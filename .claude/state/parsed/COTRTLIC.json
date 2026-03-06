@@ -1,0 +1,36 @@
+{
+  "program_id": "COTRTLIC",
+  "source_path": "app/app-db2/cbl/COTRTLIC.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COTRTLIC",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "CICS DB2 COBOL Program",
+    "function": "Transaction list with DB2",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "copybook_inclusions": ["SQLCA", "CSDB2RWY"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "cics_commands": [{"command": "SEND"}, {"command": "RETURN"}], "sql_statements": [{"type": "DECLARE CURSOR"}, {"type": "OPEN"}, {"type": "FETCH"}, {"type": "CLOSE"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_cics_commands": true,
+    "has_db2_sql": true,
+    "has_db2_cursor": true,
+    "has_bms_maps": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 850,
+    "copybooks": 2,
+    "cics_commands": 2,
+    "sql_statements": 4
+  }
+}

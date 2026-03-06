@@ -1,0 +1,208 @@
+{
+  "program_id": "PAYMENT-HANDLER",
+  "source_path": "cobol-modernization/sample-cobol/PAYMENT-HANDLER.cbl",
+  "parsed_at": "2026-02-28T00:00:00Z",
+  "identification": {
+    "program_id": "PAYMENT-HANDLER",
+    "author": "S.PATEL",
+    "date_written": "1992-11-03",
+    "date_compiled": null,
+    "remarks": "Processes payment transactions. Routes to appropriate handler based on payment type. Legacy GOTO retained from original implementation - flagged for refactoring."
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "PAYMENT-LOG",
+        "physical_name": "PAYLOG",
+        "organization": "SEQUENTIAL",
+        "access_mode": "SEQUENTIAL"
+      }
+    ]
+  },
+  "data": {
+    "working_storage": [
+      {
+        "level": "01",
+        "name": "WS-FILE-STATUS",
+        "pic": "X(2)",
+        "value": "'00'"
+      },
+      {
+        "level": "01",
+        "name": "WS-TIMESTAMP",
+        "pic": "X(26)",
+        "value": "SPACES"
+      },
+      {
+        "level": "01",
+        "name": "WS-LOG-RECORD",
+        "pic": null,
+        "children": []
+      },
+      {
+        "level": "01",
+        "name": "WS-VALIDATION-RESULT",
+        "pic": "X",
+        "value": "'Y'"
+      },
+      {
+        "level": "01",
+        "name": "WS-PROCESS-STATUS",
+        "pic": "X",
+        "value": "SPACES"
+      }
+    ],
+    "linkage_section": [
+      {
+        "level": "01",
+        "name": "LS-PAYMENT-REQUEST",
+        "pic": null,
+        "children": []
+      },
+      {
+        "level": "01",
+        "name": "LS-RETURN-CODE",
+        "pic": "S9(4)",
+        "usage": "COMP"
+      }
+    ],
+    "copybook_inclusions": [
+      "PAYMENT-RECORD"
+    ],
+    "redefines_items": [],
+    "condition_names_88": [
+      "WS-FILE-OK",
+      "WS-VALID-PAYMENT",
+      "WS-INVALID-PAYMENT"
+    ]
+  },
+  "procedure": {
+    "paragraphs": [
+      {
+        "name": "0000-MAIN",
+        "line_start": 43,
+        "line_end": 62,
+        "performs": [
+          "1000-OPEN-LOG",
+          "2000-VALIDATE-PAYMENT",
+          "3000-PROCESS-REGULAR",
+          "3100-PROCESS-REFUND",
+          "3200-PROCESS-REVERSAL",
+          "4000-LOG-TRANSACTION"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": [
+          "9000-EXIT"
+        ]
+      },
+      {
+        "name": "9000-EXIT",
+        "line_start": 63,
+        "line_end": 66,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1000-OPEN-LOG",
+        "line_start": 68,
+        "line_end": 72,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "2000-VALIDATE-PAYMENT",
+        "line_start": 74,
+        "line_end": 82,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "3000-PROCESS-REGULAR",
+        "line_start": 84,
+        "line_end": 87,
+        "performs": [
+          "3900-UPDATE-PAYMENT-STATUS"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "3100-PROCESS-REFUND",
+        "line_start": 89,
+        "line_end": 94,
+        "performs": [
+          "3900-UPDATE-PAYMENT-STATUS"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "3200-PROCESS-REVERSAL",
+        "line_start": 96,
+        "line_end": 99,
+        "performs": [
+          "3900-UPDATE-PAYMENT-STATUS"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "3900-UPDATE-PAYMENT-STATUS",
+        "line_start": 101,
+        "line_end": 102,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "4000-LOG-TRANSACTION",
+        "line_start": 104,
+        "line_end": 111,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [
+          "PAYMENT-LOG-REC (WRITE)"
+        ],
+        "gotos": []
+      },
+      {
+        "name": "9000-CLOSE-LOG",
+        "line_start": 113,
+        "line_end": 114,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      }
+    ]
+  },
+  "risk_flags": {
+    "has_goto": true,
+    "has_alter": false,
+    "has_redefines": false,
+    "has_occurs_depending_on": false,
+    "deep_nesting": false,
+    "estimated_complexity": "MEDIUM"
+  }
+}

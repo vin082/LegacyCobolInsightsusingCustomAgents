@@ -1,0 +1,43 @@
+{
+  "program_id": "COUSR00C",
+  "source_path": "app/cbl/COUSR00C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COUSR00C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "CICS COBOL Program",
+    "function": "List all users from USRSEC file",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "working_storage": [
+      {"level": "01", "name": "WS-VARIABLES", "children": [
+        {"level": "05", "name": "WS-PGMNAME", "pic": "X(08)", "value": "COUSR00C"},
+        {"level": "05", "name": "WS-TRANID", "pic": "X(04)", "value": "CU00"}
+      ]},
+      {"level": "01", "name": "WS-USER-DATA", "children": [{"level": "02", "name": "USER-REC", "occurs": 10}]}
+    ],
+    "copybook_inclusions": ["COCOM01Y", "COUSR00", "COTTL01Y", "CSDAT01Y", "CSMSG01Y", "CSUSR01Y", "DFHAID", "DFHBMSCA"],
+    "condition_names_88": ["ERR-FLG-ON", "ERR-FLG-OFF", "USER-SEC-EOF", "SEND-ERASE-YES"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "cics_commands": [{"command": "STARTBR"}, {"command": "READNEXT"}, {"command": "ENDBR"}, {"command": "SEND"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_cics_commands": true,
+    "has_bms_maps": true,
+    "has_browse": true,
+    "estimated_complexity": "MEDIUM"
+  },
+  "metrics": {
+    "total_lines": 696,
+    "copybooks": 8,
+    "cics_commands": 6,
+    "bms_maps": 1
+  }
+}

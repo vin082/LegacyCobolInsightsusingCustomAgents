@@ -1,0 +1,161 @@
+{
+  "program_id": "COSGN00C",
+  "source_path": "app/cbl/COSGN00C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COSGN00C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "CICS COBOL Program",
+    "function": "Signon Screen for the CardDemo Application",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": []
+  },
+  "data": {
+    "working_storage": [
+      {
+        "level": "01",
+        "name": "WS-VARIABLES",
+        "children": [
+          {"level": "05", "name": "WS-PGMNAME", "pic": "X(08)", "value": "COSGN00C"},
+          {"level": "05", "name": "WS-TRANID", "pic": "X(04)", "value": "CC00"},
+          {"level": "05", "name": "WS-MESSAGE", "pic": "X(80)", "value": "SPACES"},
+          {"level": "05", "name": "WS-USRSEC-FILE", "pic": "X(08)", "value": "USRSEC"},
+          {"level": "05", "name": "WS-ERR-FLG", "pic": "X(01)", "value": "N", "condition_names": [
+            {"level": "88", "name": "ERR-FLG-ON", "value": "Y"},
+            {"level": "88", "name": "ERR-FLG-OFF", "value": "N"}
+          ]},
+          {"level": "05", "name": "WS-RESP-CD", "pic": "S9(09)", "usage": "COMP", "value": "ZEROS"},
+          {"level": "05", "name": "WS-REAS-CD", "pic": "S9(09)", "usage": "COMP", "value": "ZEROS"},
+          {"level": "05", "name": "WS-USER-ID", "pic": "X(08)"},
+          {"level": "05", "name": "WS-USER-PWD", "pic": "X(08)"}
+        ]
+      }
+    ],
+    "linkage_section": [
+      {
+        "level": "01",
+        "name": "DFHCOMMAREA",
+        "children": [
+          {"level": "05", "name": "LK-COMMAREA", "pic": "X(01)", "occurs": "1 TO 32767", "depending_on": "EIBCALEN"}
+        ]
+      }
+    ],
+    "copybook_inclusions": ["COCOM01Y", "COSGN00", "COTTL01Y", "CSDAT01Y", "CSMSG01Y", "CSUSR01Y", "DFHAID", "DFHBMSCA"],
+    "redefines_items": [],
+    "condition_names_88": ["ERR-FLG-ON", "ERR-FLG-OFF"],
+    "occurs_clauses": ["LK-COMMAREA OCCURS 1 TO 32767 DEPENDING ON EIBCALEN"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {
+        "name": "MAIN-PARA",
+        "line_start": 71,
+        "line_end": 103,
+        "performs": ["SEND-SIGNON-SCREEN", "PROCESS-ENTER-KEY", "SEND-PLAIN-TEXT"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "cics_commands": [
+          {"command": "RETURN", "parameters": ["TRANSID", "COMMAREA", "LENGTH"]}
+        ],
+        "gotos": []
+      },
+      {
+        "name": "PROCESS-ENTER-KEY",
+        "line_start": 108,
+        "line_end": 141,
+        "performs": ["SEND-SIGNON-SCREEN", "READ-USER-SEC-FILE"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "cics_commands": [
+          {"command": "RECEIVE", "parameters": ["MAP", "MAPSET", "RESP", "RESP2"]}
+        ],
+        "gotos": []
+      },
+      {
+        "name": "SEND-SIGNON-SCREEN",
+        "line_start": 146,
+        "line_end": 157,
+        "performs": ["POPULATE-HEADER-INFO"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "cics_commands": [
+          {"command": "SEND", "parameters": ["MAP", "MAPSET", "FROM", "ERASE", "CURSOR"]}
+        ],
+        "gotos": []
+      },
+      {
+        "name": "SEND-PLAIN-TEXT",
+        "line_start": 162,
+        "line_end": 171,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "cics_commands": [
+          {"command": "SEND TEXT", "parameters": ["FROM", "LENGTH", "ERASE", "FREEKB"]},
+          {"command": "RETURN"}
+        ],
+        "gotos": []
+      },
+      {
+        "name": "POPULATE-HEADER-INFO",
+        "line_start": 176,
+        "line_end": 204,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "cics_commands": [
+          {"command": "ASSIGN", "parameters": ["APPLID"]},
+          {"command": "ASSIGN", "parameters": ["SYSID"]}
+        ],
+        "gotos": []
+      },
+      {
+        "name": "READ-USER-SEC-FILE",
+        "line_start": 209,
+        "line_end": 253,
+        "performs": ["SEND-SIGNON-SCREEN"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "cics_commands": [
+          {"command": "READ", "parameters": ["DATASET", "INTO", "LENGTH", "RIDFLD", "KEYLENGTH", "RESP", "RESP2"]},
+          {"command": "XCTL", "program": "COADM01C", "parameters": ["PROGRAM", "COMMAREA"]},
+          {"command": "XCTL", "program": "COMEN01C", "parameters": ["PROGRAM", "COMMAREA"]}
+        ],
+        "gotos": []
+      }
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": false,
+    "has_occurs_depending_on": true,
+    "deep_nesting": false,
+    "has_cics_commands": true,
+    "has_bms_maps": true,
+    "has_xctl": true,
+    "cics_file_io": ["READ from USRSEC"],
+    "programs_called_via_xctl": ["COADM01C", "COMEN01C"],
+    "bms_maps_used": ["COSGN0A (COSGN00)"],
+    "estimated_complexity": "LOW"
+  },
+  "metrics": {
+    "total_lines": 261,
+    "paragraphs": 6,
+    "copybooks": 8,
+    "cics_commands": 9,
+    "xctl_count": 2,
+    "file_operations": 1,
+    "bms_maps": 1,
+    "occurs_count": 1
+  }
+}

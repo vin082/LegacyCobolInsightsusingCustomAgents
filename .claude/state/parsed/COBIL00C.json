@@ -1,0 +1,33 @@
+{
+  "program_id": "COBIL00C",
+  "source_path": "app/cbl/COBIL00C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COBIL00C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "CICS COBOL Program",
+    "function": "Billing inquiry screen",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "copybook_inclusions": []
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "cics_commands": [{"command": "READ"}, {"command": "SEND"}, {"command": "RETURN"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_cics_commands": true,
+    "has_bms_maps": true,
+    "estimated_complexity": "MEDIUM"
+  },
+  "metrics": {
+    "total_lines": 600,
+    "copybooks": 0,
+    "cics_commands": 3
+  }
+}

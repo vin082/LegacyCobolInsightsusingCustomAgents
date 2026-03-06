@@ -1,0 +1,10 @@
+{
+  "github.copilot.chat.agentFilesLocations": ["${workspaceFolder}/.claude/agents"],
+  "github.copilot.chat.agent.enabled": true,
+  "files.associations": {
+    "*.cbl": "cobol",
+    "*.cob": "cobol",
+    "*.cpy": "cobol",
+    "*.agent.md": "markdown"
+  }
+}

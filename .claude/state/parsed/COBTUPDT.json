@@ -1,0 +1,33 @@
+{
+  "program_id": "COBTUPDT",
+  "source_path": "app/app-db2/cbl/COBTUPDT.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COBTUPDT",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "Batch DB2 COBOL Program",
+    "function": "Batch update with DB2",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "copybook_inclusions": ["SQLCA", "CSDB2RWY"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "sql_statements": [{"type": "SELECT"}, {"type": "UPDATE"}, {"type": "INSERT"}, {"type": "DELETE"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_db2_sql": true,
+    "has_batch_db2": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 700,
+    "copybooks": 2,
+    "sql_statements": 4
+  }
+}

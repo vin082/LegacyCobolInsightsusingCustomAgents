@@ -1,0 +1,56 @@
+{
+ "program_id": "CBCUS01C",
+  "source_path": "app/cbl/CBCUS01C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBCUS01C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Read and print customer data file",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "CUSTFILE-FILE",
+        "physical_name": "CUSTFILE",
+        "organization": "INDEXED",
+        "access_mode": "SEQUENTIAL",
+        "record_key": "FD-CUST-ID",
+        "file_status": "CUSTFILE-STATUS"
+      }
+    ]
+  },
+  "data": {
+    "working_storage": [
+      {"level": "01", "name": "CUSTFILE-STATUS"},
+      {"level": "01", "name": "APPL-RESULT", "pic": "S9(9)", "usage": "COMP"}
+    ],
+    "copybook_inclusions": ["CVCUS01Y"],
+    "redefines_items": ["TWO-BYTES-ALPHA REDEFINES TWO-BYTES-BINARY"],
+    "condition_names_88": ["APPL-AOK", "APPL-EOF"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN", "line_start": 71, "line_end": 86, "performs": ["0000-CUSTFILE-OPEN", "1000-CUSTFILE-GET-NEXT", "9000-CUSTFILE-CLOSE"]},
+      {"name": "1000-CUSTFILE-GET-NEXT", "line_start": 91, "line_end": 109, "reads": ["CUSTFILE-FILE"]},
+      {"name": "0000-CUSTFILE-OPEN", "line_start": 111, "line_end": 124},
+      {"name": "9000-CUSTFILE-CLOSE", "line_start": 126, "line_end": 139},
+      {"name": "9999-ABEND-PROGRAM", "line_start": 141, "line_end": 144, "calls": [{"program": "CEE3ABD"}]},
+      {"name": "9910-DISPLAY-IO-STATUS", "line_start": 147, "line_end": 159}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": true,
+    "estimated_complexity": "LOW"
+  },
+  "metrics": {
+    "total_lines": 179,
+    "paragraphs": 6,
+    "copybooks": 1,
+    "file_operations": 1
+  }
+}

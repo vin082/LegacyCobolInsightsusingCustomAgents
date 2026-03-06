@@ -1,0 +1,332 @@
+{
+  "program_id": "CBACT01C",
+  "source_path": "app/cbl/CBACT01C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBACT01C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "READ THE ACCOUNT FILE AND WRITE INTO FILES",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "ACCTFILE-FILE",
+        "physical_name": "ACCTFILE",
+        "organization": "INDEXED",
+        "access_mode": "SEQUENTIAL",
+        "record_key": "FD-ACCT-ID",
+        "file_status": "ACCTFILE-STATUS"
+      },
+      {
+        "logical_name": "OUT-FILE",
+        "physical_name": "OUTFILE",
+        "organization": "SEQUENTIAL",
+        "access_mode": "SEQUENTIAL",
+        "file_status": "OUTFILE-STATUS"
+      },
+      {
+        "logical_name": "ARRY-FILE",
+        "physical_name": "ARRYFILE",
+        "organization": "SEQUENTIAL",
+        "access_mode": "SEQUENTIAL",
+        "file_status": "ARRYFILE-STATUS"
+      },
+      {
+        "logical_name": "VBRC-FILE",
+        "physical_name": "VBRCFILE",
+        "organization": "SEQUENTIAL",
+        "access_mode": "SEQUENTIAL",
+        "file_status": "VBRCFILE-STATUS",
+        "recording_mode": "V",
+        "varying_size": "10 TO 80"
+      }
+    ]
+  },
+  "data": {
+    "file_section": [
+      {
+        "level": "FD",
+        "name": "ACCTFILE-FILE",
+        "record": "FD-ACCTFILE-REC",
+        "fields": [
+          {"level": "05", "name": "FD-ACCT-ID", "pic": "9(11)"},
+          {"level": "05", "name": "FD-ACCT-DATA", "pic": "X(289)"}
+        ]
+      },
+      {
+        "level": "FD",
+        "name": "OUT-FILE",
+        "record": "OUT-ACCT-REC",
+        "fields": [
+          {"level": "05", "name": "OUT-ACCT-ID", "pic": "9(11)"},
+          {"level": "05", "name": "OUT-ACCT-ACTIVE-STATUS", "pic": "X(01)"},
+          {"level": "05", "name": "OUT-ACCT-CURR-BAL", "pic": "S9(10)V99"},
+          {"level": "05", "name": "OUT-ACCT-CREDIT-LIMIT", "pic": "S9(10)V99"},
+          {"level": "05", "name": "OUT-ACCT-CASH-CREDIT-LIMIT", "pic": "S9(10)V99"},
+          {"level": "05", "name": "OUT-ACCT-OPEN-DATE", "pic": "X(10)"},
+          {"level": "05", "name": "OUT-ACCT-EXPIRAION-DATE", "pic": "X(10)"},
+          {"level": "05", "name": "OUT-ACCT-REISSUE-DATE", "pic": "X(10)"},
+          {"level": "05", "name": "OUT-ACCT-CURR-CYC-CREDIT", "pic": "S9(10)V99"},
+          {"level": "05", "name": "OUT-ACCT-CURR-CYC-DEBIT", "pic": "S9(10)V99", "usage": "COMP-3"},
+          {"level": "05", "name": "OUT-ACCT-GROUP-ID", "pic": "X(10)"}
+        ]
+      },
+      {
+        "level": "FD",
+        "name": "ARRY-FILE",
+        "record": "ARR-ARRAY-REC",
+        "fields": [
+          {"level": "05", "name": "ARR-ACCT-ID", "pic": "9(11)"},
+          {"level": "05", "name": "ARR-ACCT-BAL", "occurs": 5, "children": [
+            {"level": "10", "name": "ARR-ACCT-CURR-BAL", "pic": "S9(10)V99"},
+            {"level": "10", "name": "ARR-ACCT-CURR-CYC-DEBIT", "pic": "S9(10)V99", "usage": "COMP-3"}
+          ]},
+          {"level": "05", "name": "ARR-FILLER", "pic": "X(04)"}
+        ]
+      },
+      {
+        "level": "FD",
+        "name": "VBRC-FILE",
+        "record": "VBR-REC",
+        "fields": [
+          {"level": "01", "name": "VBR-REC", "pic": "X(80)"}
+        ]
+      }
+    ],
+    "working_storage": [
+      {
+        "level": "01",
+        "name": "ACCTFILE-STATUS",
+        "children": [
+          {"level": "05", "name": "ACCTFILE-STAT1", "pic": "X"},
+          {"level": "05", "name": "ACCTFILE-STAT2", "pic": "X"}
+        ]
+      },
+      {
+        "level": "01",
+        "name": "OUTFILE-STATUS",
+        "children": [
+          {"level": "05", "name": "OUTFILE-STAT1", "pic": "X"},
+          {"level": "05", "name": "OUTFILE-STAT2", "pic": "X"}
+        ]
+      },
+      {
+        "level": "01",
+        "name": "APPL-RESULT",
+        "pic": "S9(9)",
+        "usage": "COMP",
+        "condition_names": [
+          {"level": "88", "name": "APPL-AOK", "value": "0"},
+          {"level": "88", "name": "APPL-EOF", "value": "16"}
+        ]
+      },
+      {
+        "level": "01",
+        "name": "END-OF-FILE",
+        "pic": "X(01)",
+        "value": "N"
+      }
+    ],
+    "copybook_inclusions": ["CVACT01Y", "CODATECN"],
+    "redefines_items": ["TWO-BYTES-ALPHA REDEFINES TWO-BYTES-BINARY", "WS-REISSUE-DATE REDEFINES WS-ACCT-REISSUE-DATE"],
+    "condition_names_88": ["APPL-AOK", "APPL-EOF"],
+    "occurs_clauses": ["ARR-ACCT-BAL OCCURS 5 TIMES"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {
+        "name": "MAIN",
+        "line_start": 155,
+        "line_end": 168,
+        "performs": ["0000-ACCTFILE-OPEN", "2000-OUTFILE-OPEN", "3000-ARRFILE-OPEN", "4000-VBRFILE-OPEN", "1000-ACCTFILE-GET-NEXT", "9000-ACCTFILE-CLOSE"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1000-ACCTFILE-GET-NEXT",
+        "line_start": 172,
+        "line_end": 200,
+        "performs": ["1100-DISPLAY-ACCT-RECORD", "1300-POPUL-ACCT-RECORD", "1350-WRITE-ACCT-RECORD", "1400-POPUL-ARRAY-RECORD", "1450-WRITE-ARRY-RECORD", "1500-POPUL-VBRC-RECORD", "1550-WRITE-VB1-RECORD", "1575-WRITE-VB2-RECORD", "9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": ["ACCTFILE-FILE"],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1100-DISPLAY-ACCT-RECORD",
+        "line_start": 202,
+        "line_end": 215,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1300-POPUL-ACCT-RECORD",
+        "line_start": 217,
+        "line_end": 246,
+        "performs": [],
+        "calls": [{"program": "COBDATFT", "using": ["CODATECN-REC"]}],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1350-WRITE-ACCT-RECORD",
+        "line_start": 248,
+        "line_end": 256,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": ["OUT-ACCT-REC"],
+        "gotos": []
+      },
+      {
+        "name": "1400-POPUL-ARRAY-RECORD",
+        "line_start": 258,
+        "line_end": 267,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1450-WRITE-ARRY-RECORD",
+        "line_start": 269,
+        "line_end": 279,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": ["ARR-ARRAY-REC"],
+        "gotos": []
+      },
+      {
+        "name": "1500-POPUL-VBRC-RECORD",
+        "line_start": 281,
+        "line_end": 291,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1550-WRITE-VB1-RECORD",
+        "line_start": 293,
+        "line_end": 304,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": ["VBR-REC"],
+        "gotos": []
+      },
+      {
+        "name": "1575-WRITE-VB2-RECORD",
+        "line_start": 306,
+        "line_end": 317,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": ["VBR-REC"],
+        "gotos": []
+      },
+      {
+        "name": "0000-ACCTFILE-OPEN",
+        "line_start": 319,
+        "line_end": 333,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "2000-OUTFILE-OPEN",
+        "line_start": 334,
+        "line_end": 348,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "3000-ARRFILE-OPEN",
+        "line_start": 350,
+        "line_end": 364,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "4000-VBRFILE-OPEN",
+        "line_start": 366,
+        "line_end": 380,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "9000-ACCTFILE-CLOSE",
+        "line_start": 382,
+        "line_end": 396,
+        "performs": ["9910-DISPLAY-IO-STATUS", "9999-ABEND-PROGRAM"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "9999-ABEND-PROGRAM",
+        "line_start": 398,
+        "line_end": 402,
+        "performs": [],
+        "calls": [{"program": "CEE3ABD", "using": ["ABCODE", "TIMING"]}],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "9910-DISPLAY-IO-STATUS",
+        "line_start": 404,
+        "line_end": 417,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      }
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": true,
+    "has_occurs_depending_on": false,
+    "has_comp3_fields": true,
+    "has_varying_records": true,
+    "deep_nesting": false,
+    "external_calls": ["COBDATFT", "CEE3ABD"],
+    "estimated_complexity": "MEDIUM"
+  },
+  "metrics": {
+    "total_lines": 431,
+    "paragraphs": 17,
+    "copybooks": 2,
+    "file_operations": 4,
+    "external_calls": 2,
+    "redefines_count": 2,
+    "occurs_count": 1
+  }
+}

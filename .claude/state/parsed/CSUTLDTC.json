@@ -1,0 +1,171 @@
+{
+  "program_id": "CSUTLDTC",
+  "source_path": "app/cbl/CSUTLDTC.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CSUTLDTC",
+    "author": null,
+    "application": "CardDemo",
+    "type": "UTILITY COBOL Program",
+    "function": "CALL TO CEEDAYS - Date validation utility",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": []
+  },
+  "data": {
+    "working_storage": [
+      {
+        "level": "01",
+        "name": "WS-DATE-TO-TEST",
+        "children": [
+          {"level": "02", "name": "Vstring-length", "pic": "S9(4)", "usage": "BINARY"},
+          {"level": "02", "name": "Vstring-text", "children": [
+            {"level": "03", "name": "Vstring-char", "pic": "X", "occurs": "0 TO 256", "depending_on": "Vstring-length"}
+          ]}
+        ]
+      },
+      {
+        "level": "01",
+        "name": "WS-DATE-FORMAT",
+        "children": [
+          {"level": "02", "name": "Vstring-length", "pic": "S9(4)", "usage": "BINARY"},
+          {"level": "02", "name": "Vstring-text", "children": [
+            {"level": "03", "name": "Vstring-char", "pic": "X", "occurs": "0 TO 256", "depending_on": "Vstring-length"}
+          ]}
+        ]
+      },
+      {
+        "level": "01",
+        "name": "OUTPUT-LILLIAN",
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      },
+      {
+        "level": "01",
+        "name": "WS-MESSAGE",
+        "children": [
+          {"level": "02", "name": "WS-SEVERITY", "pic": "X(04)"},
+          {"level": "02", "name": "WS-SEVERITY-N", "redefines": "WS-SEVERITY", "pic": "9(4)"},
+          {"level": "02", "name": "FILLER", "pic": "X(11)", "value": "Mesg Code:"},
+          {"level": "02", "name": "WS-MSG-NO", "pic": "X(04)"},
+          {"level": "02", "name": "WS-MSG-NO-N", "redefines": "WS-MSG-NO", "pic": "9(4)"},
+          {"level": "02", "name": "FILLER", "pic": "X(01)", "value": "SPACE"},
+          {"level": "02", "name": "WS-RESULT", "pic": "X(15)"},
+          {"level": "02", "name": "FILLER", "pic": "X(01)", "value": "SPACE"},
+          {"level": "02", "name": "FILLER", "pic": "X(09)", "value": "TstDate:"},
+          {"level": "02", "name": "WS-DATE", "pic": "X(10)", "value": "SPACES"},
+          {"level": "02", "name": "FILLER", "pic": "X(01)", "value": "SPACE"},
+          {"level": "02", "name": "FILLER", "pic": "X(10)", "value": "Mask used:"},
+          {"level": "02", "name": "WS-DATE-FMT", "pic": "X(10)"},
+          {"level": "02", "name": "FILLER", "pic": "X(01)", "value": "SPACE"},
+          {"level": "02", "name": "FILLER", "pic": "X(03)", "value": "SPACES"}
+        ]
+      },
+      {
+        "level": "01",
+        "name": "FEEDBACK-CODE",
+        "children": [
+          {"level": "02", "name": "FEEDBACK-TOKEN-VALUE", "condition_names": [
+            {"level": "88", "name": "FC-INVALID-DATE", "value": "X'0000000000000000'"},
+            {"level": "88", "name": "FC-INSUFFICIENT-DATA", "value": "X'000309CB59C3C5C5'"},
+            {"level": "88", "name": "FC-BAD-DATE-VALUE", "value": "X'000309CC59C3C5C5'"},
+            {"level": "88", "name": "FC-INVALID-ERA", "value": "X'000309CD59C3C5C5'"},
+            {"level": "88", "name": "FC-UNSUPP-RANGE", "value": "X'000309D159C3C5C5'"},
+            {"level": "88", "name": "FC-INVALID-MONTH", "value": "X'000309D559C3C5C5'"},
+            {"level": "88", "name": "FC-BAD-PIC-STRING", "value": "X'000309D659C3C5C5'"},
+            {"level": "88", "name": "FC-NON-NUMERIC-DATA", "value": "X'000309D859C3C5C5'"},
+            {"level": "88", "name": "FC-YEAR-IN-ERA-ZERO", "value": "X'000309D959C3C5C5'"}
+          ]},
+          {"level": "03", "name": "CASE-1-CONDITION-ID", "children": [
+            {"level": "04", "name": "SEVERITY", "pic": "S9(4)", "usage": "BINARY"},
+            {"level": "04", "name": "MSG-NO", "pic": "S9(4)", "usage": "BINARY"}
+          ]},
+          {"level": "03", "name": "CASE-2-CONDITION-ID", "redefines": "CASE-1-CONDITION-ID", "children": [
+            {"level": "04", "name": "CLASS-CODE", "pic": "S9(4)", "usage": "BINARY"},
+            {"level": "04", "name": "CAUSE-CODE", "pic": "S9(4)", "usage": "BINARY"}
+          ]},
+          {"level": "03", "name": "CASE-SEV-CTL", "pic": "X"},
+          {"level": "03", "name": "FACILITY-ID", "pic": "XXX"},
+          {"level": "02", "name": "I-S-INFO", "pic": "S9(9)", "usage": "BINARY"}
+        ]
+      }
+    ],
+    "linkage_section": [
+      {
+        "level": "01",
+        "name": "LS-DATE",
+        "pic": "X(10)"
+      },
+      {
+        "level": "01",
+        "name": "LS-DATE-FORMAT",
+        "pic": "X(10)"
+      },
+      {
+        "level": "01",
+        "name": "LS-RESULT",
+        "pic": "X(80)"
+      }
+    ],
+    "copybook_inclusions": [],
+    "redefines_items": ["WS-SEVERITY-N REDEFINES WS-SEVERITY", "WS-MSG-NO-N REDEFINES WS-MSG-NO", "CASE-2-CONDITION-ID REDEFINES CASE-1-CONDITION-ID"],
+    "condition_names_88": ["FC-INVALID-DATE", "FC-INSUFFICIENT-DATA", "FC-BAD-DATE-VALUE", "FC-INVALID-ERA", "FC-UNSUPP-RANGE", "FC-INVALID-MONTH", "FC-BAD-PIC-STRING", "FC-NON-NUMERIC-DATA", "FC-YEAR-IN-ERA-ZERO"],
+    "occurs_clauses": ["Vstring-char OCCURS 0 TO 256 DEPENDING ON Vstring-length"]
+  },
+  "procedure": {
+    "entry_point": "PROCEDURE DIVISION USING LS-DATE, LS-DATE-FORMAT, LS-RESULT",
+    "paragraphs": [
+      {
+        "name": "MAIN",
+        "line_start": 104,
+        "line_end": 112,
+        "performs": ["A000-MAIN THRU A000-MAIN-EXIT"],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "A000-MAIN",
+        "line_start": 114,
+        "line_end": 163,
+        "performs": [],
+        "calls": [{"program": "CEEDAYS", "using": ["WS-DATE-TO-TEST", "WS-DATE-FORMAT", "OUTPUT-LILLIAN", "FEEDBACK-CODE"]}],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "A000-MAIN-EXIT",
+        "line_start": 165,
+        "line_end": 166,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      }
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": true,
+    "has_occurs_depending_on": true,
+    "deep_nesting": false,
+    "is_called_subprogram": true,
+    "uses_linkage_section": true,
+    "calls_language_environment": ["CEEDAYS"],
+    "estimated_complexity": "LOW"
+  },
+  "metrics": {
+    "total_lines": 200,
+    "paragraphs": 3,
+    "copybooks": 0,
+    "external_calls": 1,
+    "linkage_parameters": 3,
+    "redefines_count": 3,
+    "occurs_count": 1
+  }
+}

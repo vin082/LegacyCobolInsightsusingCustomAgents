@@ -1,0 +1,38 @@
+{
+  "program_id": "CBTRN01C",
+  "source_path": "app/cbl/CBTRN01C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBTRN01C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Post the records from daily transaction file",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": [
+      {"logical_name": "DALYTRAN-FILE", "physical_name": "DALYTRAN", "organization": "SEQUENTIAL"},
+      {"logical_name": "CUSTOMER-FILE", "physical_name": "CUSTFILE", "organization": "INDEXED", "access_mode": "RANDOM", "record_key": "FD-CUST-ID"},
+      {"logical_name": "XREF-FILE", "physical_name": "XREFFILE", "organization": "INDEXED", "access_mode": "RANDOM", "record_key": "FD-XREF-CARD-NUM"},
+      {"logical_name": "CARD-FILE", "physical_name": "CARDFILE", "organization": "INDEXED", "access_mode": "RANDOM", "record_key": "FD-CARD-NUM"},
+      {"logical_name": "ACCOUNT-FILE", "physical_name": "ACCTFILE", "organization": "INDEXED", "access_mode": "RANDOM", "record_key": "FD-ACCT-ID"},
+      {"logical_name": "TRANSACT-FILE", "physical_name": "TRANFILE", "organization": "INDEXED", "access_mode": "RANDOM", "record_key": "FD-TRANS-ID"}
+    ]
+  },
+  "data": {
+    "copybook_inclusions": ["CVTRA06Y"]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_random_access": true,
+    "multi_file_processing": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 495,
+    "copybooks": 1,
+    "file_operations": 6
+  }
+}

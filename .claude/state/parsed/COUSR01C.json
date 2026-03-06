@@ -1,0 +1,34 @@
+{
+  "program_id": "COUSR01C",
+  "source_path": "app/cbl/COUSR01C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COUSR01C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "CICS COBOL Program",
+    "function": "Add new user to USRSEC file",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "copybook_inclusions": ["COCOM01Y", "COUSR01", "COTTL01Y", "CSDAT01Y", "CSMSG01Y", "CSUSR01Y", "DFHAID", "DFHBMSCA"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "cics_commands": [{"command": "WRITE"}, {"command": "SEND"}, {"command": "RETURN"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_cics_commands": true,
+    "has_bms_maps": true,
+    "estimated_complexity": "MEDIUM"
+  },
+  "metrics": {
+    "total_lines": 500,
+    "copybooks": 8,
+    "cics_commands": 4,
+    "bms_maps": 1
+  }
+}

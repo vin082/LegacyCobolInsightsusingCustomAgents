@@ -1,0 +1,37 @@
+{
+  "program_id": "CBEXPORT",
+  "source_path": "app/cbl/CBEXPORT.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBEXPORT",
+    "author": "CARDDEMO TEAM",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Export Customer Data for Branch Migration - reads normalized CardDemo files and creates multi-record export file",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": [
+      {"logical_name": "CUSTOMER-INPUT", "physical_name": "CUSTFILE", "organization": "INDEXED", "access_mode": "SEQUENTIAL", "record_key": "CUST-ID"},
+      {"logical_name": "ACCOUNT-INPUT", "physical_name": "ACCTFILE", "organization": "INDEXED", "access_mode": "SEQUENTIAL", "record_key": "ACCT-ID"},
+      {"logical_name": "XREF-INPUT", "physical_name": "XREFFILE", "organization": "INDEXED", "access_mode": "SEQUENTIAL", "record_key": "XREF-CARD-NUM"},
+      {"logical_name": "TRANSACTION-INPUT", "physical_name": "TRANSACT", "organization": "INDEXED", "access_mode": "SEQUENTIAL", "record_key": "TRAN-ID"},
+      {"logical_name": "CARD-INPUT", "physical_name": "CARDFILE", "organization": "INDEXED", "access_mode": "SEQUENTIAL", "record_key": "CARD-NUM"},
+      {"logical_name": "EXPORT-OUTPUT", "physical_name": "EXPFILE", "organization": "INDEXED", "access_mode": "SEQUENTIAL", "record_key": "EXPORT-SEQUENCE-NUM"}
+    ]
+  },
+  "data": {
+    "copybook_inclusions": ["CVCUS01Y", "CVACT01Y", "CVACT03Y", "CVTRA05Y", "CVACT02Y", "CVEXPORT"]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "multi_file_input": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 583,
+    "copybooks": 6,
+    "file_operations": 6
+  }
+}

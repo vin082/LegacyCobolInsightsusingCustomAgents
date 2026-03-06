@@ -1,0 +1,524 @@
+{
+  "analysis_target": "CUSTOMER-RECORD",
+  "artefact_type": "Copybook",
+  "change_type": "MODIFY",
+  "analyzed_at": "2026-03-01T00:00:00Z",
+  "summary": {
+    "total_programs_affected": 4,
+    "direct_users": 3,
+    "indirect_users": 1,
+    "critical": 0,
+    "high": 3,
+    "medium": 1,
+    "low": 0
+  },
+  "analysis_methodology": {
+    "upstream_analysis": "Identified all programs that directly INCLUDE this copybook",
+    "downstream_analysis": "Traced programs called by direct users to identify transitive impact",
+    "shared_data_analysis": "Analyzed which programs share this copybook",
+    "impact_scoring": "Applied scoring matrix based on: direct callers (30%), transitive depth (20%), copybook breadth (25%), complexity (15%), risk flags (10%)"
+  },
+  "copybook_metadata": {
+    "name": "CUSTOMER-RECORD",
+    "source_path": "cobol-modernization/sample-cobol/copybooks/CUSTOMER-RECORD.cpy",
+    "data_item_count": 5,
+    "parsed_at": "2026-02-28T00:00:00Z",
+    "data_items": [
+      {
+        "fqn": "CUSTOMER-RECORD.CUST-ID",
+        "level": "05",
+        "pic": "9(8)",
+        "description": "Customer identifier"
+      },
+      {
+        "fqn": "CUSTOMER-RECORD.CUST-NAME",
+        "level": "05",
+        "pic": "X(40)",
+        "description": "Customer name"
+      },
+      {
+        "fqn": "CUSTOMER-RECORD.CUST-STATUS",
+        "level": "05",
+        "pic": "X",
+        "description": "Customer status with condition names"
+      },
+      {
+        "fqn": "CUSTOMER-RECORD.CUST-BALANCE",
+        "level": "05",
+        "pic": "S9(9)V99",
+        "description": "Customer balance (signed numeric)"
+      },
+      {
+        "fqn": "CUSTOMER-RECORD.CUST-OPEN-DATE",
+        "level": "05",
+        "pic": "9(8)",
+        "description": "Account opening date"
+      }
+    ]
+  },
+  "affected_programs": [
+    {
+      "program_id": "CUSTOMER-PROC",
+      "impact_level": "HIGH",
+      "impact_type": "DIRECT",
+      "reason": "Directly includes CUSTOMER-RECORD copybook; fundamental customer processing logic",
+      "usage_type": "Direct copybook inclusion",
+      "call_depth": 0,
+      "inbound_calls": 1,
+      "inbound_callers": ["BATCH-RUNNER"],
+      "outbound_calls": 1,
+      "outbound_callees": ["ACCOUNT-MGR"],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/CUSTOMER-PROC.cbl",
+        "author": "J.SMITH",
+        "date_written": "1987-03-15",
+        "line_count": 58,
+        "estimated_complexity": "LOW",
+        "has_goto": false,
+        "has_alter": false,
+        "has_redefines": false
+      },
+      "impact_score": {
+        "direct_caller_score": 1,
+        "transitive_depth_score": 1,
+        "copybook_breadth_score": 1,
+        "complexity_score": 0,
+        "risk_flag_score": 0,
+        "raw_score": 3,
+        "category": "LOW-MEDIUM"
+      },
+      "testing_priority": 1,
+      "estimated_effort_days": 2.0,
+      "key_concerns": [
+        "Core customer processing logic must be regression tested",
+        "Called by BATCH-RUNNER - impacts batch processing",
+        "Calls ACCOUNT-MGR - changes propagate downstream"
+      ]
+    },
+    {
+      "program_id": "BATCH-RUNNER",
+      "impact_level": "HIGH",
+      "impact_type": "DIRECT",
+      "reason": "Directly includes CUSTOMER-RECORD copybook; entry point for batch processing",
+      "usage_type": "Direct copybook inclusion",
+      "call_depth": 0,
+      "inbound_calls": 0,
+      "inbound_callers": [],
+      "outbound_calls": 1,
+      "outbound_callees": ["CUSTOMER-PROC"],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/BATCH-RUNNER.cbl",
+        "author": "D.WILSON",
+        "date_written": "1995-02-14",
+        "line_count": 124,
+        "estimated_complexity": "LOW",
+        "has_goto": false,
+        "has_alter": false,
+        "has_redefines": false
+      },
+      "impact_score": {
+        "direct_caller_score": 0,
+        "transitive_depth_score": 0,
+        "copybook_breadth_score": 1,
+        "complexity_score": 0,
+        "risk_flag_score": 0,
+        "raw_score": 1,
+        "category": "LOW"
+      },
+      "testing_priority": 1,
+      "estimated_effort_days": 2.5,
+      "key_concerns": [
+        "Top-level batch processing entry point",
+        "No upstream callers - independent testing possible",
+        "Must verify batch processing workflow end-to-end"
+      ]
+    },
+    {
+      "program_id": "ACCOUNT-MGR",
+      "impact_level": "HIGH",
+      "impact_type": "DIRECT",
+      "reason": "Directly includes CUSTOMER-RECORD copybook; also uses ACCOUNT-RECORD and PAYMENT-RECORD",
+      "usage_type": "Direct copybook inclusion",
+      "call_depth": 0,
+      "inbound_calls": 1,
+      "inbound_callers": ["CUSTOMER-PROC"],
+      "outbound_calls": 1,
+      "outbound_callees": ["PAYMENT-HANDLER"],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/ACCOUNT-MGR.cbl",
+        "author": "M.JONES",
+        "date_written": "1989-07-22",
+        "line_count": 116,
+        "estimated_complexity": "MEDIUM",
+        "has_goto": false,
+        "has_alter": false,
+        "has_redefines": false
+      },
+      "impact_score": {
+        "direct_caller_score": 1,
+        "transitive_depth_score": 2,
+        "copybook_breadth_score": 1,
+        "complexity_score": 1,
+        "risk_flag_score": 0,
+        "raw_score": 5,
+        "category": "MEDIUM"
+      },
+      "testing_priority": 2,
+      "estimated_effort_days": 3.0,
+      "key_concerns": [
+        "Uses multiple copybooks (CUSTOMER-RECORD, ACCOUNT-RECORD, PAYMENT-RECORD)",
+        "MEDIUM complexity - more extensive testing required",
+        "Calls PAYMENT-HANDLER - changes cascade to payment processing",
+        "Critical business logic for account management"
+      ]
+    },
+    {
+      "program_id": "PAYMENT-HANDLER",
+      "impact_level": "MEDIUM",
+      "impact_type": "INDIRECT",
+      "reason": "Called by ACCOUNT-MGR which uses CUSTOMER-RECORD; indirect impact through data flow",
+      "usage_type": "Transitive dependency",
+      "call_depth": 1,
+      "inbound_calls": 1,
+      "inbound_callers": ["ACCOUNT-MGR"],
+      "outbound_calls": 0,
+      "outbound_callees": [],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/PAYMENT-HANDLER.cbl",
+        "author": "S.PATEL",
+        "date_written": "1992-11-03",
+        "line_count": 119,
+        "estimated_complexity": "MEDIUM",
+        "has_goto": true,
+        "has_alter": false,
+        "has_redefines": false
+      },
+      "impact_score": {
+        "direct_caller_score": 1,
+        "transitive_depth_score": 3,
+        "copybook_breadth_score": 0,
+        "complexity_score": 1,
+        "risk_flag_score": 1,
+        "raw_score": 6,
+        "category": "MEDIUM"
+      },
+      "testing_priority": 3,
+      "estimated_effort_days": 1.5,
+      "key_concerns": [
+        "Contains GOTO statements - high refactoring risk",
+        "Does not directly use CUSTOMER-RECORD but receives data from ACCOUNT-MGR",
+        "MEDIUM complexity with control flow risks",
+        "Regression test for data flow from upstream changes"
+      ]
+    }
+  ],
+  "call_chain_analysis": {
+    "description": "Complete call chain showing how changes propagate",
+    "primary_path": [
+      {
+        "program": "BATCH-RUNNER",
+        "uses_copybook": true,
+        "calls": "CUSTOMER-PROC"
+      },
+      {
+        "program": "CUSTOMER-PROC",
+        "uses_copybook": true,
+        "calls": "ACCOUNT-MGR"
+      },
+      {
+        "program": "ACCOUNT-MGR",
+        "uses_copybook": true,
+        "calls": "PAYMENT-HANDLER"
+      },
+      {
+        "program": "PAYMENT-HANDLER",
+        "uses_copybook": false,
+        "calls": null
+      }
+    ],
+    "max_call_depth": 3,
+    "total_programs_in_chain": 4
+  },
+  "shared_data_dependencies": {
+    "description": "Other copybooks used by affected programs",
+    "copybooks": [
+      {
+        "copybook_name": "ACCOUNT-RECORD",
+        "used_by": ["ACCOUNT-MGR"],
+        "risk": "MEDIUM - May have structural dependencies with CUSTOMER-RECORD"
+      },
+      {
+        "copybook_name": "PAYMENT-RECORD",
+        "used_by": ["ACCOUNT-MGR", "PAYMENT-HANDLER"],
+        "risk": "MEDIUM - Used by programs in impact chain"
+      }
+    ],
+    "cross_copybook_risk": "MEDIUM - Multiple copybooks used in tandem suggest potential data structure dependencies"
+  },
+  "file_io_analysis": {
+    "description": "File I/O operations by affected programs",
+    "files_accessed": [
+      {
+        "file_name": "CUSTOMER-FILE",
+        "logical_name": "CUSTOMER-FILE",
+        "physical_name": "CUSTMAST",
+        "organization": "SEQUENTIAL",
+        "accessed_by": [
+          {
+            "program": "CUSTOMER-PROC",
+            "paragraph": "1100-READ-CUSTOMER",
+            "operation": "READ"
+          }
+        ],
+        "risk": "HIGH - Direct customer data source"
+      },
+      {
+        "file_name": "BATCH-INPUT",
+        "logical_name": "BATCH-INPUT",
+        "physical_name": "BATCHIN",
+        "organization": "SEQUENTIAL",
+        "accessed_by": [
+          {
+            "program": "BATCH-RUNNER",
+            "paragraph": "1100-READ-NEXT-RECORD",
+            "operation": "READ"
+          }
+        ],
+        "risk": "MEDIUM - Batch processing input"
+      },
+      {
+        "file_name": "BATCH-REPORT",
+        "logical_name": "BATCH-REPORT",
+        "physical_name": "BATCHRPT",
+        "organization": "SEQUENTIAL",
+        "accessed_by": [
+          {
+            "program": "BATCH-RUNNER",
+            "paragraph": "1000-INITIALISE",
+            "operation": "WRITE"
+          }
+        ],
+        "risk": "LOW - Output report"
+      },
+      {
+        "file_name": "ACCOUNT-FILE",
+        "logical_name": "ACCOUNT-FILE",
+        "physical_name": "ACCTMAST",
+        "organization": "INDEXED",
+        "accessed_by": [
+          {
+            "program": "ACCOUNT-MGR",
+            "paragraph": "2000-VALIDATE-CUSTOMER",
+            "operation": "READ"
+          }
+        ],
+        "risk": "HIGH - Core account data"
+      },
+      {
+        "file_name": "PAYMENT-LOG",
+        "logical_name": "PAYMENT-LOG",
+        "physical_name": "PAYLOG",
+        "organization": "SEQUENTIAL",
+        "accessed_by": [
+          {
+            "program": "PAYMENT-HANDLER",
+            "paragraph": "4000-LOG-TRANSACTION",
+            "operation": "WRITE"
+          }
+        ],
+        "risk": "MEDIUM - Audit trail"
+      }
+    ]
+  },
+  "recommended_change_sequence": [
+    {
+      "step": 1,
+      "action": "Modify CUSTOMER-RECORD copybook",
+      "description": "Make structural changes to the copybook",
+      "dependencies": [],
+      "estimated_effort": "0.5 days",
+      "validation": "Compile copybook, verify no syntax errors"
+    },
+    {
+      "step": 2,
+      "action": "Update and test CUSTOMER-PROC",
+      "description": "Update program to accommodate copybook changes, unit test all paragraphs",
+      "dependencies": ["CUSTOMER-RECORD modification complete"],
+      "estimated_effort": "2.0 days",
+      "validation": "Unit test all paragraphs: 0000-MAIN, 1000-OPEN-FILES, 1100-READ-CUSTOMER, 2000-PROCESS-CUSTOMERS, 9000-CLOSE-FILES"
+    },
+    {
+      "step": 3,
+      "action": "Update and test BATCH-RUNNER",
+      "description": "Update batch processing logic, run batch tests",
+      "dependencies": ["CUSTOMER-RECORD modification complete", "CUSTOMER-PROC updated"],
+      "estimated_effort": "2.5 days",
+      "validation": "End-to-end batch processing test with sample data"
+    },
+    {
+      "step": 4,
+      "action": "Update and test ACCOUNT-MGR",
+      "description": "Update account management logic, verify integration with CUSTOMER-PROC and PAYMENT-HANDLER",
+      "dependencies": ["CUSTOMER-RECORD modification complete", "CUSTOMER-PROC tested"],
+      "estimated_effort": "3.0 days",
+      "validation": "Integration test with CUSTOMER-PROC and PAYMENT-HANDLER; verify all three copybooks (CUSTOMER-RECORD, ACCOUNT-RECORD, PAYMENT-RECORD) work together"
+    },
+    {
+      "step": 5,
+      "action": "Regression test PAYMENT-HANDLER",
+      "description": "Verify payment processing still works with updated data flow",
+      "dependencies": ["ACCOUNT-MGR tested"],
+      "estimated_effort": "1.5 days",
+      "validation": "Regression test payment processing end-to-end; extra attention to GOTO statements"
+    },
+    {
+      "step": 6,
+      "action": "Full system integration test",
+      "description": "Execute complete BATCH-RUNNER → CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER workflow",
+      "dependencies": ["All individual programs tested"],
+      "estimated_effort": "2.0 days",
+      "validation": "End-to-end system test with production-like data volume"
+    },
+    {
+      "step": 7,
+      "action": "User acceptance testing (UAT)",
+      "description": "Business validation of customer processing changes",
+      "dependencies": ["System integration test passed"],
+      "estimated_effort": "3.0 days",
+      "validation": "Business users validate customer data processing"
+    }
+  ],
+  "risk_assessment": {
+    "overall_risk": "HIGH",
+    "risk_level_justification": "CUSTOMER-RECORD is a core copybook used by 3 programs in a critical call chain. Changes will propagate through batch processing, customer management, account management, and payment processing.",
+    "critical_risk_factors": [
+      {
+        "factor": "Shared copybook usage",
+        "severity": "HIGH",
+        "description": "3 programs directly include this copybook. Any structural change affects all 3 simultaneously."
+      },
+      {
+        "factor": "Call chain depth",
+        "severity": "HIGH",
+        "description": "Changes propagate through 4-level call chain: BATCH-RUNNER → CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER"
+      },
+      {
+        "factor": "Data structure dependencies",
+        "severity": "MEDIUM",
+        "description": "ACCOUNT-MGR uses multiple copybooks together. Structural changes may create data mapping issues."
+      },
+      {
+        "factor": "GOTO in downstream program",
+        "severity": "MEDIUM",
+        "description": "PAYMENT-HANDLER contains GOTO statements, increasing risk of control flow issues if data structures change"
+      },
+      {
+        "factor": "File I/O complexity",
+        "severity": "MEDIUM",
+        "description": "Affected programs access 5 different files. Changes to data structure may require file format updates."
+      }
+    ],
+    "mitigation_strategies": [
+      {
+        "strategy": "Phased rollout",
+        "description": "Test and deploy programs incrementally rather than all at once"
+      },
+      {
+        "strategy": "Comprehensive regression testing",
+        "description": "Create automated test suite for all 4 affected programs before making changes"
+      },
+      {
+        "strategy": "Data migration plan",
+        "description": "If field sizes or types change, plan for data migration of existing files"
+      },
+      {
+        "strategy": "Freeze related changes",
+        "description": "Freeze all other changes to these 4 programs during the CUSTOMER-RECORD modification"
+      },
+      {
+        "strategy": "Refactor PAYMENT-HANDLER GOTO",
+        "description": "Before making copybook changes, refactor GOTO statements in PAYMENT-HANDLER to reduce control flow risk"
+      }
+    ]
+  },
+  "estimated_total_effort": {
+    "development_days": 11.5,
+    "testing_days": 5.0,
+    "total_days": 14.5,
+    "assuming_team_size": 2,
+    "calendar_duration_weeks": 2,
+    "note": "Assumes 2-person team with parallel work where possible"
+  },
+  "impact_visualization": {
+    "description": "Text-based impact tree showing relationships",
+    "tree": [
+      "CUSTOMER-RECORD (Copybook - MODIFY)",
+      "├── [HIGH] DIRECT IMPACT",
+      "│   ├── CUSTOMER-PROC (58 lines, LOW complexity, 1 caller, 1 callee)",
+      "│   │   └── Called by: BATCH-RUNNER",
+      "│   │   └── Calls: ACCOUNT-MGR",
+      "│   │",
+      "│   ├── BATCH-RUNNER (124 lines, LOW complexity, 0 callers, 1 callee)",
+      "│   │   └── Entry point (top-level program)",
+      "│   │   └── Calls: CUSTOMER-PROC → impacts entire chain",
+      "│   │",
+      "│   └── ACCOUNT-MGR (116 lines, MEDIUM complexity, 1 caller, 1 callee)",
+      "│       └── Uses 3 copybooks: CUSTOMER-RECORD, ACCOUNT-RECORD, PAYMENT-RECORD",
+      "│       └── Called by: CUSTOMER-PROC",
+      "│       └── Calls: PAYMENT-HANDLER → impacts payment processing",
+      "│",
+      "└── [MEDIUM] INDIRECT IMPACT",
+      "    └── PAYMENT-HANDLER (119 lines, MEDIUM complexity, has GOTO)",
+      "        └── Called by: ACCOUNT-MGR (receives data indirectly)",
+      "        └── Risk: GOTO statements + data flow changes"
+    ]
+  },
+  "recommendations": {
+    "immediate_actions": [
+      "Create comprehensive test data covering all scenarios before making any changes",
+      "Set up automated regression test suite for all 4 programs",
+      "Document current behavior of CUSTOMER-PROC, BATCH-RUNNER, and ACCOUNT-MGR",
+      "Freeze all other development on these 4 programs during the change window"
+    ],
+    "pre_change_activities": [
+      "Review and refactor GOTO statements in PAYMENT-HANDLER",
+      "Verify file format compatibility if field sizes/types will change",
+      "Create rollback plan including data backups",
+      "Establish regression test baseline"
+    ],
+    "post_change_activities": [
+      "Monitor production batch jobs for 1 week after deployment",
+      "Review performance metrics - structure changes may impact processing time",
+      "Document lessons learned for future copybook changes",
+      "Update technical documentation"
+    ],
+    "architectural_recommendations": [
+      "Consider creating service layer to reduce direct copybook coupling",
+      "Refactor PAYMENT-HANDLER to eliminate GOTO statements",
+      "Evaluate splitting CUSTOMER-RECORD if it's frequently changed",
+      "Implement automated impact analysis tooling for future changes"
+    ]
+  },
+  "compliance_and_audit": {
+    "change_tracking": "Document all modifications to CUSTOMER-RECORD structure in change management system",
+    "data_privacy": "Verify no PII/sensitive data exposure if field visibility changes",
+    "regulatory_impact": "If CUSTOMER-RECORD contains regulatory data (e.g., banking, healthcare), ensure compliance team reviews changes",
+    "backup_requirements": "Full backup of all affected programs and data files before deployment"
+  },
+  "metadata": {
+    "report_version": "1.0",
+    "generated_by": "impact-analyzer agent",
+    "analysis_approach": "Static graph analysis based on Neo4j knowledge graph data",
+    "data_sources": [
+      ".claude/state/build-graph.cypher",
+      ".claude/skills/neo4j-schema/SKILL.md",
+      ".claude/skills/impact-analysis/SKILL.md"
+    ],
+    "limitations": [
+      "Analysis based on static code structure only",
+      "Runtime behavior not evaluated",
+      "Data volume impact not assessed",
+      "Performance implications not measured"
+    ]
+  }
+}

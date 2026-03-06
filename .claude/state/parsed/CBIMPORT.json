@@ -1,0 +1,38 @@
+{
+  "program_id": "CBIMPORT",
+  "source_path": "app/cbl/CBIMPORT.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBIMPORT",
+    "author": "CARDDEMO TEAM",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Import Customer Data from Branch Migration Export - reads multi-record export file and splits into normalized target files",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": [
+      {"logical_name": "EXPORT-INPUT", "physical_name": "EXPFILE", "organization": "INDEXED", "access_mode": "SEQUENTIAL", "record_key": "EXPORT-SEQUENCE-NUM"},
+      {"logical_name": "CUSTOMER-OUTPUT", "physical_name": "CUSTOUT", "organization": "SEQUENTIAL"},
+      {"logical_name": "ACCOUNT-OUTPUT", "physical_name": "ACCTOUT", "organization": "SEQUENTIAL"},
+      {"logical_name": "XREF-OUTPUT", "physical_name": "XREFOUT", "organization": "SEQUENTIAL"},
+      {"logical_name": "TRANSACTION-OUTPUT", "physical_name": "TRNXOUT", "organization": "SEQUENTIAL"},
+      {"logical_name": "CARD-OUTPUT", "physical_name": "CARDOUT", "organization": "SEQUENTIAL"},
+      {"logical_name": "ERROR-OUTPUT", "physical_name": "ERROUT", "organization": "SEQUENTIAL"}
+    ]
+  },
+  "data": {
+    "copybook_inclusions": ["CVCUS01Y", "CVACT01Y", "CVACT03Y", "CVTRA05Y"]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "multi_file_output": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 488,
+    "copybooks": 4,
+    "file_operations": 7
+  }
+}

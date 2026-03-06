@@ -1,0 +1,169 @@
+{
+  "program_id": "CUSTOMER-PROC",
+  "source_path": "cobol-modernization/sample-cobol/CUSTOMER-PROC.cbl",
+  "parsed_at": "2026-02-28T00:00:00Z",
+  "identification": {
+    "program_id": "CUSTOMER-PROC",
+    "author": "J.SMITH",
+    "date_written": "1987-03-15",
+    "date_compiled": null,
+    "remarks": null
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "CUSTOMER-FILE",
+        "physical_name": "CUSTMAST",
+        "organization": "SEQUENTIAL",
+        "access_mode": "INPUT"
+      },
+      {
+        "logical_name": "AUDIT-FILE",
+        "physical_name": "AUDITMAST",
+        "organization": "SEQUENTIAL",
+        "access_mode": "OUTPUT"
+      }
+    ]
+  },
+  "data": {
+    "working_storage": [
+      {
+        "level": "01",
+        "name": "WS-FLAGS",
+        "pic": null,
+        "children": [
+          {
+            "level": "05",
+            "name": "WS-EOF-FLAG",
+            "pic": "X",
+            "value": "'N'"
+          },
+          {
+            "level": "88",
+            "name": "WS-EOF",
+            "pic": null,
+            "value": "'Y'"
+          },
+          {
+            "level": "05",
+            "name": "WS-ERROR-FLAG",
+            "pic": "X",
+            "value": "'N'"
+          },
+          {
+            "level": "88",
+            "name": "WS-ERROR",
+            "pic": null,
+            "value": "'Y'"
+          }
+        ]
+      },
+      {
+        "level": "01",
+        "name": "WS-COUNTERS",
+        "pic": null,
+        "children": [
+          {
+            "level": "05",
+            "name": "WS-RECORDS-READ",
+            "pic": "9(7)",
+            "value": "ZEROES"
+          },
+          {
+            "level": "05",
+            "name": "WS-RECORDS-WRITTEN",
+            "pic": "9(7)",
+            "value": "ZEROES"
+          }
+        ]
+      }
+    ],
+    "copybook_inclusions": [
+      "CUSTOMER-RECORD"
+    ],
+    "redefines_items": [],
+    "condition_names_88": [
+      "WS-EOF",
+      "WS-ERROR"
+    ]
+  },
+  "procedure": {
+    "paragraphs": [
+      {
+        "name": "0000-MAIN",
+        "line_start": 32,
+        "line_end": 36,
+        "performs": [
+          "1000-OPEN-FILES",
+          "2000-PROCESS-CUSTOMERS",
+          "9000-CLOSE-FILES"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1000-OPEN-FILES",
+        "line_start": 38,
+        "line_end": 41,
+        "performs": [
+          "1100-READ-CUSTOMER"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1100-READ-CUSTOMER",
+        "line_start": 43,
+        "line_end": 46,
+        "performs": [],
+        "calls": [],
+        "reads": [
+          "CUSTOMER-FILE"
+        ],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "2000-PROCESS-CUSTOMERS",
+        "line_start": 48,
+        "line_end": 50,
+        "performs": [
+          "1100-READ-CUSTOMER"
+        ],
+        "calls": [
+          {
+            "program": "ACCOUNT-MGR",
+            "using": [
+              "CUSTOMER-REC"
+            ]
+          }
+        ],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "9000-CLOSE-FILES",
+        "line_start": 52,
+        "line_end": 54,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      }
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": false,
+    "has_occurs_depending_on": false,
+    "deep_nesting": false,
+    "estimated_complexity": "LOW"
+  }
+}

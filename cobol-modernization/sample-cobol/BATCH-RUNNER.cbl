@@ -1,0 +1,123 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. BATCH-RUNNER.
+       AUTHOR. D.WILSON.
+       DATE-WRITTEN. 1995-02-14.
+       REMARKS. Master batch controller. Reads customer extract file
+                and invokes CUSTOMER-PROC for each record.
+                Produces batch run statistics report.
+
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+           SOURCE-COMPUTER. IBM-MAINFRAME.
+           OBJECT-COMPUTER. IBM-MAINFRAME.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT BATCH-INPUT   ASSIGN TO BATCHIN
+               ORGANIZATION IS SEQUENTIAL
+               ACCESS MODE IS SEQUENTIAL
+               FILE STATUS IS WS-INPUT-STATUS.
+           SELECT BATCH-REPORT  ASSIGN TO BATCHRPT
+               ORGANIZATION IS SEQUENTIAL
+               ACCESS MODE IS SEQUENTIAL
+               FILE STATUS IS WS-REPORT-STATUS.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD BATCH-INPUT
+           RECORDING MODE IS F
+           BLOCK CONTAINS 0 RECORDS
+           RECORD CONTAINS 200 CHARACTERS.
+       01 BATCH-INPUT-REC.
+          COPY CUSTOMER-RECORD.
+
+       FD BATCH-REPORT.
+       01 BATCH-REPORT-REC   PIC X(132).
+
+       WORKING-STORAGE SECTION.
+       01 WS-INPUT-STATUS    PIC X(2).
+          88 WS-INPUT-OK     VALUE '00'.
+          88 WS-INPUT-EOF    VALUE '10'.
+       01 WS-REPORT-STATUS   PIC X(2).
+          88 WS-REPORT-OK    VALUE '00'.
+       01 WS-EOF             PIC X VALUE 'N'.
+          88 WS-END-OF-FILE  VALUE 'Y'.
+       01 WS-COUNTERS.
+          05 WS-TOTAL-READ      PIC 9(7) VALUE ZEROES.
+          05 WS-TOTAL-PROCESSED PIC 9(7) VALUE ZEROES.
+          05 WS-TOTAL-ERRORS    PIC 9(7) VALUE ZEROES.
+       01 WS-CALL-RETURN-CODE  PIC S9(4) COMP VALUE ZERO.
+       01 WS-DATE-TIME.
+          05 WS-DATE           PIC 9(8).
+          05 WS-TIME           PIC 9(6).
+       01 WS-REPORT-LINE        PIC X(132).
+       01 WS-HEADING-1.
+          05 FILLER PIC X(40) VALUE
+             'COBOL CUSTOMER BATCH PROCESSING REPORT'.
+          05 FILLER PIC X(20) VALUE SPACES.
+          05 WS-HDR-DATE PIC X(10).
+       01 WS-DETAIL-LINE.
+          05 WS-DL-CUST-ID   PIC Z(7)9.
+          05 FILLER          PIC X(3) VALUE SPACES.
+          05 WS-DL-CUST-NAME PIC X(40).
+          05 FILLER          PIC X(3) VALUE SPACES.
+          05 WS-DL-STATUS    PIC X(10).
+       01 WS-TOTAL-LINE.
+          05 FILLER PIC X(20) VALUE 'TOTALS:'.
+          05 WS-TL-READ     PIC Z(6)9.
+          05 FILLER PIC X(5) VALUE ' READ'.
+          05 WS-TL-PROC     PIC Z(6)9.
+          05 FILLER PIC X(10) VALUE ' PROCESSED'.
+          05 WS-TL-ERRS     PIC Z(6)9.
+          05 FILLER PIC X(7) VALUE ' ERRORS'.
+
+       PROCEDURE DIVISION.
+       0000-MAIN.
+           PERFORM 1000-INITIALISE
+           PERFORM 2000-PROCESS-BATCH
+               UNTIL WS-END-OF-FILE
+           PERFORM 9000-FINALISE
+           STOP RUN.
+
+       1000-INITIALISE.
+           OPEN INPUT  BATCH-INPUT
+           OPEN OUTPUT BATCH-REPORT
+           IF NOT WS-INPUT-OK
+               DISPLAY 'ERROR: Cannot open BATCHIN - status ' WS-INPUT-STATUS
+               MOVE 16 TO RETURN-CODE
+               STOP RUN
+           END-IF
+           MOVE FUNCTION CURRENT-DATE(1:8) TO WS-HDR-DATE
+           MOVE WS-HEADING-1 TO BATCH-REPORT-REC
+           WRITE BATCH-REPORT-REC AFTER ADVANCING PAGE
+           PERFORM 1100-READ-NEXT-RECORD.
+
+       1100-READ-NEXT-RECORD.
+           READ BATCH-INPUT
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END
+                   ADD 1 TO WS-TOTAL-READ
+           END-READ.
+
+       2000-PROCESS-BATCH.
+           CALL 'CUSTOMER-PROC' USING BATCH-INPUT-REC
+           IF RETURN-CODE = ZERO
+               ADD 1 TO WS-TOTAL-PROCESSED
+               MOVE 'OK        ' TO WS-DL-STATUS
+           ELSE
+               ADD 1 TO WS-TOTAL-ERRORS
+               MOVE 'ERROR     ' TO WS-DL-STATUS
+           END-IF
+           MOVE CUST-ID   TO WS-DL-CUST-ID
+           MOVE CUST-NAME TO WS-DL-CUST-NAME
+           MOVE WS-DETAIL-LINE TO BATCH-REPORT-REC
+           WRITE BATCH-REPORT-REC AFTER ADVANCING 1 LINE
+           PERFORM 1100-READ-NEXT-RECORD.
+
+       9000-FINALISE.
+           MOVE WS-TOTAL-READ       TO WS-TL-READ
+           MOVE WS-TOTAL-PROCESSED  TO WS-TL-PROC
+           MOVE WS-TOTAL-ERRORS     TO WS-TL-ERRS
+           MOVE WS-TOTAL-LINE TO BATCH-REPORT-REC
+           WRITE BATCH-REPORT-REC AFTER ADVANCING 3 LINES
+           CLOSE BATCH-INPUT
+           CLOSE BATCH-REPORT.

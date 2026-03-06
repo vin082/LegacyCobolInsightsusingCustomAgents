@@ -1,0 +1,28 @@
+{
+  "program_id": "COBSWAIT",
+  "source_path": "app/cbl/COBSWAIT.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COBSWAIT",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Wait/sleep utility program",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": []
+  },
+  "data": {
+    "copybook_inclusions": []
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "estimated_complexity": "LOW"
+  },
+  "metrics": {
+    "total_lines": 100,
+    "copybooks": 0
+  }
+}

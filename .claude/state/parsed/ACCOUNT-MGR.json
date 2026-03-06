@@ -1,0 +1,213 @@
+{
+  "program_id": "ACCOUNT-MGR",
+  "source_path": "cobol-modernization/sample-cobol/ACCOUNT-MGR.cbl",
+  "parsed_at": "2026-02-28T00:00:00Z",
+  "identification": {
+    "program_id": "ACCOUNT-MGR",
+    "author": "M.JONES",
+    "date_written": "1989-07-22",
+    "date_compiled": null,
+    "remarks": null
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "ACCOUNT-FILE",
+        "physical_name": "ACCTMAST",
+        "organization": "INDEXED",
+        "access_mode": "DYNAMIC",
+        "record_key": "ACCT-ID"
+      }
+    ]
+  },
+  "data": {
+    "working_storage": [
+      {
+        "level": "01",
+        "name": "WS-FILE-STATUS",
+        "pic": "X(2)",
+        "value": "SPACES"
+      },
+      {
+        "level": "01",
+        "name": "WS-RETURN-CODE",
+        "pic": "S9(4)",
+        "value": "ZERO",
+        "usage": "COMP"
+      },
+      {
+        "level": "01",
+        "name": "WS-ACCT-FOUND",
+        "pic": "X",
+        "value": "'N'"
+      },
+      {
+        "level": "01",
+        "name": "WS-PAYMENT-REQUEST",
+        "pic": null,
+        "children": []
+      }
+    ],
+    "linkage_section": [
+      {
+        "level": "01",
+        "name": "LS-CUSTOMER-REC",
+        "pic": null,
+        "children": []
+      }
+    ],
+    "copybook_inclusions": [
+      "ACCOUNT-RECORD",
+      "PAYMENT-RECORD",
+      "CUSTOMER-RECORD"
+    ],
+    "redefines_items": [],
+    "condition_names_88": [
+      "WS-FILE-OK",
+      "WS-FILE-EOF",
+      "WS-FILE-NOTFND",
+      "WS-ACCOUNT-FOUND"
+    ]
+  },
+  "procedure": {
+    "paragraphs": [
+      {
+        "name": "0000-MAIN",
+        "line_start": 35,
+        "line_end": 45,
+        "performs": [
+          "1000-OPEN-FILES",
+          "2000-VALIDATE-CUSTOMER",
+          "3000-UPDATE-ACCOUNT",
+          "4000-PROCESS-PAYMENT",
+          "8000-HANDLE-MISSING-ACCOUNT",
+          "9000-CLOSE-FILES"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1000-OPEN-FILES",
+        "line_start": 47,
+        "line_end": 52,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "2000-VALIDATE-CUSTOMER",
+        "line_start": 54,
+        "line_end": 61,
+        "performs": [],
+        "calls": [],
+        "reads": [
+          "ACCOUNT-FILE"
+        ],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "3000-UPDATE-ACCOUNT",
+        "line_start": 63,
+        "line_end": 73,
+        "performs": [
+          "3100-ACTIVATE-ACCOUNT",
+          "3200-DEACTIVATE-ACCOUNT",
+          "3300-CLOSE-ACCOUNT"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "3100-ACTIVATE-ACCOUNT",
+        "line_start": 75,
+        "line_end": 79,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [
+          "ACCOUNT-REC (REWRITE)"
+        ],
+        "gotos": []
+      },
+      {
+        "name": "3200-DEACTIVATE-ACCOUNT",
+        "line_start": 81,
+        "line_end": 85,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [
+          "ACCOUNT-REC (REWRITE)"
+        ],
+        "gotos": []
+      },
+      {
+        "name": "3300-CLOSE-ACCOUNT",
+        "line_start": 87,
+        "line_end": 92,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [
+          "ACCOUNT-REC (REWRITE)"
+        ],
+        "gotos": []
+      },
+      {
+        "name": "4000-PROCESS-PAYMENT",
+        "line_start": 94,
+        "line_end": 101,
+        "performs": [
+          "8000-HANDLE-MISSING-ACCOUNT"
+        ],
+        "calls": [
+          {
+            "program": "PAYMENT-HANDLER",
+            "using": [
+              "WS-PAYMENT-REQUEST",
+              "WS-RETURN-CODE"
+            ]
+          }
+        ],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "8000-HANDLE-MISSING-ACCOUNT",
+        "line_start": 103,
+        "line_end": 104,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "9000-CLOSE-FILES",
+        "line_start": 106,
+        "line_end": 107,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      }
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": false,
+    "has_occurs_depending_on": false,
+    "deep_nesting": false,
+    "estimated_complexity": "MEDIUM"
+  }
+}

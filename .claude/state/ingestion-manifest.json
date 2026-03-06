@@ -1,0 +1,928 @@
+{
+  "scanned_at": "2026-03-03T00:00:00Z",
+  "workspace_root": "E:\\LegacyModernzaionNewapproach\\aws-carddemo",
+  "repository": "AWS Mainframe Modernization CardDemo",
+  "repository_url": "https://github.com/aws-samples/aws-mainframe-modernization-carddemo",
+  "summary": {
+    "total_files": 148,
+    "programs": 39,
+    "copybooks": 51,
+    "jcl": 39,
+    "bms": 19
+  },
+  "files": [
+    {
+      "path": "app/cbl/CBACT01C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBACT01C",
+      "program_type": "BATCH",
+      "size_bytes": 24000,
+      "line_count": 431,
+      "encoding": "ASCII",
+      "copybook_hints": ["CVACT01Y", "CODATECN"],
+      "status": "PARSED",
+      "function": "Read account file and write into files"
+    },
+    {
+      "path": "app/cbl/CBACT02C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBACT02C",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CBACT03C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBACT03C",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CBACT04C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBACT04C",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CBCUS01C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBCUS01C",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CBEXPORT.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBEXPORT",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CBIMPORT.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBIMPORT",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CBTRN01C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBTRN01C",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CBTRN02C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBTRN02C",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CBTRN03C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBTRN03C",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COSGN00C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COSGN00C",
+      "program_type": "CICS",
+      "size_bytes": 14000,
+      "line_count": 261,
+      "encoding": "ASCII",
+      "copybook_hints": ["COCOM01Y", "COSGN00", "COTTL01Y", "CSDAT01Y", "CSMSG01Y", "CSUSR01Y", "DFHAID", "DFHBMSCA"],
+      "status": "PARSED",
+      "function": "Signon screen for CardDemo application"
+    },
+    {
+      "path": "app/cbl/COMEN01C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COMEN01C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COUSR00C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COUSR00C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COUSR01C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COUSR01C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COUSR02C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COUSR02C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COUSR03C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COUSR03C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CORPT00C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CORPT00C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COTRN00C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COTRN00C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COTRN01C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COTRN01C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COTRN02C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COTRN02C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COADM01C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COADM01C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COACTUPC.cbl",
+      "type": "PROGRAM",
+      "program_id": "COACTUPC",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COACTVWC.cbl",
+      "type": "PROGRAM",
+      "program_id": "COACTVWC",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COBIL00C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COBIL00C",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COBSWAIT.cbl",
+      "type": "PROGRAM",
+      "program_id": "COBSWAIT",
+      "program_type": "BATCH",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COCRDLIC.cbl",
+      "type": "PROGRAM",
+      "program_id": "COCRDLIC",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COCRDSLC.cbl",
+      "type": "PROGRAM",
+      "program_id": "COCRDSLC",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/COCRDUPC.cbl",
+      "type": "PROGRAM",
+      "program_id": "COCRDUPC",
+      "program_type": "CICS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cbl/CSUTLDTC.cbl",
+      "type": "PROGRAM",
+      "program_id": "CSUTLDTC",
+      "program_type": "UTILITY",
+      "size_bytes": 7000,
+      "line_count": 200,
+      "encoding": "ASCII",
+      "copybook_hints": [],
+      "status": "PARSED",
+      "function": "Date validation utility using CEEDAYS"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cbl/CBPAUP0C.cbl",
+      "type": "PROGRAM",
+      "program_id": "CBPAUP0C",
+      "program_type": "BATCH",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cbl/COPAUA0C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COPAUA0C",
+      "program_type": "CICS",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cbl/COPAUS0C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COPAUS0C",
+      "program_type": "CICS",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cbl/COPAUS1C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COPAUS1C",
+      "program_type": "CICS",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cbl/COPAUS2C.cbl",
+      "type": "PROGRAM",
+      "program_id": "COPAUS2C",
+      "program_type": "CICS",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/cbl/COBTUPDT.cbl",
+      "type": "PROGRAM",
+      "program_id": "COBTUPDT",
+      "program_type": "BATCH",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/cbl/COTRTLIC.cbl",
+      "type": "PROGRAM",
+      "program_id": "COTRTLIC",
+      "program_type": "CICS",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/cbl/COTRTUPC.cbl",
+      "type": "PROGRAM",
+      "program_id": "COTRTUPC",
+      "program_type": "CICS",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-vsam-mq/cbl/COACCT01.cbl",
+      "type": "PROGRAM",
+      "program_id": "COACCT01",
+      "program_type": "BATCH",
+      "submodule": "vsam-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-vsam-mq/cbl/CODATE01.cbl",
+      "type": "PROGRAM",
+      "program_id": "CODATE01",
+      "program_type": "UTILITY",
+      "submodule": "vsam-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CUSTREC.cpy",
+      "type": "COPYBOOK",
+      "entity": "CUSTOMER-RECORD",
+      "size_bytes": 1200,
+      "line_count": 30,
+      "status": "PENDING",
+      "description": "Customer entity data structure (RECLN 500)"
+    },
+    {
+      "path": "app/cpy/COADM02Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/COCOM01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVACT01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVACT02Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVACT03Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSUTLDWY.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSUTLDPY.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSUSR01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSSTRPFY.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSSETATY.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSMSG02Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSMSG01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSLKPCDY.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CSDAT01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVTRA02Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVTRA04Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVTRA03Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVTRA01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVEXPORT.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVCUS01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVCRD01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/COTTL01Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVTRA05Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/COMEN02Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVTRA06Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CVTRA07Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/CODATECN.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/cpy/UNUSED1Y.cpy",
+      "type": "COPYBOOK",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cpy/CIPAUSMY.cpy",
+      "type": "COPYBOOK",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cpy/CIPAUDTY.cpy",
+      "type": "COPYBOOK",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cpy/CCPAURQY.cpy",
+      "type": "COPYBOOK",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cpy/CCPAURLY.cpy",
+      "type": "COPYBOOK",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cpy/IMSFUNCS.cpy",
+      "type": "COPYBOOK",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cpy/CCPAUERY.cpy",
+      "type": "COPYBOOK",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cpy-bms/COPAU01.cpy",
+      "type": "COPYBOOK",
+      "submodule": "authorization-ims-db2-mq",
+      "description": "BMS copybook",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/cpy-bms/COPAU00.cpy",
+      "type": "COPYBOOK",
+      "submodule": "authorization-ims-db2-mq",
+      "description": "BMS copybook",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/cpy-bms/COTRTUP.cpy",
+      "type": "COPYBOOK",
+      "submodule": "transaction-type-db2",
+      "description": "BMS copybook",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/cpy-bms/COTRTLI.cpy",
+      "type": "COPYBOOK",
+      "submodule": "transaction-type-db2",
+      "description": "BMS copybook",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/cpy/CSDB2RWY.cpy",
+      "type": "COPYBOOK",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/cpy/CSDB2RPY.cpy",
+      "type": "COPYBOOK",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/CBIMPORT.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/COMBTRAN.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/CLOSEFIL.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/CBEXPORT.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/CBADMCDJ.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/CUSTFILE.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/CARDFILE.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/DALYREJS.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/DEFCUST.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/ACCTFILE.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/DEFGDGB.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/INTCALC.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/ESDSRRDS.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/OPENFIL.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/POSTTRAN.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/DUSRSECJ.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/DISCGRP.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/DEFGDGD.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/XREFFILE.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/WAITSTEP.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/TRANTYPE.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/TRANREPT.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/TRANIDX.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/TRANFILE.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/TRANCATG.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/REPTFILE.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/READXREF.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/READCUST.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/READCARD.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/READACCT.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/PRTCATBL.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/TRANBKP.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/jcl/TCATBALF.jcl",
+      "type": "JCL",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/jcl/TRANEXTR.jcl",
+      "type": "JCL",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/jcl/MNTTRDB2.jcl",
+      "type": "JCL",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/jcl/CREADB21.jcl",
+      "type": "JCL",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/jcl/DBPAUTP0.jcl",
+      "type": "JCL",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/jcl/CBPAUP0J.jcl",
+      "type": "JCL",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/RACFCMDS.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/LISTCAT.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/IMSMQCMP.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/CICDBCMP.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/CICCMP.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/REPRTEST.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/BMSCMP.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/BATCMP.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "samples/jcl/SORTTEST.jcl",
+      "type": "JCL",
+      "submodule": "samples",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COACTUP.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COACTVW.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COTRN02.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COUSR01.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COUSR00.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COTRN01.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COTRN00.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COSGN00.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COUSR02.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/CORPT00.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COMEN01.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COCRDUP.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COCRDSL.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COCRDLI.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COBIL00.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COADM01.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/bms/COUSR03.bms",
+      "type": "BMS",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/bms/COPAU01.bms",
+      "type": "BMS",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-authorization-ims-db2-mq/bms/COPAU00.bms",
+      "type": "BMS",
+      "submodule": "authorization-ims-db2-mq",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/bms/COTRTUP.bms",
+      "type": "BMS",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    },
+    {
+      "path": "app/app-transaction-type-db2/bms/COTRTLI.bms",
+      "type": "BMS",
+      "submodule": "transaction-type-db2",
+      "status": "PENDING"
+    }
+  ],
+  "metadata": {
+    "source": "AWS CardDemo - Mainframe Application Modernization Demo",
+    "license": "Apache 2.0",
+    "technologies": [
+      "COBOL",
+      "CICS",
+      "VSAM",
+      "DB2",
+      "IMS",
+      "MQ",
+      "BMS"
+    ],
+    "submodules": [
+      "core",
+      "authorization-ims-db2-mq",
+      "transaction-type-db2",
+      "vsam-mq"
+    ],
+    "program_types": {
+      "BATCH": "Batch processing programs",
+      "CICS": "CICS online transaction processing",
+      "UTILITY": "Utility/helper programs"
+    }
+  },
+  "next_steps": {
+    "1": "Parse copybooks first (51 files) - they define data structures",
+    "2": "Parse BATCH programs (10 files) - simpler, no CICS dependencies",
+    "3": "Parse CICS programs (27 files) - online transaction programs",
+    "4": "Parse BMS maps (19 files) - screen definitions",
+    "5": "Analyze JCL (39 files) - job execution workflows",
+    "6": "Build Neo4j knowledge graph with all relationships"
+  }
+}

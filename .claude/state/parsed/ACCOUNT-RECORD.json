@@ -1,0 +1,111 @@
+{
+  "copybook_name": "ACCOUNT-RECORD",
+  "source_path": "cobol-modernization/sample-cobol/copybooks/ACCOUNT-RECORD.cpy",
+  "parsed_at": "2026-02-28T00:00:00Z",
+  "data_items": [
+    {
+      "level": "05",
+      "name": "ACCT-ID",
+      "pic": "9(10)",
+      "value": null,
+      "usage": null,
+      "occurs": null,
+      "redefines": null
+    },
+    {
+      "level": "05",
+      "name": "ACCT-CUST-ID",
+      "pic": "9(8)",
+      "value": null,
+      "usage": null,
+      "occurs": null,
+      "redefines": null
+    },
+    {
+      "level": "05",
+      "name": "ACCT-TYPE",
+      "pic": "X(3)",
+      "value": null,
+      "usage": null,
+      "occurs": null,
+      "redefines": null,
+      "condition_names": [
+        {
+          "level": "88",
+          "name": "ACCT-CURRENT",
+          "value": "'CUR'"
+        },
+        {
+          "level": "88",
+          "name": "ACCT-SAVINGS",
+          "value": "'SAV'"
+        },
+        {
+          "level": "88",
+          "name": "ACCT-LOAN",
+          "value": "'LON'"
+        }
+      ]
+    },
+    {
+      "level": "05",
+      "name": "ACCT-STATUS",
+      "pic": "X",
+      "value": "'A'",
+      "usage": null,
+      "occurs": null,
+      "redefines": null,
+      "condition_names": [
+        {
+          "level": "88",
+          "name": "ACCT-ACTIVE",
+          "value": "'A'"
+        },
+        {
+          "level": "88",
+          "name": "ACCT-INACTIVE",
+          "value": "'I'"
+        },
+        {
+          "level": "88",
+          "name": "ACCT-CLOSED",
+          "value": "'C'"
+        }
+      ]
+    },
+    {
+      "level": "05",
+      "name": "ACCT-BALANCE",
+      "pic": "S9(11)V99",
+      "value": null,
+      "usage": "COMP-3",
+      "occurs": null,
+      "redefines": null
+    },
+    {
+      "level": "05",
+      "name": "ACCT-LIMIT",
+      "pic": "S9(9)V99",
+      "value": null,
+      "usage": "COMP-3",
+      "occurs": null,
+      "redefines": null
+    },
+    {
+      "level": "05",
+      "name": "ACCT-OPEN-DATE",
+      "pic": "9(8)",
+      "value": null,
+      "usage": null,
+      "occurs": null,
+      "redefines": null
+    }
+  ],
+  "summary": {
+    "total_items": 7,
+    "condition_names_count": 6,
+    "has_occurs": false,
+    "has_redefines": false,
+    "has_comp": true
+  }
+}

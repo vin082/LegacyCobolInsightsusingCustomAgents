@@ -1,0 +1,46 @@
+{
+  "program_id": "COMEN01C",
+  "source_path": "app/cbl/COMEN01C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COMEN01C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "CICS COBOL Program",
+    "function": "Main Menu for the Regular users",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "working_storage": [
+      {"level": "01", "name": "WS-VARIABLES", "children": [
+        {"level": "05", "name": "WS-PGMNAME", "pic": "X(08)", "value": "COMEN01C"},
+        {"level": "05", "name": "WS-TRANID", "pic": "X(04)", "value": "CM00"}
+      ]}
+    ],
+    "copybook_inclusions": ["COCOM01Y", "COMEN02Y", "COMEN01", "COTTL01Y", "CSDAT01Y", "CSMSG01Y", "CSUSR01Y", "DFHAID", "DFHBMSCA"],
+    "condition_names_88": ["ERR-FLG-ON", "ERR-FLG-OFF"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "cics_commands": [{"command": "XCTL"}]},
+      {"name": "RECEIVE-MENU-SCREEN", "cics_commands": [{"command": "RECEIVE"}]},
+      {"name": "SEND-MENU-SCREEN", "cics_commands": [{"command": "SEND"}]},
+      {"name": "RETURN-TO-SIGNON-SCREEN", "cics_commands": [{"command": "XCTL", "program": "COSGN00C"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_cics_commands": true,
+    "has_bms_maps": true,
+    "has_xctl": true,
+    "estimated_complexity": "LOW"
+  },
+  "metrics": {
+    "total_lines": 309,
+    "paragraphs": 4,
+    "copybooks": 9,
+    "cics_commands": 5,
+    "bms_maps": 1
+  }
+}

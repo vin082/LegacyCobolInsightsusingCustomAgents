@@ -1,0 +1,19 @@
+# Environment variables (contains secrets)
+.env
+
+# Claude Code project MCP config (contains credentials)
+.mcp.json
+
+# Agent runtime state (generated, not source)
+.claude/state/
+
+# Node modules
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp

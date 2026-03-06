@@ -1,0 +1,76 @@
+{
+  "copybook_name": "CUSTOMER-RECORD",
+  "source_path": "cobol-modernization/sample-cobol/copybooks/CUSTOMER-RECORD.cpy",
+  "parsed_at": "2026-02-28T00:00:00Z",
+  "data_items": [
+    {
+      "level": "05",
+      "name": "CUST-ID",
+      "pic": "9(8)",
+      "value": null,
+      "usage": null,
+      "occurs": null,
+      "redefines": null
+    },
+    {
+      "level": "05",
+      "name": "CUST-NAME",
+      "pic": "X(40)",
+      "value": null,
+      "usage": null,
+      "occurs": null,
+      "redefines": null
+    },
+    {
+      "level": "05",
+      "name": "CUST-STATUS",
+      "pic": "X",
+      "value": "'A'",
+      "usage": null,
+      "occurs": null,
+      "redefines": null,
+      "condition_names": [
+        {
+          "level": "88",
+          "name": "CUST-ACTIVE",
+          "value": "'A'"
+        },
+        {
+          "level": "88",
+          "name": "CUST-INACTIVE",
+          "value": "'I'"
+        },
+        {
+          "level": "88",
+          "name": "CUST-CLOSED",
+          "value": "'C'"
+        }
+      ]
+    },
+    {
+      "level": "05",
+      "name": "CUST-BALANCE",
+      "pic": "S9(9)V99",
+      "value": null,
+      "usage": null,
+      "occurs": null,
+      "redefines": null
+    },
+    {
+      "level": "05",
+      "name": "CUST-OPEN-DATE",
+      "pic": "9(8)",
+      "value": null,
+      "usage": null,
+      "occurs": null,
+      "redefines": null
+    }
+  ],
+  "summary": {
+    "total_items": 5,
+    "condition_names_count": 3,
+    "has_occurs": false,
+    "has_redefines": false,
+    "has_comp": false
+  }
+}

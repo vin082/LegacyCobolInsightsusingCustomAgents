@@ -1,0 +1,56 @@
+{
+  "program_id": "CBACT03C",
+  "source_path": "app/cbl/CBACT03C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBACT03C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Read and print account cross reference data file",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "XREFFILE-FILE",
+        "physical_name": "XREFFILE",
+        "organization": "INDEXED",
+        "access_mode": "SEQUENTIAL",
+        "record_key": "FD-XREF-CARD-NUM",
+        "file_status": "XREFFILE-STATUS"
+      }
+    ]
+  },
+  "data": {
+    "working_storage": [
+      {"level": "01", "name": "XREFFILE-STATUS"},
+      {"level": "01", "name": "APPL-RESULT", "pic": "S9(9)", "usage": "COMP"}
+    ],
+    "copybook_inclusions": ["CVACT03Y"],
+    "redefines_items": ["TWO-BYTES-ALPHA REDEFINES TWO-BYTES-BINARY"],
+    "condition_names_88": ["APPL-AOK", "APPL-EOF"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN", "line_start": 73, "line_end": 88, "performs": ["0000-XREFFILE-OPEN", "1000-XREFFILE-GET-NEXT", "9000-XREFFILE-CLOSE"]},
+      {"name": "1000-XREFFILE-GET-NEXT", "line_start": 93, "line_end": 111, "reads": ["XREFFILE-FILE"]},
+      {"name": "0000-XREFFILE-OPEN", "line_start": 113, "line_end": 126},
+      {"name": "9000-XREFFILE-CLOSE", "line_start": 128, "line_end": 141},
+      {"name": "9999-ABEND-PROGRAM", "line_start": 143, "line_end": 146, "calls": [{"program": "CEE3ABD"}]},
+      {"name": "9910-DISPLAY-IO-STATUS", "line_start": 149, "line_end": 161}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": true,
+    "estimated_complexity": "LOW"
+  },
+  "metrics": {
+    "total_lines": 179,
+    "paragraphs": 6,
+    "copybooks": 1,
+    "file_operations": 1
+  }
+}

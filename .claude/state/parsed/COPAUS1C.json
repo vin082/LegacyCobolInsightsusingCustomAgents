@@ -1,0 +1,35 @@
+{
+  "program_id": "COPAUS1C",
+  "source_path": "app/app-ims-mq/cbl/COPAUS1C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COPAUS1C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "CICS IMS/MQ COBOL Program",
+    "function": "Authorization screen variant 1 with MQ",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "copybook_inclusions": ["MQFUNCS"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "cics_commands": [{"command": "SEND"}, {"command": "RETURN"}], "mq_calls": [{"type": "MQPUT"}, {"type": "MQGET"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_cics_commands": true,
+    "has_mq": true,
+    "has_bms_maps": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 800,
+    "copybooks": 1,
+    "cics_commands": 2,
+    "mq_calls": 2
+  }
+}

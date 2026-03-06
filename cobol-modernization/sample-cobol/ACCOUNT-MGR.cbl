@@ -1,0 +1,115 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ACCOUNT-MGR.
+       AUTHOR. M.JONES.
+       DATE-WRITTEN. 1989-07-22.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT ACCOUNT-FILE ASSIGN TO ACCTMAST
+               ORGANIZATION IS INDEXED
+               ACCESS MODE IS DYNAMIC
+               RECORD KEY IS ACCT-ID
+               FILE STATUS IS WS-FILE-STATUS.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD ACCOUNT-FILE.
+       01 ACCOUNT-REC.
+          COPY ACCOUNT-RECORD.
+
+       WORKING-STORAGE SECTION.
+       01 WS-FILE-STATUS    PIC X(2) VALUE SPACES.
+          88 WS-FILE-OK     VALUE '00'.
+          88 WS-FILE-EOF    VALUE '10'.
+          88 WS-FILE-NOTFND VALUE '23'.
+       01 WS-RETURN-CODE    PIC S9(4) COMP VALUE ZERO.
+       01 WS-ACCT-FOUND     PIC X VALUE 'N'.
+          88 WS-ACCOUNT-FOUND VALUE 'Y'.
+       01 WS-PAYMENT-REQUEST.
+          COPY PAYMENT-RECORD.
+
+       LINKAGE SECTION.
+       01 LS-CUSTOMER-REC.
+          COPY CUSTOMER-RECORD.
+
+       PROCEDURE DIVISION USING LS-CUSTOMER-REC.
+       0000-MAIN.
+           PERFORM 1000-OPEN-FILES
+           PERFORM 2000-VALIDATE-CUSTOMER
+           IF WS-ACCT-FOUND = 'Y'
+               PERFORM 3000-UPDATE-ACCOUNT
+               PERFORM 4000-PROCESS-PAYMENT
+           ELSE
+               PERFORM 8000-HANDLE-MISSING-ACCOUNT
+           END-IF
+           PERFORM 9000-CLOSE-FILES
+           MOVE WS-RETURN-CODE TO RETURN-CODE
+           GOBACK.
+
+       1000-OPEN-FILES.
+           OPEN I-O ACCOUNT-FILE
+           IF NOT WS-FILE-OK
+               MOVE 8 TO WS-RETURN-CODE
+               PERFORM 9000-CLOSE-FILES
+               GOBACK
+           END-IF.
+
+       2000-VALIDATE-CUSTOMER.
+           MOVE LS-CUST-ID TO ACCT-CUST-ID
+           READ ACCOUNT-FILE KEY IS ACCT-CUST-ID
+               INVALID KEY
+                   MOVE 'N' TO WS-ACCT-FOUND
+               NOT INVALID KEY
+                   MOVE 'Y' TO WS-ACCT-FOUND
+           END-READ.
+
+       3000-UPDATE-ACCOUNT.
+           EVALUATE LS-CUST-STATUS
+               WHEN 'A'
+                   PERFORM 3100-ACTIVATE-ACCOUNT
+               WHEN 'I'
+                   PERFORM 3200-DEACTIVATE-ACCOUNT
+               WHEN 'C'
+                   PERFORM 3300-CLOSE-ACCOUNT
+               WHEN OTHER
+                   MOVE 12 TO WS-RETURN-CODE
+           END-EVALUATE.
+
+       3100-ACTIVATE-ACCOUNT.
+           MOVE 'A' TO ACCT-STATUS
+           REWRITE ACCOUNT-REC
+           IF NOT WS-FILE-OK
+               MOVE 16 TO WS-RETURN-CODE
+           END-IF.
+
+       3200-DEACTIVATE-ACCOUNT.
+           MOVE 'I' TO ACCT-STATUS
+           REWRITE ACCOUNT-REC
+           IF NOT WS-FILE-OK
+               MOVE 16 TO WS-RETURN-CODE
+           END-IF.
+
+       3300-CLOSE-ACCOUNT.
+           MOVE 'C' TO ACCT-STATUS
+           MOVE ZEROES TO ACCT-BALANCE
+           REWRITE ACCOUNT-REC
+           IF NOT WS-FILE-OK
+               MOVE 16 TO WS-RETURN-CODE
+           END-IF.
+
+       4000-PROCESS-PAYMENT.
+           MOVE LS-CUST-ID    TO PAY-CUST-ID
+           MOVE ACCT-BALANCE  TO PAY-AMOUNT
+           MOVE 'REGULAR'     TO PAY-TYPE
+           CALL 'PAYMENT-HANDLER' USING WS-PAYMENT-REQUEST
+                                        WS-RETURN-CODE
+           IF WS-RETURN-CODE NOT = ZERO
+               PERFORM 8000-HANDLE-MISSING-ACCOUNT
+           END-IF.
+
+       8000-HANDLE-MISSING-ACCOUNT.
+           MOVE 4 TO WS-RETURN-CODE.
+
+       9000-CLOSE-FILES.
+           CLOSE ACCOUNT-FILE.

@@ -1,0 +1,39 @@
+{
+  "program_id": "COACTVWC",
+  "source_path": "app/cbl/COACTVWC.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COACTVWC",
+    "author": null,
+    "application": "CardDemo",
+    "type": "CICS COBOL Program",
+    "function": "Accept and process Account View request",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "working_storage": [
+      {"level": "01", "name": "WS-MISC-STORAGE"},
+      {"level": "01", "name": "WS-XREF-RID"}
+    ],
+    "copybook_inclusions": [],
+    "condition_names_88": ["INPUT-OK", "INPUT-ERROR", "PFK-VALID", "FLG-ACCTFILTER-ISVALID", "FLG-CUSTFILTER-ISVALID", "FOUND-ACCT-IN-MASTER", "FOUND-CUST-IN-MASTER"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "cics_commands": [{"command": "READ"}, {"command": "SEND"}, {"command": "RETURN"}, {"command": "XCTL"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_cics_commands": true,
+    "has_bms_maps": true,
+    "has_xctl": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 942,
+    "copybooks": 0,
+    "cics_commands": 6
+  }
+}

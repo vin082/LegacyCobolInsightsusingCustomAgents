@@ -1,0 +1,176 @@
+{
+  "description": "Expected Neo4j graph state after ingesting all sample-cobol files",
+  "generated_from": "sample-cobol/ directory",
+  "node_counts": {
+    "Program": 4,
+    "Copybook": 3,
+    "Paragraph": 18,
+    "DataItem": 20,
+    "CobolFile": 3,
+    "JCLJob": 0
+  },
+  "relationship_counts": {
+    "CALLS": 3,
+    "CONTAINS": 18,
+    "INCLUDES": 7,
+    "DEFINES": 20,
+    "READS": 1,
+    "WRITES": 1,
+    "PERFORMS": 12
+  },
+  "programs": [
+    {
+      "program_id": "CUSTOMER-PROC",
+      "source_path": "sample-cobol/CUSTOMER-PROC.cbl",
+      "author": "J.SMITH",
+      "date_written": "1987-03-15",
+      "estimated_complexity": "LOW",
+      "has_goto": false,
+      "has_alter": false,
+      "has_redefines": false,
+      "calls": ["ACCOUNT-MGR"],
+      "called_by": ["BATCH-RUNNER"],
+      "includes_copybooks": ["CUSTOMER-RECORD"],
+      "paragraphs": [
+        "0000-MAIN",
+        "1000-OPEN-FILES",
+        "1100-READ-CUSTOMER",
+        "2000-PROCESS-CUSTOMERS",
+        "9000-CLOSE-FILES"
+      ]
+    },
+    {
+      "program_id": "ACCOUNT-MGR",
+      "source_path": "sample-cobol/ACCOUNT-MGR.cbl",
+      "author": "M.JONES",
+      "date_written": "1989-07-22",
+      "estimated_complexity": "MEDIUM",
+      "has_goto": false,
+      "has_alter": false,
+      "has_redefines": true,
+      "calls": ["PAYMENT-HANDLER"],
+      "called_by": ["CUSTOMER-PROC"],
+      "includes_copybooks": ["CUSTOMER-RECORD", "ACCOUNT-RECORD", "PAYMENT-RECORD"],
+      "paragraphs": [
+        "0000-MAIN",
+        "1000-OPEN-FILES",
+        "2000-VALIDATE-CUSTOMER",
+        "3000-UPDATE-ACCOUNT",
+        "3100-ACTIVATE-ACCOUNT",
+        "3200-DEACTIVATE-ACCOUNT",
+        "3300-CLOSE-ACCOUNT",
+        "4000-PROCESS-PAYMENT",
+        "8000-HANDLE-MISSING-ACCOUNT",
+        "9000-CLOSE-FILES"
+      ]
+    },
+    {
+      "program_id": "PAYMENT-HANDLER",
+      "source_path": "sample-cobol/PAYMENT-HANDLER.cbl",
+      "author": "S.PATEL",
+      "date_written": "1992-11-03",
+      "estimated_complexity": "MEDIUM",
+      "has_goto": true,
+      "has_alter": false,
+      "has_redefines": false,
+      "calls": [],
+      "called_by": ["ACCOUNT-MGR"],
+      "includes_copybooks": ["PAYMENT-RECORD"],
+      "paragraphs": [
+        "0000-MAIN",
+        "1000-OPEN-LOG",
+        "2000-VALIDATE-PAYMENT",
+        "3000-PROCESS-REGULAR",
+        "3100-PROCESS-REFUND",
+        "3200-PROCESS-REVERSAL",
+        "3900-UPDATE-PAYMENT-STATUS",
+        "4000-LOG-TRANSACTION",
+        "9000-CLOSE-LOG"
+      ]
+    },
+    {
+      "program_id": "BATCH-RUNNER",
+      "source_path": "sample-cobol/BATCH-RUNNER.cbl",
+      "author": "D.WILSON",
+      "date_written": "1995-02-14",
+      "estimated_complexity": "LOW",
+      "has_goto": false,
+      "has_alter": false,
+      "has_redefines": false,
+      "calls": ["CUSTOMER-PROC"],
+      "called_by": [],
+      "includes_copybooks": ["CUSTOMER-RECORD"],
+      "paragraphs": [
+        "0000-MAIN",
+        "1000-INITIALISE",
+        "1100-READ-NEXT-RECORD",
+        "2000-PROCESS-BATCH",
+        "9000-FINALISE"
+      ]
+    }
+  ],
+  "copybooks": [
+    {
+      "name": "CUSTOMER-RECORD",
+      "source_path": "sample-cobol/copybooks/CUSTOMER-RECORD.cpy",
+      "data_item_count": 5,
+      "used_by": ["CUSTOMER-PROC", "ACCOUNT-MGR", "BATCH-RUNNER"],
+      "fields": [
+        {"name": "CUST-ID", "level": "05", "pic": "9(8)"},
+        {"name": "CUST-NAME", "level": "05", "pic": "X(40)"},
+        {"name": "CUST-STATUS", "level": "05", "pic": "X"},
+        {"name": "CUST-BALANCE", "level": "05", "pic": "S9(9)V99"},
+        {"name": "CUST-OPEN-DATE", "level": "05", "pic": "9(8)"}
+      ]
+    },
+    {
+      "name": "ACCOUNT-RECORD",
+      "source_path": "sample-cobol/copybooks/ACCOUNT-RECORD.cpy",
+      "data_item_count": 7,
+      "used_by": ["ACCOUNT-MGR"],
+      "fields": [
+        {"name": "ACCT-ID", "level": "05", "pic": "9(10)"},
+        {"name": "ACCT-CUST-ID", "level": "05", "pic": "9(8)"},
+        {"name": "ACCT-TYPE", "level": "05", "pic": "X(3)"},
+        {"name": "ACCT-STATUS", "level": "05", "pic": "X"},
+        {"name": "ACCT-BALANCE", "level": "05", "pic": "S9(11)V99 COMP-3"},
+        {"name": "ACCT-LIMIT", "level": "05", "pic": "S9(9)V99 COMP-3"},
+        {"name": "ACCT-OPEN-DATE", "level": "05", "pic": "9(8)"}
+      ]
+    },
+    {
+      "name": "PAYMENT-RECORD",
+      "source_path": "sample-cobol/copybooks/PAYMENT-RECORD.cpy",
+      "data_item_count": 6,
+      "used_by": ["ACCOUNT-MGR", "PAYMENT-HANDLER"],
+      "fields": [
+        {"name": "PAY-TRANS-ID", "level": "05", "pic": "9(12)"},
+        {"name": "PAY-CUST-ID", "level": "05", "pic": "9(8)"},
+        {"name": "PAY-ACCT-ID", "level": "05", "pic": "9(10)"},
+        {"name": "PAY-AMOUNT", "level": "05", "pic": "S9(9)V99 COMP-3"},
+        {"name": "PAY-TYPE", "level": "05", "pic": "X(10)"},
+        {"name": "PAY-STATUS", "level": "05", "pic": "X(10)"}
+      ]
+    }
+  ],
+  "call_graph": {
+    "adjacency_list": {
+      "BATCH-RUNNER": ["CUSTOMER-PROC"],
+      "CUSTOMER-PROC": ["ACCOUNT-MGR"],
+      "ACCOUNT-MGR": ["PAYMENT-HANDLER"],
+      "PAYMENT-HANDLER": []
+    },
+    "entry_points": ["BATCH-RUNNER"],
+    "leaf_programs": ["PAYMENT-HANDLER"],
+    "circular_dependencies": []
+  },
+  "validation_assertions": [
+    "BATCH-RUNNER has 0 inbound CALLS (entry point)",
+    "PAYMENT-HANDLER has 0 outbound CALLS (leaf program)",
+    "PAYMENT-HANDLER has has_goto = true",
+    "ACCOUNT-MGR has has_redefines = true",
+    "No programs have has_alter = true",
+    "No circular dependencies exist",
+    "CUSTOMER-RECORD is the most-used copybook (3 programs)"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "program_id": "CBACT02C",
+  "source_path": "app/cbl/CBACT02C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBACT02C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Read and print card data file",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "CARDFILE-FILE",
+        "physical_name": "CARDFILE",
+        "organization": "INDEXED",
+        "access_mode": "SEQUENTIAL",
+        "record_key": "FD-CARD-NUM",
+        "file_status": "CARDFILE-STATUS"
+      }
+    ]
+  },
+  "data": {
+    "working_storage": [
+      {"level": "01", "name": "CARDFILE-STATUS"},
+      {"level": "01", "name": "APPL-RESULT", "pic": "S9(9)", "usage": "COMP"}
+    ],
+    "copybook_inclusions": ["CVACT02Y"],
+    "redefines_items": ["TWO-BYTES-ALPHA REDEFINES TWO-BYTES-BINARY"],
+    "condition_names_88": ["APPL-AOK", "APPL-EOF"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN", "line_start": 77, "line_end": 92, "performs": ["0000-CARDFILE-OPEN", "1000-CARDFILE-GET-NEXT", "9000-CARDFILE-CLOSE"]},
+      {"name": "1000-CARDFILE-GET-NEXT", "line_start": 97, "line_end": 115, "reads": ["CARDFILE-FILE"]},
+      {"name": "0000-CARDFILE-OPEN", "line_start": 117, "line_end": 130},
+      {"name": "9000-CARDFILE-CLOSE", "line_start": 132, "line_end": 145},
+      {"name": "9999-ABEND-PROGRAM", "line_start": 147, "line_end": 150, "calls": [{"program": "CEE3ABD"}]},
+      {"name": "9910-DISPLAY-IO-STATUS", "line_start": 153, "line_end": 165}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": true,
+    "estimated_complexity": "LOW"
+  },
+  "metrics": {
+    "total_lines": 179,
+    "paragraphs": 6,
+    "copybooks": 1,
+    "file_operations": 1
+  }
+}

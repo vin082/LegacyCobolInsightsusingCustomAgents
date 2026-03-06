@@ -1,0 +1,35 @@
+{
+  "program_id": "COTRTUPC",
+  "source_path": "app/app-db2/cbl/COTRTUPC.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "COTRTUPC",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "CICS DB2 COBOL Program",
+    "function": "Transaction update with DB2",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "copybook_inclusions": ["SQLCA", "CSDB2RWY"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "cics_commands": [{"command": "READ"}, {"command": "SEND"}, {"command": "RETURN"}], "sql_statements": [{"type": "SELECT"}, {"type": "UPDATE"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_cics_commands": true,
+    "has_db2_sql": true,
+    "has_bms_maps": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 900,
+    "copybooks": 2,
+    "cics_commands": 3,
+    "sql_statements": 2
+  }
+}

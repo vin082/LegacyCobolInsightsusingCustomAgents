@@ -1,0 +1,118 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PAYMENT-HANDLER.
+       AUTHOR. S.PATEL.
+       DATE-WRITTEN. 1992-11-03.
+       REMARKS. Processes payment transactions. Routes to appropriate
+                handler based on payment type. Legacy GOTO retained
+                from original implementation - flagged for refactoring.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT PAYMENT-LOG ASSIGN TO PAYLOG
+               ORGANIZATION IS SEQUENTIAL
+               ACCESS MODE IS SEQUENTIAL.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD PAYMENT-LOG.
+       01 PAYMENT-LOG-REC   PIC X(200).
+
+       WORKING-STORAGE SECTION.
+       01 WS-FILE-STATUS    PIC X(2) VALUE '00'.
+          88 WS-FILE-OK     VALUE '00'.
+       01 WS-TIMESTAMP      PIC X(26) VALUE SPACES.
+       01 WS-LOG-RECORD.
+          05 WS-LOG-CUST-ID  PIC 9(8).
+          05 FILLER          PIC X VALUE SPACE.
+          05 WS-LOG-AMOUNT   PIC Z,ZZZ,ZZ9.99-.
+          05 FILLER          PIC X VALUE SPACE.
+          05 WS-LOG-TYPE     PIC X(10).
+          05 FILLER          PIC X VALUE SPACE.
+          05 WS-LOG-STATUS   PIC X(8).
+          05 FILLER          PIC X VALUE SPACE.
+          05 WS-LOG-TSTAMP   PIC X(26).
+       01 WS-VALIDATION-RESULT PIC X VALUE 'Y'.
+          88 WS-VALID-PAYMENT  VALUE 'Y'.
+          88 WS-INVALID-PAYMENT VALUE 'N'.
+       01 WS-PROCESS-STATUS  PIC X VALUE SPACES.
+
+       LINKAGE SECTION.
+       01 LS-PAYMENT-REQUEST.
+          COPY PAYMENT-RECORD.
+       01 LS-RETURN-CODE     PIC S9(4) COMP.
+
+       PROCEDURE DIVISION USING LS-PAYMENT-REQUEST LS-RETURN-CODE.
+       0000-MAIN.
+           MOVE ZERO TO LS-RETURN-CODE
+           PERFORM 1000-OPEN-LOG
+           PERFORM 2000-VALIDATE-PAYMENT
+           IF WS-INVALID-PAYMENT
+               MOVE 4 TO LS-RETURN-CODE
+               GO TO 9000-EXIT
+           END-IF
+           EVALUATE PAY-TYPE
+               WHEN 'REGULAR'
+                   PERFORM 3000-PROCESS-REGULAR
+               WHEN 'REFUND'
+                   PERFORM 3100-PROCESS-REFUND
+               WHEN 'REVERSAL'
+                   PERFORM 3200-PROCESS-REVERSAL
+               WHEN OTHER
+                   MOVE 8 TO LS-RETURN-CODE
+                   GO TO 9000-EXIT
+           END-EVALUATE
+           PERFORM 4000-LOG-TRANSACTION
+           PERFORM 9000-CLOSE-LOG.
+       9000-EXIT.
+           CLOSE PAYMENT-LOG
+           GOBACK.
+
+       1000-OPEN-LOG.
+           OPEN EXTEND PAYMENT-LOG
+           IF NOT WS-FILE-OK
+               OPEN OUTPUT PAYMENT-LOG
+           END-IF.
+
+       2000-VALIDATE-PAYMENT.
+           MOVE 'Y' TO WS-VALIDATION-RESULT
+           IF PAY-AMOUNT <= ZEROES
+               MOVE 'N' TO WS-VALIDATION-RESULT
+           END-IF
+           IF PAY-CUST-ID = ZEROES
+               MOVE 'N' TO WS-VALIDATION-RESULT
+           END-IF
+           IF PAY-TYPE = SPACES
+               MOVE 'N' TO WS-VALIDATION-RESULT
+           END-IF.
+
+       3000-PROCESS-REGULAR.
+           MOVE 'APPROVED' TO WS-PROCESS-STATUS
+           PERFORM 3900-UPDATE-PAYMENT-STATUS.
+
+       3100-PROCESS-REFUND.
+           IF PAY-AMOUNT > 1000
+               MOVE 'PENDING' TO WS-PROCESS-STATUS
+           ELSE
+               MOVE 'APPROVED' TO WS-PROCESS-STATUS
+           END-IF
+           PERFORM 3900-UPDATE-PAYMENT-STATUS.
+
+       3200-PROCESS-REVERSAL.
+           MOVE 'REVERSED' TO WS-PROCESS-STATUS
+           PERFORM 3900-UPDATE-PAYMENT-STATUS.
+
+       3900-UPDATE-PAYMENT-STATUS.
+           MOVE WS-PROCESS-STATUS TO PAY-STATUS.
+
+       4000-LOG-TRANSACTION.
+           MOVE PAY-CUST-ID TO WS-LOG-CUST-ID
+           MOVE PAY-AMOUNT  TO WS-LOG-AMOUNT
+           MOVE PAY-TYPE    TO WS-LOG-TYPE
+           MOVE PAY-STATUS  TO WS-LOG-STATUS
+           MOVE FUNCTION CURRENT-DATE TO WS-LOG-TSTAMP
+           MOVE WS-LOG-RECORD TO PAYMENT-LOG-REC
+           WRITE PAYMENT-LOG-REC.
+
+       9000-CLOSE-LOG.
+           CLOSE PAYMENT-LOG.

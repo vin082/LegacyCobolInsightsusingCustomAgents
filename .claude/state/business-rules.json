@@ -1,0 +1,224 @@
+{
+  "extracted_at": "2025-01-10T00:00:00Z",
+  "total_rules": 85,
+  "by_type": {
+    "DATA-ACCESS": 28,
+    "ROUTING": 15,
+    "CALCULATION": 14,
+    "CONDITIONAL": 13,
+    "VALIDATION": 13,
+    "THRESHOLD": 2
+  },
+  "by_confidence": {
+    "HIGH": 64,
+    "MEDIUM": 21,
+    "LOW": 0
+  },
+  "by_program": {
+    "CBACT04C": {
+      "rule_count": 12,
+      "rules": [
+        "CBACT04C.SUCCESS-STATUS-CHECK",
+        "CBACT04C.EOF-STATUS-CHECK",
+        "CBACT04C.ACCOUNT-CHANGE-DETECTION",
+        "CBACT04C.FIRST-TIME-SKIP",
+        "CBACT04C.MONTHLY-INTEREST-CALCULATION",
+        "CBACT04C.ZERO-INTEREST-FILTER",
+        "CBACT04C.INTEREST-RATE-LOOKUP",
+        "CBACT04C.DEFAULT-RATE-FALLBACK",
+        "CBACT04C.ACCOUNT-BALANCE-UPDATE",
+        "CBACT04C.CYCLE-BALANCE-RESET",
+        "CBACT04C.TRANSACTION-ID-GENERATION",
+        "CBACT04C.INTEREST-TRANSACTION-CLASSIFICATION",
+        "CBACT04C.SEQUENTIAL-PROCESSING-UNTIL-EOF"
+      ],
+      "program_function": "Interest Calculator - Computes monthly interest charges on account category balances",
+      "business_criticality": "CRITICAL",
+      "regulatory_impact": "HIGH",
+      "financial_impact": "DIRECT"
+    },
+    "CBACT01C": {
+      "rule_count": 7,
+      "rules": [
+        "CBACT01C.EOF-DETECTION",
+        "CBACT01C.ACCTFILE-READ",
+        "CBACT01C.OUTFILE-WRITE",
+        "CBACT01C.DATE-FORMATTING",
+        "CBACT01C.FILE-STATUS-CHECK",
+        "CBACT01C.ARRAY-POPULATION",
+        "CBACT01C.DEFAULT-DEBIT-VALUE"
+      ],
+      "program_function": "Account File Processor - Reads account file and writes transformed output to multiple sequential files",
+      "business_criticality": "HIGH",
+      "regulatory_impact": "MEDIUM",
+      "financial_impact": "INDIRECT"
+    },
+    "COSGN00C": {
+      "rule_count": 5,
+      "rules": [
+        "COSGN00C.ERROR-FLAG-CHECK",
+        "COSGN00C.USER-AUTHENTICATION",
+        "COSGN00C.ACCESS-ROUTING",
+        "COSGN00C.SCREEN-DISPLAY",
+        "COSGN00C.INITIAL-ENTRY"
+      ],
+      "program_function": "User Authentication - Validates credentials and routes to authorized menus",
+      "business_criticality": "CRITICAL",
+      "regulatory_impact": "HIGH",
+      "financial_impact": "NONE"
+    },
+    "CSUTLDTC": {
+      "rule_count": 3,
+      "rules": [
+        "CSUTLDTC.INVALID-DATE-CHECK",
+        "CSUTLDTC.DATE-MASK-APPLICATION",
+        "CSUTLDTC.LILLIAN-CONVERSION"
+      ],
+      "program_function": "Date Validation Utility - Validates date formats using IBM CEEDAYS service",
+      "business_criticality": "MEDIUM",
+      "regulatory_impact": "LOW",
+      "financial_impact": "NONE"
+    },
+    "CBACT02C": {"rule_count": 3, "program_function": "Card file sequential processor"},
+    "CBACT03C": {"rule_count": 3, "program_function": "Cross-reference file sequential processor"},
+    "CBCUS01C": {"rule_count": 3, "program_function": "Customer file sequential processor"},
+    "CBIMPORT": {"rule_count": 4, "program_function": "Multi-file batch import orchestration"},
+    "CBEXPORT": {"rule_count": 3, "program_function": "Multi-file batch export consolidation"},
+    "CBTRN01C": {"rule_count": 3, "program_function": "Daily transaction posting batch"},
+    "CBTRN02C": {"rule_count": 1, "program_function": "Transaction batch processing"},
+    "CBTRN03C": {"rule_count": 1, "program_function": "Transaction report generation"},
+    "COMEN01C": {"rule_count": 3, "program_function": "CICS main menu navigation"},
+    "COUSR00C": {"rule_count": 3, "program_function": "CICS user browse screen"},
+    "COUSR01C": {"rule_count": 2, "program_function": "CICS user list screen"},
+    "COUSR02C": {"rule_count": 2, "program_function": "CICS user creation screen"},
+    "COUSR03C": {"rule_count": 2, "program_function": "CICS user update/delete screen"},
+    "CORPT00C": {"rule_count": 1, "program_function": "CICS report selection screen"},
+    "COTRN00C": {"rule_count": 1, "program_function": "CICS transaction browse screen"},
+    "COTRN01C": {"rule_count": 1, "program_function": "CICS transaction list screen"},
+    "COTRN02C": {"rule_count": 2, "program_function": "CICS transaction detail screen"},
+    "COADM01C": {"rule_count": 1, "program_function": "CICS admin menu screen"},
+    "COACTUPC": {"rule_count": 2, "program_function": "CICS account update screen"},
+    "COACTVWC": {"rule_count": 1, "program_function": "CICS account view screen"},
+    "COBIL00C": {"rule_count": 1, "program_function": "CICS bill payment screen"},
+    "COCRDLIC": {"rule_count": 1, "program_function": "CICS card browse screen"},
+    "COCRDSLC": {"rule_count": 1, "program_function": "CICS card selection screen"},
+    "COCRDUPC": {"rule_count": 1, "program_function": "CICS card update screen"},
+    "COBSWAIT": {"rule_count": 1, "program_function": "Batch synchronization utility"},
+    "CBPAUP0C": {"rule_count": 1, "program_function": "Batch payment authorization processor"},
+    "COPAUA0C": {"rule_count": 1, "program_function": "CICS MQ authorization display"},
+    "COPAUS0C": {"rule_count": 1, "program_function": "CICS MQ authorization list"},
+    "COPAUS1C": {"rule_count": 1, "program_function": "CICS MQ authorization approval"},
+    "COPAUS2C": {"rule_count": 1, "program_function": "CICS MQ authorization rejection"},
+    "COBTUPDT": {"rule_count": 1, "program_function": "DB2 transaction type batch update"},
+    "COTRTLIC": {"rule_count": 1, "program_function": "CICS DB2 transaction type list"},
+    "COTRTUPC": {"rule_count": 1, "program_function": "CICS DB2 transaction type maintenance"},
+    "COACCT01": {"rule_count": 1, "program_function": "VSAM account access with MQ"},
+    "CODATE01": {"rule_count": 1, "program_function": "Date utility service with MQ"}
+  },
+  "critical_rules": [
+    {
+      "rule_id": "CBACT04C.MONTHLY-INTEREST-CALCULATION",
+      "reason": "Core financial calculation - errors result in incorrect customer charges",
+      "regulatory_reference": "Truth in Lending Act (15 USC 1601)",
+      "test_priority": "CRITICAL"
+    },
+    {
+      "rule_id": "COSGN00C.USER-AUTHENTICATION",
+      "reason": "Security control - prevents unauthorized access to financial systems",
+      "regulatory_reference": "SOX Section 404, PCI-DSS Requirement 8",
+      "test_priority": "CRITICAL"
+    },
+    {
+      "rule_id": "CBACT01C.FILE-STATUS-CHECK",
+      "reason": "Data integrity control - ensures all file operations succeed or program aborts",
+      "regulatory_reference": "SOX Section 404",
+      "test_priority": "HIGH"
+    },
+    {
+      "rule_id": "CBACT04C.ACCOUNT-CHANGE-DETECTION",
+      "reason": "Control-break logic - incorrect implementation causes wrong account updates",
+      "test_priority": "HIGH"
+    },
+    {
+      "rule_id": "CBACT04C.DEFAULT-RATE-FALLBACK",
+      "reason": "Ensures all accounts have interest rates - prevents unprocessed accounts",
+      "regulatory_reference": "CARD Act 2009",
+      "test_priority": "HIGH"
+    }
+  ],
+  "regulatory_mapping": {
+    "Truth in Lending Act (15 USC 1601)": ["CBACT04C.MONTHLY-INTEREST-CALCULATION", "CBACT04C.INTEREST-RATE-LOOKUP"],
+    "Regulation Z (12 CFR 1026)": ["CBACT04C.MONTHLY-INTEREST-CALCULATION", "CBACT04C.DEFAULT-RATE-FALLBACK"],
+    "CARD Act (2009)": ["CBACT04C.INTEREST-TRANSACTION-CLASSIFICATION"],
+    "SOX Section 404": ["COSGN00C.USER-AUTHENTICATION", "CBACT01C.FILE-STATUS-CHECK"],
+    "PCI-DSS Requirement 8": ["COSGN00C.USER-AUTHENTICATION", "COSGN00C.ACCESS-ROUTING"]
+  },
+  "extraction_methodology": {
+    "88_level_conditions": "HIGH confidence - direct mapping from condition names",
+    "file_io_operations": "HIGH confidence - paragraphs with READ/WRITE/OPEN/CLOSE",
+    "paragraph_naming": "MEDIUM confidence - inferred from VALIDATE-, CHECK-, CALC- prefixes",
+    "external_calls": "HIGH confidence - CALL statements to other programs",
+    "threshold_values": "MEDIUM confidence - MOVE of literal values to working storage"
+  },
+  "coverage_status": {
+    "programs_analyzed": 33,
+    "programs_pending": 6,
+    "total_programs": 39,
+    "coverage_percentage": "84.6%"
+  },
+  "neo4j_statistics": {
+    "business_rule_nodes": 85,
+    "embeds_relationships": 84,
+    "implements_relationships": 90,
+    "governs_relationships": 24,
+    "rule_to_rule_relationships": 0
+  },
+  "next_steps": [
+    "Extract rules from remaining 6 programs (if any additional programs exist)",
+    "Expand GOVERNS relationships (BusinessRule → DataItem) for complete field-level traceability",
+    "Create enhanced rule-to-rule relationships (PRECEDES, DEPENDS_ON, TRIGGERS, PROVIDES_DATA_FOR, etc.)",
+    "Add regulatory compliance tags to all financial rules beyond the 4 critical programs",
+    "Generate test case templates from all 85 business rules",
+    "Create per-program rule documentation in docs/business-rules/ directory"
+  ],
+  "migration_notes": {
+    "data_type_requirements": [
+      "Use BigDecimal for all monetary calculations (NOT double/float)",
+      "Preserve COMP-3 decimal precision (2 decimal places for currency)",
+      "Transaction IDs must maintain uniqueness across runs"
+    ],
+    "control_flow_patterns": [
+      "Control-break processing on TRANCAT-ACCT-ID requires sorted input",
+      "First-record boundary condition must be handled explicitly",
+      "EOF handling includes posting final account update"
+    ],
+    "error_handling_strategy": "Fail-fast: Any file error abends entire job (no partial processing)",
+    "performance_considerations": [
+      "Sequential read of TCATBAL-FILE (full scan)",
+      "Random reads of ACCOUNT-FILE, XREF-FILE, DISCGRP-FILE (indexed)",
+      "Single REWRITE per account (not per category) - optimized I/O"
+    ]
+  },
+  "test_coverage_requirements": {
+    "unit_tests": [
+      "Monthly interest formula with 50+ rate/balance combinations",
+      "Account change detection with multiple accounts",
+      "Default rate fallback with missing disclosure groups",
+      "Zero rate filter",
+      "Transaction ID generation uniqueness"
+    ],
+    "integration_tests": [
+      "End-to-end batch run with 1000 category balances",
+      "Account balance updates verified",
+      "Interest transaction file validated",
+      "Compare COBOL output vs Java output (equivalence testing)"
+    ],
+    "edge_cases": [
+      "First account in file",
+      "Last account in file (EOF boundary)",
+      "Account with zero balance",
+      "Missing disclosure group rates",
+      "Transaction ID counter overflow (> 999999)"
+    ]
+  }
+}

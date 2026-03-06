@@ -1,0 +1,801 @@
+{
+  "analysis_target": "CUSTOMER-PROC",
+  "artefact_type": "Program",
+  "change_type": "MODIFY",
+  "change_description": "Program logic modification",
+  "analyzed_at": "2026-03-01T15:00:00Z",
+  "summary": {
+    "total_programs_affected": 3,
+    "upstream_programs": 1,
+    "downstream_programs": 2,
+    "critical": 0,
+    "high": 2,
+    "medium": 1,
+    "low": 0,
+    "total_estimated_effort_days": 7.5
+  },
+  "analysis_methodology": {
+    "upstream_analysis": "Identified all programs that directly CALL CUSTOMER-PROC (programs that depend on this artefact)",
+    "downstream_analysis": "Traced all programs that CUSTOMER-PROC calls, including transitive dependencies",
+    "shared_data_analysis": "Analyzed copybook dependencies and identified programs sharing CUSTOMER-RECORD copybook",
+    "impact_scoring": "Applied scoring matrix based on: direct callers (30%), transitive depth (20%), copybook breadth (25%), complexity (15%), risk flags (10%)",
+    "risk_assessment": "Evaluated program complexity, control flow patterns (GOTO, ALTER), and call depth in the dependency chain"
+  },
+  "target_program_metadata": {
+    "program_id": "CUSTOMER-PROC",
+    "source_path": "cobol-modernization/sample-cobol/CUSTOMER-PROC.cbl",
+    "author": "J.SMITH",
+    "date_written": "1987-03-15",
+    "line_count": 58,
+    "estimated_complexity": "LOW",
+    "paragraphs": 5,
+    "paragraph_names": [
+      "0000-MAIN",
+      "1000-OPEN-FILES",
+      "1100-READ-CUSTOMER",
+      "2000-PROCESS-CUSTOMERS",
+      "9000-CLOSE-FILES"
+    ],
+    "risk_flags": {
+      "has_goto": false,
+      "has_alter": false,
+      "has_redefines": false,
+      "has_occurs_depending_on": false,
+      "deep_nesting": false
+    },
+    "copybooks_included": [
+      "CUSTOMER-RECORD"
+    ],
+    "files_accessed": [
+      {
+        "logical_name": "CUSTOMER-FILE",
+        "physical_name": "CUSTMAST",
+        "organization": "SEQUENTIAL",
+        "access_mode": "INPUT",
+        "operation": "READ"
+      },
+      {
+        "logical_name": "AUDIT-FILE",
+        "physical_name": "AUDITMAST",
+        "organization": "SEQUENTIAL",
+        "access_mode": "OUTPUT",
+        "operation": "WRITE"
+      }
+    ],
+    "calls_made": [
+      {
+        "program": "ACCOUNT-MGR",
+        "using_params": ["CUSTOMER-REC"]
+      }
+    ]
+  },
+  "call_chain_visualization": {
+    "description": "Complete call hierarchy showing CUSTOMER-PROC in context",
+    "chain": [
+      {
+        "level": 0,
+        "program": "BATCH-RUNNER",
+        "role": "Entry Point / Upstream Caller",
+        "complexity": "LOW"
+      },
+      {
+        "level": 1,
+        "program": "CUSTOMER-PROC",
+        "role": "*** CHANGE TARGET ***",
+        "complexity": "LOW"
+      },
+      {
+        "level": 2,
+        "program": "ACCOUNT-MGR",
+        "role": "Direct Downstream Callee",
+        "complexity": "MEDIUM"
+      },
+      {
+        "level": 3,
+        "program": "PAYMENT-HANDLER",
+        "role": "Indirect Downstream Callee",
+        "complexity": "MEDIUM",
+        "risk_note": "Contains GOTO statements"
+      }
+    ],
+    "visual_tree": [
+      "BATCH-RUNNER (Entry Point)",
+      "  └─> CUSTOMER-PROC *** CHANGE TARGET ***",
+      "        └─> ACCOUNT-MGR",
+      "              └─> PAYMENT-HANDLER (has GOTO)"
+    ],
+    "max_call_depth": 4,
+    "total_programs_in_chain": 4
+  },
+  "affected_programs": [
+    {
+      "program_id": "BATCH-RUNNER",
+      "impact_level": "HIGH",
+      "impact_type": "UPSTREAM",
+      "reason": "Directly calls CUSTOMER-PROC; top-level batch processing entry point; any changes to CUSTOMER-PROC interface or behavior will affect batch workflow",
+      "call_depth": -1,
+      "relationship": "Direct caller (upstream dependency)",
+      "inbound_calls": 0,
+      "inbound_callers": [],
+      "outbound_calls": 1,
+      "outbound_callees": ["CUSTOMER-PROC"],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/BATCH-RUNNER.cbl",
+        "author": "D.WILSON",
+        "date_written": "1995-02-14",
+        "line_count": 124,
+        "estimated_complexity": "LOW",
+        "has_goto": false,
+        "has_alter": false,
+        "has_redefines": false,
+        "remarks": "Master batch controller. Reads customer extract file and invokes CUSTOMER-PROC for each record. Produces batch run statistics report."
+      },
+      "copybook_dependencies": {
+        "direct_inclusions": ["CUSTOMER-RECORD"],
+        "shared_with_target": ["CUSTOMER-RECORD"],
+        "shared_data_risk": "HIGH - Uses same CUSTOMER-RECORD copybook"
+      },
+      "call_details": {
+        "paragraph": "2000-PROCESS-BATCH",
+        "line_range": "106-117",
+        "call_pattern": "CALL 'CUSTOMER-PROC' USING BATCH-INPUT-REC",
+        "parameters_passed": ["BATCH-INPUT-REC"]
+      },
+      "impact_score": {
+        "direct_caller_score": 0,
+        "transitive_depth_score": 0,
+        "copybook_breadth_score": 2,
+        "complexity_score": 0,
+        "risk_flag_score": 0,
+        "raw_score": 2,
+        "category": "LOW-MEDIUM",
+        "adjusted_level": "HIGH (elevated due to entry point role)"
+      },
+      "testing_priority": 1,
+      "estimated_effort_days": 2.5,
+      "key_concerns": [
+        "Entry point for entire batch processing workflow",
+        "No upstream callers - changes here don't cascade further up",
+        "Reads BATCH-INPUT file and writes BATCH-REPORT - verify report output",
+        "Shares CUSTOMER-RECORD structure with CUSTOMER-PROC - data contract changes will break this program",
+        "Must perform full end-to-end batch processing regression test",
+        "Verify error handling and statistics reporting after CUSTOMER-PROC changes"
+      ],
+      "specific_regression_tests": [
+        "Full batch run with sample customer extract file",
+        "Verify BATCH-REPORT output format and statistics",
+        "Test error handling when CUSTOMER-PROC returns error conditions",
+        "Validate CUSTOMER-REC data passed to CUSTOMER-PROC",
+        "Confirm file open/close sequence integrity"
+      ]
+    },
+    {
+      "program_id": "ACCOUNT-MGR",
+      "impact_level": "HIGH",
+      "impact_type": "DOWNSTREAM",
+      "reason": "Directly called by CUSTOMER-PROC; receives CUSTOMER-REC as parameter; MEDIUM complexity with multiple copybook dependencies",
+      "call_depth": 1,
+      "relationship": "Direct callee (downstream dependency)",
+      "inbound_calls": 1,
+      "inbound_callers": ["CUSTOMER-PROC"],
+      "outbound_calls": 1,
+      "outbound_callees": ["PAYMENT-HANDLER"],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/ACCOUNT-MGR.cbl",
+        "author": "M.JONES",
+        "date_written": "1989-07-22",
+        "line_count": 116,
+        "estimated_complexity": "MEDIUM",
+        "has_goto": false,
+        "has_alter": false,
+        "has_redefines": false,
+        "remarks": null
+      },
+      "copybook_dependencies": {
+        "direct_inclusions": [
+          "ACCOUNT-RECORD",
+          "PAYMENT-RECORD",
+          "CUSTOMER-RECORD"
+        ],
+        "shared_with_target": ["CUSTOMER-RECORD"],
+        "shared_data_risk": "HIGH - Uses CUSTOMER-RECORD and expects specific data from CUSTOMER-PROC"
+      },
+      "call_details": {
+        "called_from_paragraph": "2000-PROCESS-CUSTOMERS",
+        "receiving_parameters": ["CUSTOMER-REC"],
+        "linkage_section": ["LS-CUSTOMER-REC"],
+        "data_dependency": "Receives customer data structure from CUSTOMER-PROC"
+      },
+      "impact_score": {
+        "direct_caller_score": 1,
+        "transitive_depth_score": 2,
+        "copybook_breadth_score": 2,
+        "complexity_score": 1,
+        "risk_flag_score": 0,
+        "raw_score": 6,
+        "category": "MEDIUM-HIGH"
+      },
+      "testing_priority": 1,
+      "estimated_effort_days": 3.0,
+      "key_concerns": [
+        "Receives CUSTOMER-REC as parameter - interface contract must remain stable",
+        "MEDIUM complexity - more extensive logic to validate",
+        "Uses 3 different copybooks - complex data dependencies",
+        "Calls PAYMENT-HANDLER - changes cascade further downstream",
+        "Performs INDEXED file operations on ACCOUNT-FILE - verify data integrity",
+        "Multiple paragraph-level operations: validate, update, process payment",
+        "Critical business logic for account management and payment processing"
+      ],
+      "specific_regression_tests": [
+        "Test all account operations: activate, deactivate, close",
+        "Verify customer validation logic with modified CUSTOMER-PROC data",
+        "Validate ACCOUNT-FILE read/write operations",
+        "Test payment processing flow when called from modified CUSTOMER-PROC",
+        "Verify error handling for missing accounts",
+        "Confirm return codes and status passed back to CUSTOMER-PROC",
+        "Integration test: CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER flow"
+      ]
+    },
+    {
+      "program_id": "PAYMENT-HANDLER",
+      "impact_level": "MEDIUM",
+      "impact_type": "DOWNSTREAM (Transitive)",
+      "reason": "Called by ACCOUNT-MGR (which is called by CUSTOMER-PROC); indirect impact through data and control flow; contains GOTO statements (legacy risk)",
+      "call_depth": 2,
+      "relationship": "Indirect callee (transitive downstream dependency)",
+      "inbound_calls": 1,
+      "inbound_callers": ["ACCOUNT-MGR"],
+      "outbound_calls": 0,
+      "outbound_callees": [],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/PAYMENT-HANDLER.cbl",
+        "author": "S.PATEL",
+        "date_written": "1992-11-03",
+        "line_count": 119,
+        "estimated_complexity": "MEDIUM",
+        "has_goto": true,
+        "has_alter": false,
+        "has_redefines": false,
+        "remarks": "Processes payment transactions. Routes to appropriate handler based on payment type. Legacy GOTO retained from original implementation - flagged for refactoring."
+      },
+      "copybook_dependencies": {
+        "direct_inclusions": ["PAYMENT-RECORD"],
+        "shared_with_target": [],
+        "shared_data_risk": "LOW - No direct data structure sharing with CUSTOMER-PROC"
+      },
+      "call_details": {
+        "called_from_paragraph": "4000-PROCESS-PAYMENT",
+        "receiving_parameters": [
+          "WS-PAYMENT-REQUEST",
+          "WS-RETURN-CODE"
+        ],
+        "data_dependency": "Indirectly depends on customer data processed by CUSTOMER-PROC"
+      },
+      "risk_analysis": {
+        "goto_statements": true,
+        "goto_locations": ["lines 50, 58 (from graph-build-report)"],
+        "control_flow_risk": "MEDIUM - GOTO statements make control flow harder to predict",
+        "refactoring_recommendation": "Consider eliminating GOTO during any modification cycle"
+      },
+      "impact_score": {
+        "direct_caller_score": 1,
+        "transitive_depth_score": 3,
+        "copybook_breadth_score": 0,
+        "complexity_score": 1,
+        "risk_flag_score": 1,
+        "raw_score": 6,
+        "category": "MEDIUM"
+      },
+      "testing_priority": 2,
+      "estimated_effort_days": 2.0,
+      "key_concerns": [
+        "Contains GOTO statements - higher risk of unexpected behavior",
+        "Leaf program (no outbound calls) - easier to isolate and test",
+        "Payment transaction logging - critical for audit trail",
+        "PAYMENT-RECORD copybook used - verify payment data structure",
+        "Indirect impact means changes may be subtle - thorough testing required",
+        "Multiple payment types (regular, refund, reversal) - test all paths"
+      ],
+      "specific_regression_tests": [
+        "Test all payment processing paths: regular, refund, reversal",
+        "Verify payment validation logic",
+        "Confirm PAYMENT-LOG file operations",
+        "Test GOTO control flow paths explicitly",
+        "Validate return codes passed back to ACCOUNT-MGR",
+        "Integration test: ensure payment processing still works with modified CUSTOMER-PROC data flow",
+        "Test error conditions and invalid payment scenarios"
+      ]
+    }
+  ],
+  "copybook_dependency_analysis": {
+    "target_program_copybooks": [
+      "CUSTOMER-RECORD"
+    ],
+    "shared_copybook_impact": {
+      "copybook_name": "CUSTOMER-RECORD",
+      "source_path": "cobol-modernization/sample-cobol/copybooks/CUSTOMER-RECORD.cpy",
+      "total_users": 3,
+      "programs_using": [
+        "CUSTOMER-PROC",
+        "BATCH-RUNNER",
+        "ACCOUNT-MGR"
+      ],
+      "risk_level": "HIGH",
+      "risk_rationale": "CUSTOMER-RECORD is shared by 3 programs including CUSTOMER-PROC. Any modifications to CUSTOMER-PROC that alter how it uses or populates CUSTOMER-RECORD fields will impact other users.",
+      "data_items_count": 5,
+      "data_items": [
+        "CUST-ID (9(8))",
+        "CUST-NAME (X(40))",
+        "CUST-STATUS (X with condition names)",
+        "CUST-BALANCE (S9(9)V99)",
+        "CUST-OPEN-DATE (9(8))"
+      ]
+    },
+    "other_copybooks_in_chain": [
+      {
+        "copybook_name": "ACCOUNT-RECORD",
+        "used_by": ["ACCOUNT-MGR"],
+        "relationship": "Used by downstream program ACCOUNT-MGR"
+      },
+      {
+        "copybook_name": "PAYMENT-RECORD",
+        "used_by": ["ACCOUNT-MGR", "PAYMENT-HANDLER"],
+        "relationship": "Used by downstream programs in call chain"
+      }
+    ]
+  },
+  "file_io_impact_analysis": {
+    "target_program_files": [
+      {
+        "logical_name": "CUSTOMER-FILE",
+        "physical_name": "CUSTMAST",
+        "organization": "SEQUENTIAL",
+        "operation": "READ",
+        "paragraph": "1100-READ-CUSTOMER",
+        "risk": "MEDIUM - File read logic changes may affect data availability"
+      },
+      {
+        "logical_name": "AUDIT-FILE",
+        "physical_name": "AUDITMAST",
+        "organization": "SEQUENTIAL",
+        "operation": "WRITE",
+        "paragraph": "Not observed in parsed data",
+        "risk": "LOW - Output file, less likely to affect downstream programs"
+      }
+    ],
+    "related_files_in_chain": [
+      {
+        "logical_name": "BATCH-INPUT",
+        "physical_name": "BATCHIN",
+        "program": "BATCH-RUNNER",
+        "operation": "READ"
+      },
+      {
+        "logical_name": "BATCH-REPORT",
+        "physical_name": "BATCHRPT",
+        "program": "BATCH-RUNNER",
+        "operation": "WRITE"
+      },
+      {
+        "logical_name": "ACCOUNT-FILE",
+        "physical_name": "ACCTMAST",
+        "program": "ACCOUNT-MGR",
+        "operation": "READ/WRITE",
+        "organization": "INDEXED"
+      },
+      {
+        "logical_name": "PAYMENT-LOG",
+        "physical_name": "PAYLOG",
+        "program": "PAYMENT-HANDLER",
+        "operation": "WRITE"
+      }
+    ],
+    "file_dependency_risk": "MEDIUM - Changes to CUSTOMER-PROC file processing may affect upstream batch processing and downstream account/payment operations"
+  },
+  "recommended_change_sequence": [
+    {
+      "step": 1,
+      "action": "Code Review and Planning",
+      "description": "Review proposed CUSTOMER-PROC modifications with team",
+      "tasks": [
+        "Document all code changes to CUSTOMER-PROC",
+        "Identify specific paragraphs being modified",
+        "Review interface contract (parameters passed to/from ACCOUNT-MGR)",
+        "Verify CUSTOMER-RECORD copybook usage remains consistent",
+        "Plan rollback strategy"
+      ],
+      "estimated_duration": "0.5 days"
+    },
+    {
+      "step": 2,
+      "action": "Modify CUSTOMER-PROC",
+      "description": "Implement the planned logic modifications",
+      "tasks": [
+        "Make code changes to CUSTOMER-PROC",
+        "Ensure CUSTOMER-RECORD copybook fields remain consistent",
+        "Maintain interface contract with ACCOUNT-MGR (CUSTOMER-REC parameter)",
+        "Update inline comments and documentation",
+        "Perform unit-level syntax validation"
+      ],
+      "estimated_duration": "1.0 days"
+    },
+    {
+      "step": 3,
+      "action": "Unit Test CUSTOMER-PROC",
+      "description": "Isolated testing of CUSTOMER-PROC functionality",
+      "tasks": [
+        "Test all paragraphs within CUSTOMER-PROC",
+        "Verify CUSTOMER-FILE read operations",
+        "Test error handling and EOF conditions",
+        "Validate return codes and status flags",
+        "Confirm CUSTOMER-REC structure is correctly populated"
+      ],
+      "estimated_duration": "1.0 days"
+    },
+    {
+      "step": 4,
+      "action": "Integration Test: CUSTOMER-PROC ↔ ACCOUNT-MGR",
+      "description": "Test the direct call relationship",
+      "tasks": [
+        "Test CUSTOMER-PROC calling ACCOUNT-MGR",
+        "Verify parameter passing (CUSTOMER-REC)",
+        "Validate ACCOUNT-MGR receives correct data",
+        "Test all account management operations",
+        "Verify return codes and error handling"
+      ],
+      "estimated_duration": "1.5 days"
+    },
+    {
+      "step": 5,
+      "action": "Integration Test: Full Downstream Chain",
+      "description": "Test CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER",
+      "tasks": [
+        "Execute complete call chain",
+        "Test payment processing with modified CUSTOMER-PROC",
+        "Verify all payment types (regular, refund, reversal)",
+        "Validate PAYMENT-LOG output",
+        "Test GOTO control flow paths in PAYMENT-HANDLER"
+      ],
+      "estimated_duration": "1.5 days"
+    },
+    {
+      "step": 6,
+      "action": "Upstream Integration Test: BATCH-RUNNER",
+      "description": "Test the batch processing entry point",
+      "tasks": [
+        "Run full BATCH-RUNNER execution with modified CUSTOMER-PROC",
+        "Verify batch input file processing",
+        "Validate BATCH-REPORT output and statistics",
+        "Test error handling and recovery",
+        "Confirm batch processing workflow end-to-end"
+      ],
+      "estimated_duration": "2.0 days"
+    },
+    {
+      "step": 7,
+      "action": "Full Regression Testing",
+      "description": "Complete end-to-end validation",
+      "tasks": [
+        "Execute complete batch processing workflow",
+        "Test all program interactions",
+        "Validate all file I/O operations",
+        "Verify copybook data structures",
+        "Performance testing",
+        "User acceptance testing if applicable"
+      ],
+      "estimated_duration": "2.0 days"
+    },
+    {
+      "step": 8,
+      "action": "Deployment Preparation",
+      "description": "Prepare for production deployment",
+      "tasks": [
+        "Compile all affected programs if needed",
+        "Prepare JCL for batch job execution",
+        "Update documentation and runbooks",
+        "Prepare rollback procedures",
+        "Schedule deployment window"
+      ],
+      "estimated_duration": "0.5 days"
+    },
+    {
+      "step": 9,
+      "action": "Production Deployment",
+      "description": "Deploy changes to production",
+      "tasks": [
+        "Deploy CUSTOMER-PROC with modifications",
+        "Monitor initial batch run",
+        "Validate production outputs",
+        "Monitor logs for errors",
+        "Execute smoke tests"
+      ],
+      "estimated_duration": "0.5 days"
+    },
+    {
+      "step": 10,
+      "action": "Post-Deployment Validation",
+      "description": "Confirm production stability",
+      "tasks": [
+        "Monitor first full production batch cycle",
+        "Review PAYMENT-LOG audit trail",
+        "Validate BATCH-REPORT statistics",
+        "Check for any production incidents",
+        "Gather feedback from operations team"
+      ],
+      "estimated_duration": "1.0 days"
+    }
+  ],
+  "risk_assessment": {
+    "overall_risk_level": "HIGH",
+    "risk_category": "Program modification with upstream and downstream dependencies",
+    "risk_factors": [
+      {
+        "factor": "Upstream Dependency",
+        "severity": "HIGH",
+        "description": "BATCH-RUNNER is the entry point for batch processing workflow; any interface changes to CUSTOMER-PROC will break batch processing"
+      },
+      {
+        "factor": "Downstream Dependencies",
+        "severity": "HIGH",
+        "description": "CUSTOMER-PROC calls ACCOUNT-MGR which calls PAYMENT-HANDLER; changes cascade through 2 downstream programs"
+      },
+      {
+        "factor": "Shared Data Structure",
+        "severity": "HIGH",
+        "description": "CUSTOMER-RECORD copybook shared by 3 programs; data contract must remain stable"
+      },
+      {
+        "factor": "Payment Processing Impact",
+        "severity": "MEDIUM",
+        "description": "Indirect impact on payment processing through PAYMENT-HANDLER"
+      },
+      {
+        "factor": "Legacy Control Flow",
+        "severity": "MEDIUM",
+        "description": "PAYMENT-HANDLER contains GOTO statements making behavior harder to predict"
+      },
+      {
+        "factor": "Program Complexity",
+        "severity": "LOW",
+        "description": "CUSTOMER-PROC itself is LOW complexity, reducing modification risk"
+      }
+    ],
+    "mitigation_strategies": [
+      {
+        "strategy": "Interface Stability",
+        "actions": [
+          "Maintain strict backward compatibility with CUSTOMER-REC parameter structure",
+          "Do not modify CUSTOMER-RECORD copybook field definitions",
+          "Preserve return codes and error handling patterns",
+          "Document any behavioral changes clearly"
+        ]
+      },
+      {
+        "strategy": "Comprehensive Testing",
+        "actions": [
+          "Execute complete regression test suite (all 3 affected programs)",
+          "Perform full batch processing integration test",
+          "Test all payment processing scenarios",
+          "Validate all file I/O operations",
+          "Include negative test cases and error scenarios"
+        ]
+      },
+      {
+        "strategy": "Phased Rollout",
+        "actions": [
+          "Deploy to test environment first",
+          "Execute pilot batch run with sample data",
+          "Monitor for 48 hours in test environment",
+          "Use canary deployment if possible",
+          "Have rollback plan ready"
+        ]
+      },
+      {
+        "strategy": "Enhanced Monitoring",
+        "actions": [
+          "Add detailed logging to CUSTOMER-PROC modifications",
+          "Monitor BATCH-RUNNER statistics closely",
+          "Track PAYMENT-LOG for anomalies",
+          "Set up alerts for batch job failures",
+          "Review audit trail for first week post-deployment"
+        ]
+      },
+      {
+        "strategy": "Code Quality",
+        "actions": [
+          "Peer review all code changes",
+          "Run static code analysis",
+          "Validate against COBOL coding standards",
+          "Document all assumptions and dependencies",
+          "Consider refactoring GOTO statements in PAYMENT-HANDLER if touched"
+        ]
+      }
+    ]
+  },
+  "testing_strategy": {
+    "test_phases": [
+      {
+        "phase": "Unit Testing",
+        "scope": "CUSTOMER-PROC only",
+        "duration": "1.0 days",
+        "test_cases": [
+          "Test paragraph 0000-MAIN control flow",
+          "Test 1000-OPEN-FILES file operations",
+          "Test 1100-READ-CUSTOMER data retrieval",
+          "Test 2000-PROCESS-CUSTOMERS logic",
+          "Test 9000-CLOSE-FILES cleanup",
+          "Test EOF and error flag handling",
+          "Test counter increments (WS-RECORDS-READ, WS-RECORDS-WRITTEN)",
+          "Test CUSTOMER-REC structure population"
+        ]
+      },
+      {
+        "phase": "Integration Testing - Direct Dependencies",
+        "scope": "CUSTOMER-PROC with ACCOUNT-MGR",
+        "duration": "1.5 days",
+        "test_cases": [
+          "Test CUSTOMER-PROC calling ACCOUNT-MGR",
+          "Verify CUSTOMER-REC parameter passing",
+          "Test account validation in ACCOUNT-MGR",
+          "Test account update operations",
+          "Test return code handling",
+          "Test error scenarios",
+          "Verify ACCOUNT-FILE operations",
+          "Test with various customer statuses (ACTIVE, INACTIVE, CLOSED)"
+        ]
+      },
+      {
+        "phase": "Integration Testing - Full Downstream",
+        "scope": "CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER",
+        "duration": "1.5 days",
+        "test_cases": [
+          "Test complete call chain execution",
+          "Test regular payment processing",
+          "Test refund payment processing",
+          "Test reversal payment processing",
+          "Verify PAYMENT-LOG output",
+          "Test GOTO paths in PAYMENT-HANDLER",
+          "Validate payment validation logic",
+          "Test error propagation through chain"
+        ]
+      },
+      {
+        "phase": "Integration Testing - Upstream",
+        "scope": "BATCH-RUNNER calling CUSTOMER-PROC",
+        "duration": "2.0 days",
+        "test_cases": [
+          "Test full batch processing workflow",
+          "Test BATCH-INPUT file processing",
+          "Verify BATCH-REPORT generation",
+          "Test batch statistics reporting",
+          "Test EOF handling in batch context",
+          "Test error handling and batch recovery",
+          "Test with large batch input files",
+          "Verify performance and throughput"
+        ]
+      },
+      {
+        "phase": "Full Regression Testing",
+        "scope": "All 4 programs in call chain",
+        "duration": "2.0 days",
+        "test_cases": [
+          "Execute complete end-to-end batch processing",
+          "Test all customer scenarios (active, inactive, closed)",
+          "Test all payment types (regular, refund, reversal)",
+          "Verify all file operations (6 files total)",
+          "Test all copybook data structures",
+          "Performance and load testing",
+          "Validate audit trail and logging",
+          "Test error recovery scenarios"
+        ]
+      }
+    ],
+    "test_data_requirements": [
+      "Customer master file (CUSTMAST) with various customer statuses",
+      "Batch input file (BATCHIN) with representative customer data",
+      "Account master file (ACCTMAST) with test accounts",
+      "Sample payment transactions (regular, refund, reversal)",
+      "Edge cases: invalid customers, closed accounts, missing data",
+      "Large volume data for performance testing"
+    ],
+    "environment_requirements": [
+      "Test mainframe or emulator with COBOL runtime",
+      "All 6 files (CUSTMAST, AUDITMAST, BATCHIN, BATCHRPT, ACCTMAST, PAYLOG)",
+      "JCL for batch job execution",
+      "Monitoring and logging tools",
+      "Backup and restore capabilities for test data"
+    ]
+  },
+  "effort_estimation": {
+    "total_estimated_days": 11.5,
+    "breakdown": {
+      "planning_and_review": 0.5,
+      "development": 1.0,
+      "unit_testing": 1.0,
+      "integration_testing": 5.0,
+      "regression_testing": 2.0,
+      "deployment_preparation": 0.5,
+      "deployment": 0.5,
+      "post_deployment_validation": 1.0
+    },
+    "per_program_effort": {
+      "CUSTOMER-PROC": {
+        "modification": 1.0,
+        "testing": 1.0,
+        "total": 2.0
+      },
+      "BATCH-RUNNER": {
+        "analysis": 0.5,
+        "testing": 2.0,
+        "total": 2.5
+      },
+      "ACCOUNT-MGR": {
+        "analysis": 0.5,
+        "testing": 2.5,
+        "total": 3.0
+      },
+      "PAYMENT-HANDLER": {
+        "analysis": 0.5,
+        "testing": 1.5,
+        "total": 2.0
+      }
+    },
+    "assumptions": [
+      "1 developer working on modifications",
+      "2 testers for integration and regression testing",
+      "Test environment is available and configured",
+      "No unexpected technical issues",
+      "No scope changes during implementation"
+    ]
+  },
+  "recommendations": {
+    "immediate_actions": [
+      "Freeze CUSTOMER-RECORD copybook - no modifications allowed during this change cycle",
+      "Notify owners of BATCH-RUNNER, ACCOUNT-MGR, and PAYMENT-HANDLER programs",
+      "Schedule code review session with technical lead",
+      "Reserve test environment for 2-week period",
+      "Prepare test data sets for all scenarios"
+    ],
+    "best_practices": [
+      "Maintain strict interface compatibility with ACCOUNT-MGR",
+      "Add comprehensive inline comments for all changes",
+      "Use version control for all source code",
+      "Document all assumptions and design decisions",
+      "Perform peer review before testing phase"
+    ],
+    "future_considerations": [
+      "Consider refactoring PAYMENT-HANDLER to eliminate GOTO statements",
+      "Evaluate modernization of CUSTOMER-PROC to Java/Spring Boot as part of broader migration",
+      "Review performance of batch processing workflow",
+      "Consider adding more comprehensive error handling across all programs",
+      "Evaluate replacing SEQUENTIAL files with database tables"
+    ]
+  },
+  "next_steps": {
+    "immediate": "Begin code review and planning phase (Step 1 of change sequence)",
+    "short_term": "Complete CUSTOMER-PROC modifications and unit testing",
+    "medium_term": "Execute full integration and regression test suite",
+    "long_term": "Monitor production performance post-deployment",
+    "handoff_option": "Consider handing off to migration-advisor agent for Java migration recommendations"
+  },
+  "appendix": {
+    "related_documents": [
+      ".claude/skills/neo4j-schema/SKILL.md",
+      ".claude/skills/impact-analysis/SKILL.md",
+      ".claude/state/graph-build-report.json",
+      ".claude/state/parsed/CUSTOMER-PROC.json",
+      ".claude/state/parsed/BATCH-RUNNER.json",
+      ".claude/state/parsed/ACCOUNT-MGR.json",
+      ".claude/state/parsed/PAYMENT-HANDLER.json"
+    ],
+    "analysis_tools_used": [
+      "COBOL static analysis",
+      "Program dependency graph",
+      "Copybook dependency analysis",
+      "Call chain traversal",
+      "Impact scoring matrix"
+    ],
+    "generated_by": "Impact Analyzer Agent v2.0",
+    "report_version": "1.0"
+  }
+}

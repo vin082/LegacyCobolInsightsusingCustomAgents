@@ -1,0 +1,32 @@
+{
+  "program_id": "CODATE01",
+  "source_path": "app/app-vsam-mq/cbl/CODATE01.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CODATE01",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "VSAM/MQ COBOL Program",
+    "function": "Date utility with MQ",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "copybook_inclusions": []
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "mq_calls": [{"type": "MQPUT"}, {"type": "MQGET"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_mq": true,
+    "estimated_complexity": "MEDIUM"
+  },
+  "metrics": {
+    "total_lines": 300,
+    "copybooks": 0,
+    "mq_calls": 2
+  }
+}

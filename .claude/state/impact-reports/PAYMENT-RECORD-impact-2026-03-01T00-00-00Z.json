@@ -1,0 +1,542 @@
+{
+  "analysis_target": "PAYMENT-RECORD",
+  "change_type": "MODIFY",
+  "analyzed_at": "2026-03-01T00:00:00Z",
+  "summary": {
+    "total_programs_affected": 4,
+    "critical": 0,
+    "high": 1,
+    "medium": 2,
+    "low": 1,
+    "overall_risk": "HIGH",
+    "estimated_total_effort_days": 12.0
+  },
+  "affected_programs": [
+    {
+      "program_id": "PAYMENT-HANDLER",
+      "impact_level": "HIGH",
+      "impact_type": "DIRECT",
+      "reason": "Directly includes PAYMENT-RECORD copybook; contains GOTO statements (high risk); leaf program in payment processing chain",
+      "usage_type": "Direct copybook inclusion (LINKAGE SECTION)",
+      "call_depth": 0,
+      "inbound_calls": 1,
+      "inbound_callers": ["ACCOUNT-MGR"],
+      "outbound_calls": 0,
+      "outbound_callees": [],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/PAYMENT-HANDLER.cbl",
+        "author": "S.PATEL",
+        "date_written": "1992-11-03",
+        "line_count": 119,
+        "estimated_complexity": "MEDIUM",
+        "has_goto": true,
+        "has_alter": false,
+        "has_redefines": false
+      },
+      "impact_score": {
+        "direct_caller_score": 1,
+        "transitive_depth_score": 0,
+        "copybook_breadth_score": 0,
+        "complexity_score": 1,
+        "risk_flag_score": 2,
+        "raw_score": 4,
+        "category": "MEDIUM-HIGH"
+      },
+      "testing_priority": 1,
+      "estimated_effort_days": 4.0,
+      "key_concerns": [
+        "CRITICAL: Contains 2x GOTO statements (lines 50, 58) - control flow risk",
+        "Leaf program - final handler for payment transactions",
+        "LINKAGE SECTION uses PAYMENT-RECORD - interface contract change",
+        "Writes to PAYMENT-LOG file - audit trail concerns",
+        "Payment type routing logic (REGULAR/REFUND/REVERSAL) might be affected"
+      ]
+    },
+    {
+      "program_id": "ACCOUNT-MGR",
+      "impact_level": "MEDIUM",
+      "impact_type": "DIRECT",
+      "reason": "Directly includes PAYMENT-RECORD copybook; uses 3 copybooks total; central hub in processing chain",
+      "usage_type": "Direct copybook inclusion (WORKING-STORAGE)",
+      "call_depth": 0,
+      "inbound_calls": 1,
+      "inbound_callers": ["CUSTOMER-PROC"],
+      "outbound_calls": 1,
+      "outbound_callees": ["PAYMENT-HANDLER"],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/ACCOUNT-MGR.cbl",
+        "author": "M.JONES",
+        "date_written": "1989-07-22",
+        "line_count": 116,
+        "estimated_complexity": "MEDIUM",
+        "has_goto": false,
+        "has_alter": false,
+        "has_redefines": true
+      },
+      "impact_score": {
+        "direct_caller_score": 1,
+        "transitive_depth_score": 1,
+        "copybook_breadth_score": 1,
+        "complexity_score": 1,
+        "risk_flag_score": 0,
+        "raw_score": 4,
+        "category": "MEDIUM"
+      },
+      "testing_priority": 2,
+      "estimated_effort_days": 3.0,
+      "key_concerns": [
+        "Uses multiple copybooks (CUSTOMER-RECORD, ACCOUNT-RECORD, PAYMENT-RECORD)",
+        "MEDIUM complexity - more extensive testing required",
+        "Calls PAYMENT-HANDLER with WS-PAYMENT-REQUEST - interface must remain compatible",
+        "Populates payment request in 4000-PROCESS-PAYMENT paragraph",
+        "Has REDEFINES clause - potential data overlay concerns"
+      ]
+    },
+    {
+      "program_id": "CUSTOMER-PROC",
+      "impact_level": "MEDIUM",
+      "impact_type": "INDIRECT",
+      "reason": "Calls ACCOUNT-MGR which uses PAYMENT-RECORD; data flows through to payment processing",
+      "usage_type": "Transitive dependency via CALLS relationship",
+      "call_depth": 1,
+      "inbound_calls": 1,
+      "inbound_callers": ["BATCH-RUNNER"],
+      "outbound_calls": 1,
+      "outbound_callees": ["ACCOUNT-MGR"],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/CUSTOMER-PROC.cbl",
+        "author": "J.SMITH",
+        "date_written": "1987-03-15",
+        "line_count": 58,
+        "estimated_complexity": "LOW",
+        "has_goto": false,
+        "has_alter": false,
+        "has_redefines": false
+      },
+      "impact_score": {
+        "direct_caller_score": 1,
+        "transitive_depth_score": 1,
+        "copybook_breadth_score": 0,
+        "complexity_score": 0,
+        "risk_flag_score": 0,
+        "raw_score": 2,
+        "category": "LOW-MEDIUM"
+      },
+      "testing_priority": 3,
+      "estimated_effort_days": 1.5,
+      "key_concerns": [
+        "Indirectly affected through ACCOUNT-MGR call",
+        "Must verify return codes from ACCOUNT-MGR still valid",
+        "Integration testing required with ACCOUNT-MGR"
+      ]
+    },
+    {
+      "program_id": "BATCH-RUNNER",
+      "impact_level": "LOW",
+      "impact_type": "INDIRECT",
+      "reason": "Entry point program; calls CUSTOMER-PROC which eventually leads to payment processing",
+      "usage_type": "Transitive dependency via CALLS chain",
+      "call_depth": 2,
+      "inbound_calls": 0,
+      "inbound_callers": [],
+      "outbound_calls": 1,
+      "outbound_callees": ["CUSTOMER-PROC"],
+      "metadata": {
+        "source_path": "cobol-modernization/sample-cobol/BATCH-RUNNER.cbl",
+        "author": "D.WILSON",
+        "date_written": "1995-02-14",
+        "line_count": 124,
+        "estimated_complexity": "LOW",
+        "has_goto": false,
+        "has_alter": false,
+        "has_redefines": false
+      },
+      "impact_score": {
+        "direct_caller_score": 0,
+        "transitive_depth_score": 2,
+        "copybook_breadth_score": 0,
+        "complexity_score": 0,
+        "risk_flag_score": 0,
+        "raw_score": 2,
+        "category": "LOW"
+      },
+      "testing_priority": 4,
+      "estimated_effort_days": 1.0,
+      "key_concerns": [
+        "Entry point - must verify end-to-end batch processing",
+        "Full regression test required after all changes complete"
+      ]
+    }
+  ],
+  "call_chain_analysis": {
+    "description": "Complete call chain showing impact propagation",
+    "chain": [
+      {
+        "program": "BATCH-RUNNER",
+        "uses_copybook": false,
+        "calls": "CUSTOMER-PROC"
+      },
+      {
+        "program": "CUSTOMER-PROC",
+        "uses_copybook": false,
+        "calls": "ACCOUNT-MGR"
+      },
+      {
+        "program": "ACCOUNT-MGR",
+        "uses_copybook": true,
+        "calls": "PAYMENT-HANDLER"
+      },
+      {
+        "program": "PAYMENT-HANDLER",
+        "uses_copybook": true,
+        "calls": null
+      }
+    ],
+    "max_call_depth": 3,
+    "total_programs_in_chain": 4
+  },
+  "shared_data_dependencies": {
+    "description": "Other copybooks used by affected programs",
+    "copybooks": [
+      {
+        "copybook_name": "CUSTOMER-RECORD",
+        "used_by": ["ACCOUNT-MGR", "CUSTOMER-PROC", "BATCH-RUNNER"],
+        "risk": "HIGH - Shared by 3 programs, may have structural dependencies with PAYMENT-RECORD"
+      },
+      {
+        "copybook_name": "ACCOUNT-RECORD",
+        "used_by": ["ACCOUNT-MGR"],
+        "risk": "MEDIUM - Used by same program (ACCOUNT-MGR), may have business logic dependencies"
+      }
+    ],
+    "cross_copybook_contamination": "HIGH - ACCOUNT-MGR uses all 3 copybooks together, changes to PAYMENT-RECORD might affect business logic involving customer and account data"
+  },
+  "data_structure_analysis": {
+    "copybook_name": "PAYMENT-RECORD",
+    "source_path": "cobol-modernization/sample-cobol/copybooks/PAYMENT-RECORD.cpy",
+    "data_items": [
+      {
+        "name": "PAY-TRANS-ID",
+        "level": "05",
+        "pic": "9(12)",
+        "usage": null,
+        "risk": "HIGH - Primary key field, used for transaction identification"
+      },
+      {
+        "name": "PAY-CUST-ID",
+        "level": "05",
+        "pic": "9(8)",
+        "usage": null,
+        "risk": "HIGH - Foreign key to CUSTOMER-RECORD, used for linking"
+      },
+      {
+        "name": "PAY-ACCT-ID",
+        "level": "05",
+        "pic": "9(10)",
+        "usage": null,
+        "risk": "HIGH - Foreign key to ACCOUNT-RECORD, used for linking"
+      },
+      {
+        "name": "PAY-AMOUNT",
+        "level": "05",
+        "pic": "S9(9)V99",
+        "usage": "COMP-3",
+        "risk": "CRITICAL - Monetary amount, precision must be maintained"
+      },
+      {
+        "name": "PAY-TYPE",
+        "level": "05",
+        "pic": "X(10)",
+        "usage": null,
+        "condition_names": ["PAY-REGULAR", "PAY-REFUND", "PAY-REVERSAL"],
+        "risk": "HIGH - Controls routing logic in PAYMENT-HANDLER, has 88-level conditions"
+      },
+      {
+        "name": "PAY-STATUS",
+        "level": "05",
+        "pic": "X(10)",
+        "usage": null,
+        "condition_names": ["PAY-APPROVED", "PAY-PENDING", "PAY-REVERSED", "PAY-REJECTED"],
+        "risk": "HIGH - Business status field, has 88-level conditions, affects audit trail"
+      },
+      {
+        "name": "PAY-TIMESTAMP",
+        "level": "05",
+        "pic": "X(26)",
+        "usage": null,
+        "risk": "MEDIUM - Audit field, format change could affect reporting"
+      }
+    ],
+    "total_data_items": 7,
+    "has_redefines": false,
+    "has_occurs": false,
+    "has_condition_names": true,
+    "condition_names_count": 7
+  },
+  "file_io_analysis": {
+    "description": "Files accessed by programs using PAYMENT-RECORD",
+    "files": [
+      {
+        "file_name": "PAYMENT-LOG",
+        "logical_name": "PAYMENT-LOG",
+        "physical_name": "PAYLOG",
+        "organization": "SEQUENTIAL",
+        "accessed_by": [
+          {
+            "program": "PAYMENT-HANDLER",
+            "paragraph": "4000-LOG-TRANSACTION",
+            "operation": "WRITE"
+          }
+        ],
+        "risk": "HIGH - Audit trail, record layout must match PAYMENT-RECORD structure"
+      },
+      {
+        "file_name": "ACCOUNT-FILE",
+        "logical_name": "ACCOUNT-FILE",
+        "physical_name": "ACCTMAST",
+        "organization": "INDEXED",
+        "accessed_by": [
+          {
+            "program": "ACCOUNT-MGR",
+            "paragraph": "2000-VALIDATE-CUSTOMER",
+            "operation": "READ"
+          }
+        ],
+        "risk": "MEDIUM - Read for account validation before payment processing"
+      }
+    ]
+  },
+  "recommended_change_sequence": [
+    {
+      "step": 1,
+      "action": "Modify PAYMENT-RECORD copybook",
+      "description": "Update the copybook structure, maintain backward compatibility if possible",
+      "dependencies": [],
+      "estimated_effort": "0.5 days",
+      "validation": "Review by lead developer and DBA"
+    },
+    {
+      "step": 2,
+      "action": "Refactor GOTO statements in PAYMENT-HANDLER",
+      "description": "CRITICAL - Remove GOTO statements BEFORE applying copybook changes to reduce risk",
+      "dependencies": ["PAYMENT-RECORD modification planned"],
+      "estimated_effort": "2.0 days",
+      "validation": "Unit test all payment types (REGULAR/REFUND/REVERSAL)"
+    },
+    {
+      "step": 3,
+      "action": "Update and test PAYMENT-HANDLER",
+      "description": "Apply PAYMENT-RECORD changes, update LINKAGE SECTION interface",
+      "dependencies": ["PAYMENT-RECORD modification complete", "GOTO refactoring complete"],
+      "estimated_effort": "2.0 days",
+      "validation": "Unit test all payment types and status transitions; verify PAYMENT-LOG output"
+    },
+    {
+      "step": 4,
+      "action": "Update and test ACCOUNT-MGR",
+      "description": "Update WS-PAYMENT-REQUEST structure, verify CALL interface to PAYMENT-HANDLER",
+      "dependencies": ["PAYMENT-RECORD modification complete", "PAYMENT-HANDLER tested"],
+      "estimated_effort": "3.0 days",
+      "validation": "Integration test with PAYMENT-HANDLER; verify all 3 copybooks work together"
+    },
+    {
+      "step": 5,
+      "action": "Regression test CUSTOMER-PROC",
+      "description": "Verify customer processing still works with updated account management",
+      "dependencies": ["ACCOUNT-MGR tested"],
+      "estimated_effort": "1.5 days",
+      "validation": "Integration test CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER chain"
+    },
+    {
+      "step": 6,
+      "action": "Full regression test BATCH-RUNNER",
+      "description": "End-to-end batch processing test",
+      "dependencies": ["All programs updated and individually tested"],
+      "estimated_effort": "1.0 days",
+      "validation": "Full batch run with production-like data volume"
+    },
+    {
+      "step": 7,
+      "action": "System integration testing",
+      "description": "Complete end-to-end testing with all payment scenarios",
+      "dependencies": ["All programs tested"],
+      "estimated_effort": "2.0 days",
+      "validation": "Test all payment types, error conditions, and audit trails"
+    }
+  ],
+  "risk_assessment": {
+    "overall_risk": "HIGH",
+    "rationale": "PAYMENT-RECORD is critical for payment processing. Changes affect payment transaction recording, routing logic, and audit trails.",
+    "critical_factors": [
+      {
+        "factor": "GOTO statements in PAYMENT-HANDLER",
+        "severity": "CRITICAL",
+        "description": "Control flow complexity increases change risk significantly. MUST refactor before applying copybook changes."
+      },
+      {
+        "factor": "Monetary data (PAY-AMOUNT)",
+        "severity": "CRITICAL",
+        "description": "COMP-3 packed decimal field - any precision/scale changes could cause financial errors"
+      },
+      {
+        "factor": "Payment routing logic",
+        "severity": "HIGH",
+        "description": "PAY-TYPE field has 88-level conditions controlling program flow - changes could misdirect payments"
+      },
+      {
+        "factor": "Audit trail",
+        "severity": "HIGH",
+        "description": "PAYMENT-LOG file writes must match updated structure - historical audit concerns"
+      },
+      {
+        "factor": "Multiple copybook interactions",
+        "severity": "HIGH",
+        "description": "ACCOUNT-MGR uses 3 copybooks together - changes could affect business logic integration"
+      }
+    ],
+    "mitigation_strategies": [
+      {
+        "strategy": "Refactor GOTO before copybook changes",
+        "description": "Eliminate GOTO statements in PAYMENT-HANDLER BEFORE applying PAYMENT-RECORD changes to reduce control flow complexity"
+      },
+      {
+        "strategy": "Maintain backward compatibility",
+        "description": "If possible, add new fields without changing existing field positions/sizes"
+      },
+      {
+        "strategy": "Data conversion planning",
+        "description": "If record layout changes, plan conversion for PAYMENT-LOG historical data"
+      },
+      {
+        "strategy": "Freeze payment processing changes",
+        "description": "No other changes to these 4 programs during the PAYMENT-RECORD modification window"
+      },
+      {
+        "strategy": "Extended testing period",
+        "description": "Test all payment types: REGULAR, REFUND, REVERSAL with all status combinations"
+      }
+    ]
+  },
+  "estimated_total_effort": {
+    "development_days": 9.0,
+    "testing_days": 4.5,
+    "total_days": 12.0,
+    "assuming_team_size": 2,
+    "calendar_duration_weeks": 1.5,
+    "note": "CRITICAL: Must refactor GOTO statements first (adds 2 days to timeline)"
+  },
+  "impact_visualization": {
+    "description": "Text-based impact tree showing relationships",
+    "tree": [
+      "PAYMENT-RECORD (Copybook - MODIFY)",
+      "├── [HIGH] DIRECT IMPACT",
+      "│   ├── PAYMENT-HANDLER (119 lines, MEDIUM complexity, 0 callees) ⚠️ HAS GOTO",
+      "│   │   └── Called by: ACCOUNT-MGR",
+      "│   │   └── Writes: PAYMENT-LOG (audit trail)",
+      "│   │   └── Risk: CRITICAL - Contains GOTO statements + monetary data",
+      "│   │",
+      "│   └── ACCOUNT-MGR (116 lines, MEDIUM complexity, 1 callee)",
+      "│       └── Uses 3 copybooks: CUSTOMER-RECORD, ACCOUNT-RECORD, PAYMENT-RECORD",
+      "│       └── Called by: CUSTOMER-PROC",
+      "│       └── Calls: PAYMENT-HANDLER with WS-PAYMENT-REQUEST",
+      "│",
+      "└── [MEDIUM] INDIRECT IMPACT",
+      "    ├── CUSTOMER-PROC (58 lines, LOW complexity)",
+      "    │   └── Called by: BATCH-RUNNER",
+      "    │   └── Calls: ACCOUNT-MGR",
+      "    │",
+      "    └── BATCH-RUNNER (124 lines, LOW complexity) - Entry point",
+      "        └── Calls: CUSTOMER-PROC → impacts entire chain"
+    ]
+  },
+  "compliance_considerations": {
+    "audit_trail": "CRITICAL - PAYMENT-LOG file serves as audit trail for financial transactions. Any record layout changes must maintain audit integrity.",
+    "financial_accuracy": "CRITICAL - PAY-AMOUNT is COMP-3 signed numeric. Precision must be maintained to avoid monetary calculation errors.",
+    "data_retention": "All payment transactions must be retained per regulatory requirements. Plan data conversion if structure changes.",
+    "change_control": "Payment processing changes require CAB approval and extended change window"
+  },
+  "testing_strategy": {
+    "unit_tests": [
+      {
+        "program": "PAYMENT-HANDLER",
+        "tests": [
+          "Test REGULAR payment type processing",
+          "Test REFUND payment type processing",
+          "Test REVERSAL payment type processing",
+          "Test all status transitions (PENDING → APPROVED, etc.)",
+          "Test PAYMENT-LOG output format",
+          "Test error handling with invalid payment data"
+        ]
+      },
+      {
+        "program": "ACCOUNT-MGR",
+        "tests": [
+          "Test WS-PAYMENT-REQUEST population",
+          "Test CALL interface to PAYMENT-HANDLER",
+          "Test return code handling",
+          "Test integration with all 3 copybooks"
+        ]
+      }
+    ],
+    "integration_tests": [
+      {
+        "chain": "ACCOUNT-MGR → PAYMENT-HANDLER",
+        "scenarios": [
+          "Successful payment processing",
+          "Payment rejection handling",
+          "Return code verification"
+        ]
+      },
+      {
+        "chain": "CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER",
+        "scenarios": [
+          "Customer with valid account processes payment",
+          "Customer with missing account error handling"
+        ]
+      },
+      {
+        "chain": "BATCH-RUNNER → CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER",
+        "scenarios": [
+          "Full batch processing with mixed transaction types",
+          "Large volume testing (1000+ transactions)",
+          "Error recovery and restart testing"
+        ]
+      }
+    ],
+    "regression_tests": [
+      "All existing payment processing test cases",
+      "Historical data compatibility",
+      "PAYMENT-LOG audit report verification",
+      "Financial reconciliation testing"
+    ]
+  },
+  "recommendations": {
+    "priority": "HIGH",
+    "proceed_with_caution": true,
+    "key_actions": [
+      "1. CRITICAL: Refactor GOTO statements in PAYMENT-HANDLER FIRST (before copybook changes)",
+      "2. Freeze all other changes to payment processing programs",
+      "3. Create comprehensive test data covering all payment types and statuses",
+      "4. Plan extended change window (minimum 4 hours) with rollback capability",
+      "5. Notify all stakeholders - payment processing is critical business function",
+      "6. Prepare data conversion scripts if PAYMENT-LOG format changes",
+      "7. Schedule CAB review for this high-risk change",
+      "8. Plan post-deployment monitoring for 72 hours"
+    ],
+    "go_no_go_factors": {
+      "green_flags": [
+        "✅ Only 2 programs directly use this copybook",
+        "✅ No circular dependencies",
+        "✅ No OCCURS or REDEFINES in PAYMENT-RECORD"
+      ],
+      "red_flags": [
+        "⚠️ PAYMENT-HANDLER contains GOTO statements (MUST refactor first)",
+        "⚠️ Affects monetary data (PAY-AMOUNT) - financial risk",
+        "⚠️ ACCOUNT-MGR uses 3 copybooks together - complex interactions",
+        "⚠️ Audit trail concerns (PAYMENT-LOG)",
+        "⚠️ 7 condition names (88-levels) - business logic dependencies"
+      ]
+    },
+    "final_recommendation": "PROCEED WITH HIGH CAUTION. This is a high-risk change affecting critical payment processing. MANDATORY prerequisite: Refactor GOTO statements in PAYMENT-HANDLER before applying copybook changes. Recommend 2-week timeline with extended testing phase."
+  }
+}

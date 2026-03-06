@@ -1,0 +1,206 @@
+{
+  "graph_build_report": {
+    "generated_at": "2026-02-28T00:00:00Z",
+    "status": "READY_FOR_EXECUTION",
+    "cypher_script": ".claude/state/build-graph.cypher",
+    "summary": {
+      "description": "Neo4j Knowledge Graph built from 4 COBOL programs and 3 copybooks"
+    },
+    "nodes_to_be_created": {
+      "Copybook": 3,
+      "DataItem": 19,
+      "Program": 4,
+      "Paragraph": 20,
+      "CobolFile": 6
+    },
+    "total_nodes": 52,
+    "relationships_to_be_created": {
+      "DEFINES": 19,
+      "CONTAINS": 20,
+      "PERFORMS": 16,
+      "CALLS": 3,
+      "INCLUDES": 6,
+      "READS": 3,
+      "WRITES": 2
+    },
+    "total_relationships": 69,
+    "copybooks": [
+      {
+        "name": "CUSTOMER-RECORD",
+        "source": "cobol-modernization/sample-cobol/copybooks/CUSTOMER-RECORD.cpy",
+        "data_items": 5,
+        "used_by": [
+          "CUSTOMER-PROC",
+          "BATCH-RUNNER",
+          "ACCOUNT-MGR"
+        ]
+      },
+      {
+        "name": "ACCOUNT-RECORD",
+        "source": "cobol-modernization/sample-cobol/copybooks/ACCOUNT-RECORD.cpy",
+        "data_items": 7,
+        "used_by": [
+          "ACCOUNT-MGR"
+        ]
+      },
+      {
+        "name": "PAYMENT-RECORD",
+        "source": "cobol-modernization/sample-cobol/copybooks/PAYMENT-RECORD.cpy",
+        "data_items": 7,
+        "used_by": [
+          "ACCOUNT-MGR",
+          "PAYMENT-HANDLER"
+        ]
+      }
+    ],
+    "programs": [
+      {
+        "program_id": "CUSTOMER-PROC",
+        "author": "J.SMITH",
+        "date_written": "1987-03-15",
+        "complexity": "LOW",
+        "line_count": 58,
+        "paragraphs": 5,
+        "calls": [
+          "ACCOUNT-MGR"
+        ],
+        "called_by": [
+          "BATCH-RUNNER"
+        ],
+        "includes_copybooks": [
+          "CUSTOMER-RECORD"
+        ],
+        "risk_flags": "NONE"
+      },
+      {
+        "program_id": "BATCH-RUNNER",
+        "author": "D.WILSON",
+        "date_written": "1995-02-14",
+        "complexity": "LOW",
+        "line_count": 124,
+        "paragraphs": 5,
+        "calls": [
+          "CUSTOMER-PROC"
+        ],
+        "called_by": [],
+        "includes_copybooks": [
+          "CUSTOMER-RECORD"
+        ],
+        "risk_flags": "NONE"
+      },
+      {
+        "program_id": "ACCOUNT-MGR",
+        "author": "M.JONES",
+        "date_written": "1989-07-22",
+        "complexity": "MEDIUM",
+        "line_count": 116,
+        "paragraphs": 6,
+        "calls": [
+          "PAYMENT-HANDLER"
+        ],
+        "called_by": [
+          "CUSTOMER-PROC"
+        ],
+        "includes_copybooks": [
+          "ACCOUNT-RECORD",
+          "PAYMENT-RECORD",
+          "CUSTOMER-RECORD"
+        ],
+        "risk_flags": "NONE"
+      },
+      {
+        "program_id": "PAYMENT-HANDLER",
+        "author": "S.PATEL",
+        "date_written": "1992-11-03",
+        "complexity": "MEDIUM",
+        "line_count": 119,
+        "paragraphs": 4,
+        "calls": [],
+        "called_by": [
+          "ACCOUNT-MGR"
+        ],
+        "includes_copybooks": [
+          "PAYMENT-RECORD"
+        ],
+        "risk_flags": "HIGH - Contains 2x GOTO statements (lines 50, 58)"
+      }
+    ],
+    "call_hierarchy": {
+      "entry_points": [
+        "BATCH-RUNNER"
+      ],
+      "call_chain": "BATCH-RUNNER → CUSTOMER-PROC → ACCOUNT-MGR → PAYMENT-HANDLER",
+      "depth": 4,
+      "orphan_programs": []
+    },
+    "file_io_analysis": {
+      "total_files": 6,
+      "sequential_files": 4,
+      "indexed_files": 1,
+      "dynamic_access": 1,
+      "files": [
+        {
+          "logical_name": "CUSTOMER-FILE",
+          "physical_name": "CUSTMAST",
+          "organization": "SEQUENTIAL",
+          "access_pattern": "READ by CUSTOMER-PROC.1100-READ-CUSTOMER"
+        },
+        {
+          "logical_name": "ACCOUNT-FILE",
+          "physical_name": "ACCTMAST",
+          "organization": "INDEXED",
+          "access_pattern": "READ by ACCOUNT-MGR.2000-VALIDATE-CUSTOMER"
+        },
+        {
+          "logical_name": "PAYMENT-LOG",
+          "physical_name": "PAYLOG",
+          "organization": "SEQUENTIAL",
+          "access_pattern": "WRITE by PAYMENT-HANDLER.4000-LOG-TRANSACTION"
+        },
+        {
+          "logical_name": "BATCH-INPUT",
+          "physical_name": "BATCHIN",
+          "organization": "SEQUENTIAL",
+          "access_pattern": "READ by BATCH-RUNNER.1100-READ-NEXT-RECORD"
+        },
+        {
+          "logical_name": "BATCH-REPORT",
+          "physical_name": "BATCHRPT",
+          "organization": "SEQUENTIAL",
+          "access_pattern": "WRITE by BATCH-RUNNER.1000-INITIALISE"
+        },
+        {
+          "logical_name": "AUDIT-FILE",
+          "physical_name": "AUDITMAST",
+          "organization": "SEQUENTIAL",
+          "access_pattern": "Not accessed in analyzed code"
+        }
+      ]
+    },
+    "data_quality_metrics": {
+      "packed_decimal_usage": {
+        "items": [
+          "ACCOUNT-RECORD.ACCT-BALANCE (COMP-3)",
+          "ACCOUNT-RECORD.ACCT-LIMIT (COMP-3)",
+          "PAYMENT-RECORD.PAY-AMOUNT (COMP-3)"
+        ],
+        "count": 3,
+        "cloud_portability_risk": "HIGH - COMP-3 requires conversion for cloud deployment"
+      },
+      "condition_names": {
+        "total": 16,
+        "examples": [
+          "CUST-ACTIVE, CUST-INACTIVE, CUST-CLOSED",
+          "ACCT-ACTIVE, ACCT-INACTIVE, ACCT-CLOSED",
+          "PAY-APPROVED, PAY-PENDING, PAY-REVERSED, PAY-REJECTED"
+        ]
+      }
+    },
+    "next_steps": [
+      "Execute build-graph.cypher script against Neo4j instance",
+      "Verify graph with: MATCH (n) RETURN labels(n), count(n) ORDER BY count DESC",
+      "Run impact-analyzer on PAYMENT-HANDLER (HIGH risk due to GOTO)",
+      "Create modernization plan for COMP-3 data items (cloud portability)"
+    ]
+  }
+}

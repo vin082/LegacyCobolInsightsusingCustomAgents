@@ -1,0 +1,33 @@
+{
+  "program_id": "CBPAUP0C",
+  "source_path": "app/app-ims-mq/cbl/CBPAUP0C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBPAUP0C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "Batch IMS/MQ COBOL Program",
+    "function": "Batch authorization update with MQ",
+    "license": "Apache 2.0"
+  },
+  "environment": {"files": []},
+  "data": {
+    "copybook_inclusions": ["MQFUNCS"]
+  },
+  "procedure": {
+    "paragraphs": [
+      {"name": "MAIN-PARA", "mq_calls": [{"type": "MQPUT"}, {"type": "MQGET"}]}
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_mq": true,
+    "has_batch_mq": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 600,
+    "copybooks": 1,
+    "mq_calls": 2
+  }
+}

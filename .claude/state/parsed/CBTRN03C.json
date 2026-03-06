@@ -1,0 +1,28 @@
+{
+  "program_id": "CBTRN03C",
+  "source_path": "app/cbl/CBTRN03C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBTRN03C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Transaction file processing batch program",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": []
+  },
+  "data": {
+    "copybook_inclusions": []
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "estimated_complexity": "MEDIUM"
+  },
+  "metrics": {
+    "total_lines": 400,
+    "copybooks": 0
+  }
+}

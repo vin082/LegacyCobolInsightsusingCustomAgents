@@ -1,0 +1,74 @@
+{
+  "program_id": "CBACT04C",
+  "source_path": "app/cbl/CBACT04C.cbl",
+  "parsed_at": "2026-03-03T00:00:00Z",
+  "identification": {
+    "program_id": "CBACT04C",
+    "author": "AWS",
+    "application": "CardDemo",
+    "type": "BATCH COBOL Program",
+    "function": "Interest calculator program",
+    "license": "Apache 2.0"
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "TCATBAL-FILE",
+        "physical_name": "TCATBALF",
+        "organization": "INDEXED",
+        "access_mode": "SEQUENTIAL",
+        "record_key": "FD-TRAN-CAT-KEY"
+      },
+      {
+        "logical_name": "XREF-FILE",
+        "physical_name": "XREFFILE",
+        "organization": "INDEXED",
+        "access_mode": "RANDOM",
+        "record_key": "FD-XREF-CARD-NUM",
+        "alternate_key": "FD-XREF-ACCT-ID"
+      },
+      {
+        "logical_name": "ACCOUNT-FILE",
+        "physical_name": "ACCTFILE",
+        "organization": "INDEXED",
+        "access_mode": "RANDOM",
+        "record_key": "FD-ACCT-ID"
+      },
+      {
+        "logical_name": "DISCGRP-FILE",
+        "physical_name": "DISCGRP",
+        "organization": "INDEXED",
+        "access_mode": "RANDOM",
+        "record_key": "FD-DISCGRP-KEY"
+      },
+      {
+        "logical_name": "TRANSACT-FILE",
+        "physical_name": "TRANSACT",
+        "organization": "SEQUENTIAL",
+        "access_mode": "SEQUENTIAL"
+      }
+    ]
+  },
+  "data": {
+    "working_storage": [],
+    "copybook_inclusions": ["CVTRA01Y"],
+    "redefines_items": [],
+    "condition_names_88": []
+  },
+  "procedure": {
+    "paragraphs": []
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": false,
+    "has_random_access": true,
+    "estimated_complexity": "HIGH"
+  },
+  "metrics": {
+    "total_lines": 653,
+    "paragraphs": 0,
+    "copybooks": 1,
+    "file_operations": 5
+  }
+}

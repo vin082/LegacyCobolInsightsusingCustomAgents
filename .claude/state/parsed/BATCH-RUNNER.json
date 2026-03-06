@@ -1,0 +1,192 @@
+{
+  "program_id": "BATCH-RUNNER",
+  "source_path": "cobol-modernization/sample-cobol/BATCH-RUNNER.cbl",
+  "parsed_at": "2026-02-28T00:00:00Z",
+  "identification": {
+    "program_id": "BATCH-RUNNER",
+    "author": "D.WILSON",
+    "date_written": "1995-02-14",
+    "date_compiled": null,
+    "remarks": "Master batch controller. Reads customer extract file and invokes CUSTOMER-PROC for each record. Produces batch run statistics report."
+  },
+  "environment": {
+    "files": [
+      {
+        "logical_name": "BATCH-INPUT",
+        "physical_name": "BATCHIN",
+        "organization": "SEQUENTIAL",
+        "access_mode": "SEQUENTIAL"
+      },
+      {
+        "logical_name": "BATCH-REPORT",
+        "physical_name": "BATCHRPT",
+        "organization": "SEQUENTIAL",
+        "access_mode": "SEQUENTIAL"
+      }
+    ]
+  },
+  "data": {
+    "working_storage": [
+      {
+        "level": "01",
+        "name": "WS-INPUT-STATUS",
+        "pic": "X(2)"
+      },
+      {
+        "level": "01",
+        "name": "WS-REPORT-STATUS",
+        "pic": "X(2)"
+      },
+      {
+        "level": "01",
+        "name": "WS-EOF",
+        "pic": "X",
+        "value": "'N'"
+      },
+      {
+        "level": "01",
+        "name": "WS-COUNTERS",
+        "pic": null,
+        "children": [
+          {
+            "level": "05",
+            "name": "WS-TOTAL-READ",
+            "pic": "9(7)",
+            "value": "ZEROES"
+          },
+          {
+            "level": "05",
+            "name": "WS-TOTAL-PROCESSED",
+            "pic": "9(7)",
+            "value": "ZEROES"
+          },
+          {
+            "level": "05",
+            "name": "WS-TOTAL-ERRORS",
+            "pic": "9(7)",
+            "value": "ZEROES"
+          }
+        ]
+      },
+      {
+        "level": "01",
+        "name": "WS-CALL-RETURN-CODE",
+        "pic": "S9(4)",
+        "value": "ZERO",
+        "usage": "COMP"
+      },
+      {
+        "level": "01",
+        "name": "WS-DATE-TIME",
+        "pic": null,
+        "children": [
+          {
+            "level": "05",
+            "name": "WS-DATE",
+            "pic": "9(8)"
+          },
+          {
+            "level": "05",
+            "name": "WS-TIME",
+            "pic": "9(6)"
+          }
+        ]
+      }
+    ],
+    "copybook_inclusions": [
+      "CUSTOMER-RECORD"
+    ],
+    "redefines_items": [],
+    "condition_names_88": [
+      "WS-INPUT-OK",
+      "WS-INPUT-EOF",
+      "WS-REPORT-OK",
+      "WS-END-OF-FILE"
+    ]
+  },
+  "procedure": {
+    "paragraphs": [
+      {
+        "name": "0000-MAIN",
+        "line_start": 81,
+        "line_end": 86,
+        "performs": [
+          "1000-INITIALISE",
+          "2000-PROCESS-BATCH",
+          "9000-FINALISE"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "1000-INITIALISE",
+        "line_start": 88,
+        "line_end": 97,
+        "performs": [
+          "1100-READ-NEXT-RECORD"
+        ],
+        "calls": [],
+        "reads": [],
+        "writes": [
+          "BATCH-REPORT-REC (WRITE)"
+        ],
+        "gotos": []
+      },
+      {
+        "name": "1100-READ-NEXT-RECORD",
+        "line_start": 99,
+        "line_end": 104,
+        "performs": [],
+        "calls": [],
+        "reads": [
+          "BATCH-INPUT"
+        ],
+        "writes": [],
+        "gotos": []
+      },
+      {
+        "name": "2000-PROCESS-BATCH",
+        "line_start": 106,
+        "line_end": 117,
+        "performs": [
+          "1100-READ-NEXT-RECORD"
+        ],
+        "calls": [
+          {
+            "program": "CUSTOMER-PROC",
+            "using": [
+              "BATCH-INPUT-REC"
+            ]
+          }
+        ],
+        "reads": [],
+        "writes": [
+          "BATCH-REPORT-REC (WRITE)"
+        ],
+        "gotos": []
+      },
+      {
+        "name": "9000-FINALISE",
+        "line_start": 119,
+        "line_end": 124,
+        "performs": [],
+        "calls": [],
+        "reads": [],
+        "writes": [
+          "BATCH-REPORT-REC (WRITE)"
+        ],
+        "gotos": []
+      }
+    ]
+  },
+  "risk_flags": {
+    "has_goto": false,
+    "has_alter": false,
+    "has_redefines": false,
+    "has_occurs_depending_on": false,
+    "deep_nesting": false,
+    "estimated_complexity": "LOW"
+  }
+}
