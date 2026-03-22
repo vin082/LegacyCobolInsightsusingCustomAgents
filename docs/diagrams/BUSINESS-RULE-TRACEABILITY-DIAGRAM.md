@@ -9,69 +9,65 @@
 ## Complete Traceability Chain: COBOL → Neo4j → Java → Tests → Database
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'12px'}}}%%
 graph TB
-    subgraph "COBOL SOURCE"
-        A1[COACTUPC.cbl]
-        A2[Paragraph: 2400-VALIDATE-SSN<br/>Lines 245-267]
-        A3[Copybook: CVCUS01Y.cpy<br/>Field: CUST-SSN PIC 9⁹]
+    subgraph COBOL_SOURCE["COBOL SOURCE"]
+        A1["COACTUPC.cbl"]
+        A2["Paragraph: 2400-VALIDATE-SSN<br/>Lines 245-267"]
+        A3["Copybook: CVCUS01Y.cpy<br/>Field: CUST-SSN PIC 9(9)"]
         
         A1 --> A2
-        A3 -.defines.-> A2
+        A3 -.-> A2
     end
     
-    subgraph "NEO4J KNOWLEDGE GRAPH"
-        B1[BusinessRule Node<br/>rule_id: COACTUPC.SSN-VALIDATION]
-        B2[Type: VALIDATION<br/>Confidence: HIGH<br/>Impact: CRITICAL]
-        B3[Regulatory: SSA<br/>Social Security Act]
-        B4[DataItem: CUST-SSN<br/>PIC 9⁹ COMP-3]
+    subgraph NEO4J_GRAPH["NEO4J KNOWLEDGE GRAPH"]
+        B1["BusinessRule Node<br/>rule_id: COACTUPC.SSN-VALIDATION"]
+        B2["Type: VALIDATION<br/>Confidence: HIGH<br/>Impact: CRITICAL"]
+        B3["Regulatory: SSA<br/>Social Security Act"]
+        B4["DataItem: CUST-SSN<br/>PIC 9(9) COMP-3"]
         
         B1 --> B2
         B2 --> B3
-        B1 -.governs.-> B4
+        B1 -.-> B4
     end
     
-    subgraph "JAVA TARGET"
-        C1[SSNValidator.java<br/>@Component]
-        C2[Method: isValid<br/>Lines 28-52]
-        C3[CustomerRecord.java<br/>@Entity]
-        C4[Field: String ssn<br/>@ValidSSN @Encrypted]
+    subgraph JAVA_TARGET["JAVA TARGET"]
+        C1["SSNValidator.java<br/>@Component"]
+        C2["Method: isValid<br/>Lines 28-52"]
+        C3["CustomerRecord.java<br/>@Entity"]
+        C4["Field: String ssn<br/>@ValidSSN @Encrypted"]
         
         C1 --> C2
         C3 --> C4
     end
     
-    subgraph "TEST COVERAGE"
-        D1[AccountUpdateServiceTest.java]
-        D2[testSSNValidation⁽⁾<br/>16 parameterized tests]
-        D3[✅ Status: ALL PASSED<br/>Duration: 124ms]
+    subgraph TEST_COV["TEST COVERAGE"]
+        D1["AccountUpdateServiceTest.java"]
+        D2["testSSNValidation()<br/>16 parameterized tests"]
+        D3["Status: ALL PASSED<br/>Duration: 124ms"]
         
         D1 --> D2
         D2 --> D3
     end
     
-    subgraph "DATABASE TARGET"
-        E1[PostgreSQL: customer_master]
-        E2[Column: ssn VARCHAR<br/>ENCRYPTED: AES-256-GCM]
-        E3[Index: idx_ssn_last4]
+    subgraph DB_TARGET["DATABASE TARGET"]
+        E1["PostgreSQL: customer_master"]
+        E2["Column: ssn VARCHAR<br/>ENCRYPTED: AES-256-GCM"]
+        E3["Index: idx_ssn_last4"]
         
         E1 --> E2
         E2 --> E3
     end
     
-    %% TRACEABILITY RELATIONSHIPS
     A2 -->|EMBEDS| B1
     B1 -->|IMPLEMENTED_BY| C2
     C2 -->|TESTED_BY| D2
     
-    %% DATA LINEAGE
     A3 -->|DEFINES| B4
     B4 -->|MAPS_TO| C4
     C4 -->|PERSISTED_TO| E2
     
-    %% GOVERNANCE
-    B1 -.enforces.-> C1
-    B3 -.compliance.-> D2
+    B1 -.-> C1
+    B3 -.-> D2
     
     style B1 fill:#2196F3,stroke:#1976D2,color:#fff,stroke-width:3px
     style C2 fill:#4CAF50,stroke:#388E3C,color:#fff,stroke-width:2px
@@ -84,75 +80,67 @@ graph TB
 ## Multi-Rule Traceability Map: Top 10 Business Rules
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'11px'}}}%%
 graph LR
-    subgraph "COBOL Paragraphs"
-        P1[2400-VALIDATE-SSN]
-        P2[2410-VALIDATE-FICO]
-        P3[2420-VALIDATE-PHONE]
-        P4[2430-VALIDATE-DOB]
-        P5[1000-MAIN-LOGIC]
-        P6[3100-READ-ACCOUNT]
-        P7[4100-WRITE-ACCOUNT]
-        P8[2000-ACTION-ROUTING]
-        P9[5100-CURRENCY-CONVERT]
-        P10[2450-VALIDATE-LIMIT]
+    subgraph COBOL_PARA["COBOL Paragraphs"]
+        P1["2400-VALIDATE-SSN"]
+        P2["2410-VALIDATE-FICO"]
+        P3["2420-VALIDATE-PHONE"]
+        P4["2430-VALIDATE-DOB"]
+        P5["1000-MAIN-LOGIC"]
+        P6["3100-READ-ACCOUNT"]
+        P7["4100-WRITE-ACCOUNT"]
+        P8["2000-ACTION-ROUTING"]
+        P9["5100-CURRENCY-CONVERT"]
+        P10["2450-VALIDATE-LIMIT"]
     end
     
-    subgraph "Business Rules Neo4j"
-        R1[SSN-VALIDATION<br/>BR-001]
-        R2[FICO-SCORE-VALIDATION<br/>BR-002]
-        R3[US-PHONE-VALIDATION<br/>BR-003]
-        R4[DATE-OF-BIRTH-VALIDATION<br/>BR-004]
-        R5[MAIN-CONTROL-FLOW<br/>BR-005]
-        R6[READ-ACCOUNT-DATA<br/>BR-006]
-        R7[WRITE-ACCOUNT-UPDATES<br/>BR-007]
-        R8[ACTION-DECISION-ROUTING<br/>BR-008]
-        R9[CURRENCY-CONVERSION<br/>BR-009]
-        R10[CREDIT-LIMIT-THRESHOLD<br/>BR-010]
+    subgraph BUS_RULES["Business Rules Neo4j"]
+        R1["SSN-VALIDATION<br/>BR-001"]
+        R2["FICO-SCORE-VALIDATION<br/>BR-002"]
+        R3["US-PHONE-VALIDATION<br/>BR-003"]
+        R4["DATE-OF-BIRTH-VALIDATION<br/>BR-004"]
+        R5["MAIN-CONTROL-FLOW<br/>BR-005"]
+        R6["READ-ACCOUNT-DATA<br/>BR-006"]
+        R7["WRITE-ACCOUNT-UPDATES<br/>BR-007"]
+        R8["ACTION-DECISION-ROUTING<br/>BR-008"]
+        R9["CURRENCY-CONVERSION<br/>BR-009"]
+        R10["CREDIT-LIMIT-THRESHOLD<br/>BR-010"]
     end
     
-    subgraph "Java Methods"
-        J1[SSNValidator.isValid⁽⁾]
-        J2[FICOValidator.isValid⁽⁾]
-        J3[USPhoneValidator.isValid⁽⁾]
-        J4[isLegalAge⁽⁾]
-        J5[processAccountUpdate⁽⁾]
-        J6[accountRepo.findById⁽⁾]
-        J7[accountRepo.save⁽⁾]
-        J8[routeAction⁽⁾]
-        J9[convertCurrency⁽⁾]
-        J10[validateCreditLimit⁽⁾]
+    subgraph JAVA_METHODS["Java Methods"]
+        J1["SSNValidator.isValid()"]
+        J2["FICOValidator.isValid()"]
+        J3["USPhoneValidator.isValid()"]
+        J4["isLegalAge()"]
+        J5["processAccountUpdate()"]
+        J6["accountRepo.findById()"]
+        J7["accountRepo.save()"]
+        J8["routeAction()"]
+        J9["convertCurrency()"]
+        J10["validateCreditLimit()"]
     end
     
-    subgraph "JUnit Tests"
-        T1[testSSNValidation⁽⁾<br/>16 tests]
-        T2[testFICOValidation⁽⁾<br/>8 tests]
-        T3[testPhoneValidation⁽⁾<br/>6 tests]
-        T4[testAgeValidation⁽⁾<br/>5 tests]
-        T5[testMainFlow⁽⁾<br/>12 tests]
-        T6[testReadAccount⁽⁾<br/>4 tests]
-        T7[testWriteAccount⁽⁾<br/>6 tests]
-        T8[testActionRouting⁽⁾<br/>8 tests]
-        T9[testCurrencyConversion⁽⁾<br/>4 tests]
-        T10[testLimitValidation⁽⁾<br/>5 tests]
+    subgraph JUNIT_TESTS["JUnit Tests"]
+        T1["testSSNValidation()<br/>16 tests"]
+        T2["testFICOValidation()<br/>8 tests"]
+        T3["testPhoneValidation()<br/>6 tests"]
+        T4["testAgeValidation()<br/>5 tests"]
+        T5["testMainFlow()<br/>12 tests"]
+        T6["testReadAccount()<br/>4 tests"]
+        T7["testWriteAccount()<br/>6 tests"]
+        T8["testActionRouting()<br/>8 tests"]
+        T9["testCurrencyConversion()<br/>4 tests"]
+        T10["testLimitValidation()<br/>5 tests"]
     end
     
-    %% VALIDATION RULES
     P1 --> R1 --> J1 --> T1
     P2 --> R2 --> J2 --> T2
     P3 --> R3 --> J3 --> T3
     P4 --> R4 --> J4 --> T4
-    
-    %% ROUTING RULES
     P5 --> R5 --> J5 --> T5
     P8 --> R8 --> J8 --> T8
-    
-    %% DATA ACCESS RULES
     P6 --> R6 --> J6 --> T6
     P7 --> R7 --> J7 --> T7
-    
-    %% CALCULATION/THRESHOLD
     P9 --> R9 --> J9 --> T9
     P10 --> R10 --> J10 --> T10
     
@@ -173,53 +161,52 @@ graph LR
 ## Data Lineage: Field-Level Traceability (SSN Field)
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'13px'}}}%%
 graph LR
-    subgraph "COBOL Copybook"
-        CB1[CVCUS01Y.cpy]
-        CB2[05 CUST-SSN PIC 9⁹<br/>Position: 45<br/>Length: 9 bytes]
+    subgraph COPYBOOK["COBOL Copybook"]
+        CB1["CVCUS01Y.cpy"]
+        CB2["05 CUST-SSN PIC 9(9)<br/>Position: 45<br/>Length: 9 bytes"]
     end
     
-    subgraph "COBOL Program Usage"
-        PG1[COACTUPC.cbl<br/>Line 246]
-        PG2[IF CUST-SSN = ZEROS]
-        PG3[IF CUST-SSN = 666...]
-        PG4[IF CUST-SSN >= 900...]
+    subgraph COBOL_USAGE["COBOL Program Usage"]
+        PG1["COACTUPC.cbl<br/>Line 246"]
+        PG2["IF CUST-SSN = ZEROS"]
+        PG3["IF CUST-SSN = 666..."]
+        PG4["IF CUST-SSN >= 900..."]
     end
     
-    subgraph "Business Rule"
-        BR1[COACTUPC.SSN-VALIDATION]
-        BR2[Regulatory: SSA]
-        BR3[Confidence: HIGH]
-        BR4[Impact: CRITICAL]
+    subgraph BUS_RULE["Business Rule"]
+        BR1["COACTUPC.SSN-VALIDATION"]
+        BR2["Regulatory: SSA"]
+        BR3["Confidence: HIGH"]
+        BR4["Impact: CRITICAL"]
     end
     
-    subgraph "Java Entity"
-        JE1[CustomerRecord.java<br/>Line 78]
-        JE2[@Column name='ssn']
-        JE3[@ValidSSN]
-        JE4[@Encrypted]
-        JE5[private String ssn]
+    subgraph JAVA_ENTITY["Java Entity"]
+        JE1["CustomerRecord.java<br/>Line 78"]
+        JE2["@Column name='ssn'"]
+        JE3["@ValidSSN"]
+        JE4["@Encrypted"]
+        JE5["private String ssn"]
     end
     
-    subgraph "Validation Logic"
-        VL1[SSNValidator.java<br/>Line 28]
-        VL2[Rule 1: No 000]
-        VL3[Rule 2: No 666]
-        VL4[Rule 3: No 900-999]
+    subgraph VALIDATION["Validation Logic"]
+        VL1["SSNValidator.java<br/>Line 28"]
+        VL2["Rule 1: No 000"]
+        VL3["Rule 2: No 666"]
+        VL4["Rule 3: No 900-999"]
     end
     
-    subgraph "Database"
-        DB1[customer_master table]
-        DB2[ssn VARCHAR255<br/>NOT NULL]
-        DB3[ENCRYPTED<br/>AES-256-GCM]
-        DB4[Index: idx_ssn_last4]
+    subgraph DATABASE["Database"]
+        DB1["customer_master table"]
+        DB2["ssn VARCHAR(255)<br/>NOT NULL"]
+        DB3["ENCRYPTED<br/>AES-256-GCM"]
+        DB4["Index: idx_ssn_last4"]
     end
     
-    subgraph "Application Layer"
-        APP1[REST API<br/>/api/customers]
-        APP2[JSON Response<br/>'ssn': '***-**-6789']
-        APP3[PII Masking<br/>Last 4 digits only]
+    subgraph APP_LAYER["Application Layer"]
+        APP1["REST API<br/>/api/customers"]
+        APP2["JSON Response<br/>'ssn': '***-**-6789'"]
+        APP3["PII Masking<br/>Last 4 digits only"]
     end
     
     CB1 --> CB2
@@ -240,22 +227,22 @@ graph LR
     VL1 --> VL3
     VL1 --> VL4
     
-    CB2 -.maps_to.-> JE5
+    CB2 -.-> JE5
     JE1 --> JE2
     JE2 --> JE3
     JE3 --> JE4
     JE4 --> JE5
     
-    VL2 -.validates.-> JE5
-    VL3 -.validates.-> JE5
-    VL4 -.validates.-> JE5
+    VL2 -.-> JE5
+    VL3 -.-> JE5
+    VL4 -.-> JE5
     
     JE5 --> DB2
     DB1 --> DB2
     DB2 --> DB3
     DB3 --> DB4
     
-    DB2 -.reads.-> APP1
+    DB2 -.-> APP1
     APP1 --> APP2
     APP2 --> APP3
     
@@ -270,9 +257,8 @@ graph LR
 ## Complete Rule Type Distribution with Lineage
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'12px'}}}%%
 graph TD
-    subgraph "VALIDATION Rules 16"
+    subgraph VALIDATION["VALIDATION Rules - 16"]
         V1[SSN-VALIDATION] --> VJ1[SSNValidator]
         V2[FICO-SCORE-VALIDATION] --> VJ2[FICOValidator]
         V3[US-PHONE-VALIDATION] --> VJ3[USPhoneValidator]
@@ -291,47 +277,47 @@ graph TD
         V16[DATA-CHANGE-DETECTION] --> VJ16[@Audited]
     end
     
-    subgraph "ROUTING Rules 7"
-        R1[MAIN-CONTROL-FLOW] --> RJ1[processAccountUpdate]
-        R2[ACTION-DECISION-ROUTING] --> RJ2[routeAction]
-        R3[SCREEN-DISPLAY-DECISION] --> RJ3[determineScreen]
-        R4[ERROR-HANDLING-FLOW] --> RJ4[handleError]
-        R5[PF-KEY-ROUTING] --> RJ5[handleFunctionKey]
-        R6[TRANSACTION-COMPLETION] --> RJ6[completeTransaction]
-        R7[RETURN-TO-MENU] --> RJ7[returnToMenu]
+    subgraph ROUTING["ROUTING Rules - 7"]
+        R1["MAIN-CONTROL-FLOW"] --> RJ1["processAccountUpdate"]
+        R2["ACTION-DECISION-ROUTING"] --> RJ2["routeAction"]
+        R3["SCREEN-DISPLAY-DECISION"] --> RJ3["determineScreen"]
+        R4["ERROR-HANDLING-FLOW"] --> RJ4["handleError"]
+        R5["PF-KEY-ROUTING"] --> RJ5["handleFunctionKey"]
+        R6["TRANSACTION-COMPLETION"] --> RJ6["completeTransaction"]
+        R7["RETURN-TO-MENU"] --> RJ7["returnToMenu"]
     end
     
-    subgraph "DATA-ACCESS Rules 7"
-        D1[READ-ACCOUNT-DATA] --> DJ1[accountRepo.findById]
-        D2[READ-CUSTOMER-MASTER] --> DJ2[customerRepo.findById]
-        D3[READ-CARD-XREF] --> DJ3[cardXrefRepo.findByAccountId]
-        D4[WRITE-ACCOUNT-UPDATES] --> DJ4[accountRepo.save]
-        D5[WRITE-CUSTOMER-UPDATES] --> DJ5[customerRepo.save]
-        D6[WRITE-CARD-UPDATES] --> DJ6[cardXrefRepo.save]
-        D7[LOCK-ACCOUNT-RECORD] --> DJ7[@Version optimistic lock]
+    subgraph DATA_ACCESS["DATA-ACCESS Rules - 7"]
+        D1["READ-ACCOUNT-DATA"] --> DJ1["accountRepo.findById"]
+        D2["READ-CUSTOMER-MASTER"] --> DJ2["customerRepo.findById"]
+        D3["READ-CARD-XREF"] --> DJ3["cardXrefRepo.findByAccountId"]
+        D4["WRITE-ACCOUNT-UPDATES"] --> DJ4["accountRepo.save"]
+        D5["WRITE-CUSTOMER-UPDATES"] --> DJ5["customerRepo.save"]
+        D6["WRITE-CARD-UPDATES"] --> DJ6["cardXrefRepo.save"]
+        D7["LOCK-ACCOUNT-RECORD"] --> DJ7["@Version optimistic lock"]
     end
     
-    subgraph "CONDITIONAL Rules 9"
-        C1[ACCOUNT-STATUS-CHECK] --> CJ1[if status == ACTIVE]
-        C2[CICS-AID-KEY-DETECTION] --> CJ2[KeyType enum]
-        C3[PROGRAM-ENTRY-MODE] --> CJ3[EntryMode enum]
-        C4[FILE-RECORD-FOUND] --> CJ4[Optional.isPresent]
-        C5[INVALID-SSN-PREFIX] --> CJ5[SSNValidator.isInvalidPrefix]
-        C6[UPDATE-CONFIRMATION] --> CJ6[confirmationStatus flag]
-        C7[DATA-CHANGED-FLAG] --> CJ7[@Audited change detection]
-        C8[ERROR-MESSAGE-FLAGS] --> CJ8[ErrorMessage enum]
-        C9[INFORMATION-MESSAGE-FLAGS] --> CJ9[InfoMessage enum]
+    subgraph CONDITIONAL["CONDITIONAL Rules - 9"]
+        C1["ACCOUNT-STATUS-CHECK"] --> CJ1["if status == ACTIVE"]
+        C2["CICS-AID-KEY-DETECTION"] --> CJ2["KeyType enum"]
+        C3["PROGRAM-ENTRY-MODE"] --> CJ3["EntryMode enum"]
+        C4["FILE-RECORD-FOUND"] --> CJ4["Optional.isPresent"]
+        C5["INVALID-SSN-PREFIX"] --> CJ5["SSNValidator.isInvalidPrefix"]
+        C6["UPDATE-CONFIRMATION"] --> CJ6["confirmationStatus flag"]
+        C7["DATA-CHANGED-FLAG"] --> CJ7["@Audited change detection"]
+        C8["ERROR-MESSAGE-FLAGS"] --> CJ8["ErrorMessage enum"]
+        C9["INFORMATION-MESSAGE-FLAGS"] --> CJ9["InfoMessage enum"]
     end
     
-    subgraph "CALCULATION Rules 1"
-        CA1[CURRENCY-CONVERSION] --> CAJ1[NumberFormat.getCurrencyInstance]
+    subgraph CALCULATION["CALCULATION Rules - 1"]
+        CA1["CURRENCY-CONVERSION"] --> CAJ1["NumberFormat.getCurrencyInstance"]
     end
     
-    subgraph "THRESHOLD Rules 1"
-        T1[CREDIT-LIMIT-THRESHOLD] --> TJ1[BigDecimal comparison]
+    subgraph THRESHOLD["THRESHOLD Rules - 1"]
+        T1["CREDIT-LIMIT-THRESHOLD"] --> TJ1["BigDecimal comparison"]
     end
     
-    subgraph "Database Schema"
+    subgraph DB_SCHEMA["Database Schema"]
         VJ1 --> DB1[(customer_master.ssn)]
         VJ2 --> DB1
         DJ1 --> DB2[(account.current_balance)]
@@ -353,9 +339,8 @@ graph TD
 ## Regulatory Compliance Lineage
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'13px'}}}%%
 graph TB
-    subgraph "Regulatory Frameworks"
+    subgraph REG_FRAME["Regulatory Frameworks"]
         REG1[Social Security Act<br/>SSA]
         REG2[Fair Credit Reporting Act<br/>FCRA]
         REG3[Sarbanes-Oxley Act<br/>SOX]
@@ -363,44 +348,44 @@ graph TB
         REG5[KYC / AML<br/>Know Your Customer]
     end
     
-    subgraph "COBOL Business Rules"
-        BR1[SSN-VALIDATION<br/>US-STATE-VALIDATION<br/>2400, 2440]
-        BR2[FICO-SCORE-VALIDATION<br/>CREDIT-LIMIT-THRESHOLD<br/>2410, 2450]
-        BR3[DATA-CHANGE-DETECTION<br/>WRITE-ACCOUNT-UPDATES<br/>4100, 4150]
-        BR4[READ-CUSTOMER-MASTER<br/>PII field access<br/>3200]
-        BR5[DATE-OF-BIRTH-VALIDATION<br/>AGE-VERIFICATION<br/>2430]
+    subgraph COBOL_BR["COBOL Business Rules"]
+        BR1["SSN-VALIDATION<br/>US-STATE-VALIDATION<br/>2400, 2440"]
+        BR2["FICO-SCORE-VALIDATION<br/>CREDIT-LIMIT-THRESHOLD<br/>2410, 2450"]
+        BR3["DATA-CHANGE-DETECTION<br/>WRITE-ACCOUNT-UPDATES<br/>4100, 4150"]
+        BR4["READ-CUSTOMER-MASTER<br/>PII field access<br/>3200"]
+        BR5["DATE-OF-BIRTH-VALIDATION<br/>AGE-VERIFICATION<br/>2430"]
     end
     
-    subgraph "Neo4j Rule Nodes"
-        NEO1[COACTUPC.SSN-VALIDATION<br/>COACTUPC.US-STATE-VALIDATION]
-        NEO2[COACTUPC.FICO-SCORE-VALIDATION<br/>COACTUPC.CREDIT-LIMIT-THRESHOLD]
-        NEO3[COACTUPC.DATA-CHANGE-DETECTION<br/>COACTUPC.WRITE-ACCOUNT-UPDATES]
-        NEO4[COACTUPC.READ-CUSTOMER-MASTER]
-        NEO5[COACTUPC.DATE-OF-BIRTH-VALIDATION]
+    subgraph NEO4J_NODES["Neo4j Rule Nodes"]
+        NEO1["COACTUPC.SSN-VALIDATION<br/>COACTUPC.US-STATE-VALIDATION"]
+        NEO2["COACTUPC.FICO-SCORE-VALIDATION<br/>COACTUPC.CREDIT-LIMIT-THRESHOLD"]
+        NEO3["COACTUPC.DATA-CHANGE-DETECTION<br/>COACTUPC.WRITE-ACCOUNT-UPDATES"]
+        NEO4["COACTUPC.READ-CUSTOMER-MASTER"]
+        NEO5["COACTUPC.DATE-OF-BIRTH-VALIDATION"]
     end
     
-    subgraph "Java Implementation"
-        JAVA1[@ValidSSN<br/>@Pattern state codes<br/>SSNValidator.java]
-        JAVA2[@ValidFICO<br/>@Digits credit limit<br/>FICOValidator.java]
-        JAVA3[@Audited entities<br/>@Version optimistic lock<br/>Hibernate Envers]
-        JAVA4[@Encrypted SSN/DOB<br/>Field masking in logs<br/>EncryptionConverter.java]
-        JAVA5[@Past DOB<br/>isLegalAge minimum 18<br/>AgeValidator.java]
+    subgraph JAVA_IMPL["Java Implementation"]
+        JAVA1["@ValidSSN<br/>@Pattern state codes<br/>SSNValidator.java"]
+        JAVA2["@ValidFICO<br/>@Digits credit limit<br/>FICOValidator.java"]
+        JAVA3["@Audited entities<br/>@Version optimistic lock<br/>Hibernate Envers"]
+        JAVA4["@Encrypted SSN/DOB<br/>Field masking in logs<br/>EncryptionConverter.java"]
+        JAVA5["@Past DOB<br/>isLegalAge minimum 18<br/>AgeValidator.java"]
     end
     
-    subgraph "Test Coverage"
-        TEST1[testSSNValidation: 16 tests<br/>testStateValidation: 12 tests]
-        TEST2[testFICOValidation: 8 tests<br/>testCreditLimit: 5 tests]
-        TEST3[testAuditTrail: 6 tests<br/>testConcurrentUpdate: 4 tests]
-        TEST4[testEncryption: 8 tests<br/>testPIIMasking: 6 tests]
-        TEST5[testAgeValidation: 5 tests]
+    subgraph TEST_COV["Test Coverage"]
+        TEST1["testSSNValidation: 16 tests<br/>testStateValidation: 12 tests"]
+        TEST2["testFICOValidation: 8 tests<br/>testCreditLimit: 5 tests"]
+        TEST3["testAuditTrail: 6 tests<br/>testConcurrentUpdate: 4 tests"]
+        TEST4["testEncryption: 8 tests<br/>testPIIMasking: 6 tests"]
+        TEST5["testAgeValidation: 5 tests"]
     end
     
-    subgraph "Audit Trail"
-        AUDIT1[Access logs: SSN reads<br/>State validation logs]
-        AUDIT2[FICO access logs with reason<br/>Credit limit change history]
-        AUDIT3[Change logs: before/after<br/>Version conflict detection]
-        AUDIT4[Encryption key rotation log<br/>PII access audit trail]
-        AUDIT5[Age verification logs<br/>KYC compliance reports]
+    subgraph AUDIT["Audit Trail"]
+        AUDIT1["Access logs: SSN reads<br/>State validation logs"]
+        AUDIT2["FICO access logs with reason<br/>Credit limit change history"]
+        AUDIT3["Change logs: before/after<br/>Version conflict detection"]
+        AUDIT4["Encryption key rotation log<br/>PII access audit trail"]
+        AUDIT5["Age verification logs<br/>KYC compliance reports"]
     end
     
     REG1 --> BR1 --> NEO1 --> JAVA1 --> TEST1 --> AUDIT1
@@ -421,45 +406,44 @@ graph TB
 ## Test Traceability Matrix
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'11px'}}}%%
 graph LR
-    subgraph "Business Rules 41"
+    subgraph BUS_RULES["Business Rules - 41"]
         BR[16 VALIDATION<br/>7 ROUTING<br/>7 DATA-ACCESS<br/>9 CONDITIONAL<br/>1 CALCULATION<br/>1 THRESHOLD]
     end
     
-    subgraph "Unit Tests 88+"
-        UT1[testSSNValidation: 16]
-        UT2[testFICOValidation: 8]
-        UT3[testPhoneValidation: 6]
-        UT4[testAgeValidation: 5]
-        UT5[testMainFlow: 12]
-        UT6[testActionRouting: 8]
-        UT7[testReadAccount: 4]
-        UT8[testWriteAccount: 6]
-        UT9[testCurrencyConversion: 4]
-        UT10[testCreditLimit: 5]
-        UT11[... 14 more methods<br/>with 14+ tests]
+    subgraph UNIT_TESTS["Unit Tests - 88+"]
+        UT1["testSSNValidation: 16"]
+        UT2["testFICOValidation: 8"]
+        UT3["testPhoneValidation: 6"]
+        UT4["testAgeValidation: 5"]
+        UT5["testMainFlow: 12"]
+        UT6["testActionRouting: 8"]
+        UT7["testReadAccount: 4"]
+        UT8["testWriteAccount: 6"]
+        UT9["testCurrencyConversion: 4"]
+        UT10["testCreditLimit: 5"]
+        UT11["... 14 more methods<br/>with 14+ tests"]
     end
     
-    subgraph "Integration Tests 24"
-        IT1[Account CRUD: 6 tests]
-        IT2[Customer CRUD: 6 tests]
-        IT3[Transaction flow: 8 tests]
-        IT4[Concurrent updates: 4 tests]
+    subgraph INTEGRATION["Integration Tests - 24"]
+        IT1["Account CRUD: 6 tests"]
+        IT2["Customer CRUD: 6 tests"]
+        IT3["Transaction flow: 8 tests"]
+        IT4["Concurrent updates: 4 tests"]
     end
     
-    subgraph "Contract Tests 12"
-        CT1[REST API contracts: 8]
-        CT2[Database contracts: 4]
+    subgraph CONTRACT["Contract Tests - 12"]
+        CT1["REST API contracts: 8"]
+        CT2["Database contracts: 4"]
     end
     
-    subgraph "E2E Tests 6"
-        E2E1[Full account update: 3]
-        E2E2[Error scenarios: 3]
+    subgraph E2E["E2E Tests - 6"]
+        E2E1["Full account update: 3"]
+        E2E2["Error scenarios: 3"]
     end
     
-    subgraph "Parallel Tests ∞"
-        PT1[COBOL vs Java<br/>Shadow mode<br/>1000+ transactions]
+    subgraph PARALLEL["Parallel Tests"]
+        PT1["COBOL vs Java<br/>Shadow mode<br/>1000+ transactions"]
     end
     
     BR --> UT1
@@ -502,7 +486,6 @@ graph LR
 ## End-to-End Transaction Flow with Rule Enforcement
 
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'12px'}}}%%
 sequenceDiagram
     autonumber
     
